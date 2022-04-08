@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace wearehouse_Report.Api
+namespace WarehouseReport.Api
 {
     public class Startup
     {
@@ -30,7 +30,7 @@ namespace wearehouse_Report.Api
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "wearehouse_Report.Api", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WarehouseReport.Api", Version = "v1" });
             });
         }
 
@@ -41,7 +41,7 @@ namespace wearehouse_Report.Api
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "wearehouse_Report.Api v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WarehouseReport.Api v1"));
             }
 
             app.UseHttpsRedirection();

@@ -1,6 +1,6 @@
 using System;
 
-namespace wearehouse_Report.Api
+namespace WarehouseReport.Api
 {
     public class WeatherForecast
     {

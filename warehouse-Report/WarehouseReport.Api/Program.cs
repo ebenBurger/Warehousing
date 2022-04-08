@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace wearehouse_Report.Api
+namespace WarehouseReport.Api
 {
     public class Program
     {
