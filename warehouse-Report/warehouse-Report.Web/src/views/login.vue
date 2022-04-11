@@ -73,15 +73,6 @@ export default {
             this.isLoading = true
             this.showErrors = false
             
-            // var bytes = []
-            //
-            // for (var i = 0; i < this.password.length; ++i) {
-            //     var code = this.password.charCodeAt(i);
-            //     bytes = bytes.concat([code]);
-            // }
-            //
-            // let passwordhash = md5.base64(bytes)
-            
             const request = {
                 username: this.username,
                 password: this.password 
@@ -93,7 +84,12 @@ export default {
             .then((response) => {
                 console.log("RESPONSE", response)
                 this.isLoading = false
-                this.$router.push({path: '/'})
+                if (response.data.role[0] === "User") {
+                    this.$router.push({path: '/user-view'})
+                }
+                if (response.data.role[0] === "Admin") {
+                    this.$router.push({path: '/admin-view'})
+                }
             })
         },
     },

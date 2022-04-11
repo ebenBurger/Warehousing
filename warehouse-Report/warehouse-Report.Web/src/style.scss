@@ -1,0 +1,352 @@
+
+$theme-colors: (
+    "primary": #18224C,
+    "secondary": #00AC64,
+
+    "supporting-blue": #00AEEF,
+    "supporting-green": #AAD042,
+    "supporting-teal": #008694,
+    "supporting-gray": #343232,    
+
+    "additional-gray": #4F4C4C,
+  
+    "red": #CB4B4B,
+    "orange": #E1AE39,
+    "yellow": #E2E257,
+    "green": #69BE6B,
+    "green-dark": #4B845F,
+    "blue": #1D5D74 ,
+    "cyan": #52B0B4,
+    "purple": #8869C8,
+    "pink": #CB7BCB,
+    "grey-dark": #2E2E2E,
+
+    "success" : #00AD92,
+    "error" : #E56666,
+  
+
+    "background-primary" : #E5E5E5,
+    "background-secondary": white,
+
+    "borders": #AEAEAE,
+
+    "text-primary": #707070,
+    "text-secondary": white
+  );
+  
+  @import "../node_modules/bootstrap/scss/bootstrap.scss";
+  @import '../node_modules/bootstrap-vue/src/index.scss';
+  
+
+#app {
+font-family: Calibri, Arial, sans-serif;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+color: var(--text-primary);
+}
+
+body{
+    background-color: var(--background-primary);
+}
+
+.row{
+    padding: 0;
+    margin: 0;
+    margin-bottom: 0.25rem;
+}
+
+.card{
+    border: none;
+    border-radius: 0;
+}
+
+.table th, .table td{
+    border-top: none;
+}
+
+.table {
+    border-bottom: 2px solid #dee2e6;
+}
+
+th{
+    color: #707070;
+}
+.menu-card-outline{
+    border: var(--supporting-teal) solid 2px;
+    h3{
+        color: var(--supporting-teal);
+    }
+}
+.menu-card-outline:hover{
+    background-color: var(--supporting-teal);
+    h3{
+        color: white;
+    }
+}
+h4{
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.status-good{
+    width: 1rem;
+    height: 1rem;
+    background-color: var(--success);
+    border-radius: 50%;
+}
+.status-bad{
+    width: 1rem;
+    height: 1rem;
+    background-color: var(--error);
+    border-radius: 50%;
+}
+
+.btn-icon{
+    background-color: transparent;
+    border: none;
+    color: var(--text-primary);
+}
+.btn-icon:hover{
+    background-color: transparent;
+    border: none;
+    color: var(--text-primary);
+}
+
+td .row{
+    margin-bottom: 0rem;
+}
+
+.img-to-fit{
+    width: 100%;
+}
+
+.primary-background{
+    background-color: var(--background-primary);
+}
+
+h5{
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0;
+}
+
+
+// secondry
+//right class for login page, otherwise all pages become fabulous!
+.login-container {
+    height: 100vh;
+    background-repeat: no-repeat;
+    background: var(--primary);
+
+    .card{
+        width: 100%;
+    }
+}
+
+.checklist-images{
+    max-width: 100%;
+    max-height: 15rem;
+}
+
+.modal-images{
+    width: 100%;
+}
+
+.card-header{
+    border: none;
+    background-color: var(--background-secondary);
+}
+
+.alert{
+    border-radius: 0;
+}
+
+.table td{
+    word-break: break-word;
+}
+
+.navbar{
+    background-color: var(--primary);
+    padding: 1rem 2rem;
+}
+
+.navbar-dark .navbar-nav .nav-link{
+    color: var(--text-secondary);
+}
+.nav-item{
+    margin-right: 1rem;
+}
+
+.navbar-login-dropdown{
+    .dropdown-menu{
+        padding-top: 0rem;
+        width: 15rem;
+    }
+
+    .dropdown-header{
+        text-align: right;
+        padding-top: 2rem;
+        margin-bottom: 0.6rem;
+        font-weight: 500;
+        color: white;
+        background-color: var(--supporting-gray);
+    }
+}
+
+label{
+    margin-bottom: 0;
+    width: 100%;
+    color: var(--text-primary);
+}
+
+.bold{
+    font-weight: 800;
+}
+
+.form-control{
+    border-radius: 0;
+}
+
+.input-group-text{
+    border-radius: 0;
+}
+
+.data-label{
+    margin: .15rem 0rem !important;
+    font-size: 0.95REM;
+    .headLabel{
+      font-weight: 600;
+    }
+  }
+
+  .primary-no-border{
+      border: none;
+  }
+
+  .breadcrumb{
+      padding-left: 2.5rem;
+      padding-right: 2.5rem;
+      background-color: var(--supporting-teal);
+      border-radius: 0;
+      color: var(--text-secondary);
+      a{
+          color: var(--text-secondary);
+      }
+      span{
+        color: var(--text-secondary);
+      }
+  }
+
+  .breadcrumb-item::before{
+    color: var(--text-secondary) !important;
+  }
+
+  .info-card{
+      background-color: var(--background-primary);
+      .row{
+          margin: 0;
+      }
+
+      .card-body{
+          padding: .25rem .25rem;
+      }
+
+      .col-12, .col-6{
+          padding: 0;
+      }
+  }
+
+
+  .sidebar-col{
+      min-height: 100vh;
+      max-width: 15rem;
+  }
+
+  .sidebar-card{
+      background-color: var(--supporting-gray);
+      min-height: 100vh;
+      height: 100%;
+  }
+
+  .btn{
+      border-radius: 0 ;
+  }
+  
+.list-group-item{
+    background-color: var(--supporting-gray);
+    border: none;
+    padding: 0.45rem 1.25rem;
+    color: var(--text-secondary);
+}
+
+a:hover{
+    color: var(--text-secondary);
+    text-decoration: none;
+}
+
+a{
+    color: var(--text-secondary);
+}
+
+.list-group{
+    .list-group-item{
+        padding-left: 2rem;
+        background-color: var(--additional-gray);
+    }
+}
+
+.list-group-item{
+    border: none;
+}
+
+.sidebar-header{
+    h3{
+        font-size: 1.25rem;
+        margin-bottom: 0;
+    }
+
+}
+
+.custom-select{
+
+    border-radius: 0;
+    padding: .05rem .5rem;
+    padding-top: 0.15rem;
+}
+
+p{
+    margin-bottom: 0;
+}
+
+.material-box{
+    label{
+        border-radius: 0;
+    }
+    label::after{
+        background-color: var(--secondary);
+        color: var(--text-secondary);
+        border-radius: 0;
+        border-color: var(--secondary);
+    }
+
+    .material-label{
+        color: var(--text-primary);
+    }
+
+    input{
+        label{
+            border: 1px solid var(--primary);
+            // font-size: .85rem;
+    
+            // width: 100%;
+            border-radius: 0 !important;
+            padding: .05rem .5rem;
+            padding-top: 0.15rem;
+        }
+    }
+
+    input:focus{
+        border-color: var(--primary);  
+        box-shadow: none;
+    }
+}
