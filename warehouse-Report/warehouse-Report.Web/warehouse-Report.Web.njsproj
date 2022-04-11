@@ -33,12 +33,16 @@
     <Content Include="public\favicon.ico" />
     <Content Include="public\index.html" />
     <Content Include="src\App.vue" />
-    <Content Include="src\components\Home.vue" />
     <Content Include="package.json" />
     <Content Include="README.md" />
+    <Content Include="src\components\admin-nav.vue" />
     <Content Include="src\router\index.js" />
     <Content Include="src\store\index.js" />
+    <Content Include="src\style.scss" />
+    <Content Include="src\views\admin-view.vue" />
+    <Content Include="src\views\layout.vue" />
     <Content Include="src\views\login.vue" />
+    <Content Include="src\views\user-view.vue" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="public\" />
