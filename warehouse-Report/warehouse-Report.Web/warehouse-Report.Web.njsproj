@@ -50,10 +50,12 @@
   <ItemGroup>
     <Folder Include="public\" />
     <Folder Include="src\" />
+    <Folder Include="src\assets\" />
     <Folder Include="src\components\" />
     <Folder Include="src\router\" />
     <Folder Include="src\store\" />
     <Folder Include="src\views\" />
+    <Folder Include="src\views\layouts\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="babel.config.js" />

@@ -7,14 +7,15 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         baseUrl: 'https://localhost:5001',
-        userIdentifier: null,
-        user: null,
+        userIdentifier: null,//not used
+        user: null,//not used
         
         //selected Item
         
         
         //request objects
         loginRequest: null,
+        createClientRequest: null,
     },
     mutations: {
         setApiUrl: (state, payload) => {
@@ -23,6 +24,7 @@ export default new Vuex.Store({
         },
 
         setLoginRequest: (state, payload) => {state.loginRequest = payload},
+        setCreateClientRequest: (state, payload) => {state.createClientRequest = payload},
     },
     actions: {
         login: ({state}) => {
@@ -37,6 +39,30 @@ export default new Vuex.Store({
                     .catch((err) => {
                         reject()
                         console.log("ERROR", err)
+                    })
+            })
+        },
+        createClient: ({state}) => {
+            const payload = state.createClientRequest
+            
+            return new Promise((resolve, reject) => {
+                const callConfig = {
+                    method: 'post',
+                    url: state.baseUrl + '/Client/AddClient',
+                    headers: {
+                        'Authorization': 'Bearer '+ localStorage.getItem('jwt'),
+                        'Content-Type': 'application/json'
+                    },
+                    data: payload,
+                }
+                
+                axios(callConfig)
+                    .then((response) => {
+                      resolve(response)  
+                    })
+                    .catch(err => {
+                        console.log('CLIENT SAVING ERROR', err)
+                        reject(err)
                     })
             })
         },
