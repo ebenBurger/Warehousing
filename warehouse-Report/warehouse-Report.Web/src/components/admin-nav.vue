@@ -74,15 +74,15 @@ export default {
 a {
     color: black;
     margin: 0 0.3rem;
-    background: white;
+    background: lightgrey;
     padding: 0.1rem 0.4rem;
-    border-radius: 12px;
+    /*border-radius: 12px;*/
 }
 
 ul a:hover {
-    color: white;
+    color: blue;
     text-decoration: none;
-    background: blue;
+    /*background: blue;*/
     padding: 0.1rem 0.4rem;
     border-radius: 12px;
 }
@@ -90,7 +90,7 @@ ul a:hover {
 .active {
     color: white;
     text-decoration: none;
-    background: blue;
+    /*background: blue;*/
     padding: 0.1rem 0.4rem;
     border-radius: 12px;
 }
