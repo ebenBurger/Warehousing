@@ -51,8 +51,7 @@ body{
 
 .row{
     padding: 0;
-    margin: 0;
-    margin-bottom: 0.25rem;
+    margin: 0 0 0.25rem;
 }
 
 .card{
@@ -113,7 +112,7 @@ h4{
 }
 
 td .row{
-    margin-bottom: 0rem;
+    margin-bottom: 0;
 }
 
 .img-to-fit{
@@ -131,7 +130,7 @@ h5{
 }
 
 
-// secondry
+// secondary
 //right class for login page, otherwise all pages become fabulous!
 .login-container {
     height: 100vh;
@@ -179,7 +178,7 @@ h5{
 
 .navbar-login-dropdown{
     .dropdown-menu{
-        padding-top: 0rem;
+        padding-top: 0;
         width: 15rem;
     }
 
@@ -212,7 +211,7 @@ label{
 }
 
 .data-label{
-    margin: .15rem 0rem !important;
+    margin: .15rem 0 !important;
     font-size: 0.95REM;
     .headLabel{
       font-weight: 600;
@@ -310,8 +309,7 @@ a{
 .custom-select{
 
     border-radius: 0;
-    padding: .05rem .5rem;
-    padding-top: 0.15rem;
+    padding: 0.15rem .5rem .05rem;
 }
 
 p{
@@ -340,8 +338,7 @@ p{
     
             // width: 100%;
             border-radius: 0 !important;
-            padding: .05rem .5rem;
-            padding-top: 0.15rem;
+            padding: 0.15rem .5rem .05rem;
         }
     }
 
