@@ -42,11 +42,6 @@ namespace WarehouseReport.Api
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
             });
             
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Test", Version = "v1" });
-            });
-            
             //sql Connection
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("SQLConnection")));
