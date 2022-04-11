@@ -40,7 +40,9 @@
     <Content Include="src\store\index.js" />
     <Content Include="src\style.scss" />
     <Content Include="src\views\admin-view.vue" />
-    <Content Include="src\views\layout.vue" />
+    <Content Include="src\views\client.vue" />
+    <Content Include="src\views\layouts\adminLayout.vue" />
+    <Content Include="src\views\layouts\layout.vue" />
     <Content Include="src\views\login.vue" />
     <Content Include="src\views\user-view.vue" />
   </ItemGroup>

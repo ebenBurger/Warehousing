@@ -30,14 +30,8 @@ export default new Vuex.Store({
             return new Promise((resolve, reject) =>{
                 axios.post(state.baseUrl + '/Authentication/login', payload)
                     .then(response => {
-                        console.log('RESPONSE', response)
                         localStorage.setItem('jwt', response.data.token)
                         localStorage.setItem('role', response.data.role[0])
-                        console.log('ROLE', response.data.role[0])
-                        
-                        // localStorage.setItem('user', response.data.user.name + " " + response.data.user.surname)
-                        // localStorage.setItem('userEmail', response.data.user.email)
-                        // state.user = response.data.user
                         resolve(response)
                     })
                     .catch((err) => {

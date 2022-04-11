@@ -85,10 +85,10 @@ export default {
                 console.log("RESPONSE", response)
                 this.isLoading = false
                 if (response.data.role[0] === "User") {
-                    this.$router.push({path: '/user-view'})
+                    this.$router.push({path: '/home'})
                 }
                 if (response.data.role[0] === "Admin") {
-                    this.$router.push({path: '/admin-view'})
+                    this.$router.push({path: '/admin-home'})
                 }
             })
         },

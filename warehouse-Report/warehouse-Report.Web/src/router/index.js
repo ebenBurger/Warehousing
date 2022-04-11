@@ -2,9 +2,12 @@ import Vue from "vue";
 import login from "@/views/login";
 import VueRouter from 'vue-router'
 
-import layout from "@/views/layout";
-import adminView from "@/views/admin-view";
+import layout from "@/views/layouts/layout";
 import userView from "@/views/user-view";
+
+import adminView from "@/views/admin-view";
+import adminLayout from "@/views/layouts/adminLayout";
+import client from "@/views/client";
 
 Vue.use(VueRouter)
 
@@ -23,8 +26,26 @@ const routes = [
         name: 'layout',
         component: layout,
         children: [
+            
             {
-                path: '/admin-view',
+                path: '/home',
+                name: 'userMain',
+                component: userView,
+                meta: {
+                    requiresAuth: true,
+                }
+            },
+        ]
+    },
+
+    {
+        path: '/',
+        name: 'adminLayout',
+        component: adminLayout,
+        children: [
+
+            {
+                path: '/admin-home',
                 name: 'adminMain',
                 component: adminView,
                 meta: {
@@ -32,9 +53,9 @@ const routes = [
                 }
             },
             {
-                path: '/user-view',
-                name: 'userMain',
-                component: userView,
+                path: '/client',
+                name: 'client',
+                component: client,
                 meta: {
                     requiresAuth: true,
                 }
