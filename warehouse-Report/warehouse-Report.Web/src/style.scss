@@ -56,7 +56,7 @@ body{
 
 .card{
     border: none;
-    border-radius: 0;
+    border-radius: 12px;
 }
 
 .table th, .table td{
@@ -134,8 +134,8 @@ h5{
 //right class for login page, otherwise all pages become fabulous!
 .login-container {
     height: 100vh;
-    background-repeat: no-repeat;
-    background: var(--primary);
+    background-image: url("./assets/login-img.jpg");
+    background-position: center;
 
     .card{
         width: 100%;

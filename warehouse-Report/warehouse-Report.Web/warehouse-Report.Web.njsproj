@@ -35,6 +35,7 @@
     <Content Include="src\App.vue" />
     <Content Include="package.json" />
     <Content Include="README.md" />
+    <Content Include="src\assets\login-img.jpg" />
     <Content Include="src\components\admin-nav.vue" />
     <Content Include="src\router\index.js" />
     <Content Include="src\store\index.js" />

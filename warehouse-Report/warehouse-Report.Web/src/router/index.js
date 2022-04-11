@@ -21,6 +21,7 @@ const routes = [
         }
     },
 
+    //CLIENT PORTAL
     {
         path: '/',
         name: 'layout',
@@ -38,6 +39,7 @@ const routes = [
         ]
     },
 
+    //ADMIN PORTAL
     {
         path: '/',
         name: 'adminLayout',

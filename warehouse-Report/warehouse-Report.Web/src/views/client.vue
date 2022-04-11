@@ -9,7 +9,11 @@
                         </B-col>
                     </b-row>
                     <B-form>
-                        <label class="text-primary font-weight-bold mb-4">Personal Details</label>
+                        <b-row>
+                            <b-col>
+                                <label class="text-primary font-weight-bold mb-4">Personal Details</label>
+                            </b-col>
+                        </b-row>
                         <b-row>
                             <b-col>
                                 <label>Name</label>
@@ -37,9 +41,13 @@
                             </b-col>
                         </b-row>
                         <hr class="mx-3">
-                        <label class="text-primary font-weight-bold mb-4">Company Details</label>
                         <b-row>
                             <b-col>
+                                <label class="text-primary font-weight-bold mb-4">Company Details</label>
+                            </b-col>
+                        </b-row>
+                        <b-row>
+                            <b-col cols="6">
                                 <label>Company Name</label>
                                 <b-form-input v-model="contactData.companyName"></b-form-input>
                             </b-col>
@@ -79,6 +87,13 @@
                             <b-col class="col-2">
                                 <label>Post Code</label>
                                 <b-form-input v-model="contactData.postalCode"></b-form-input>
+                            </b-col>
+                        </b-row>
+                        <hr class="mx-3">
+                        <b-row>
+                            <b-col>
+                                <label>Special Instructions</label>
+                                <b-textarea />
                             </b-col>
                         </b-row>
                         <hr class="mx-3">
