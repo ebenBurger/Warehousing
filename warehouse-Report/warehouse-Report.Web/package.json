@@ -9,19 +9,35 @@
   },
   "description": "warehouse-Report.Web",
   "author": {
-    "name": ""
+    "name": "Eben"
   },
   "dependencies": {
-    "vue": "2.6.12"
+    "@fortawesome/fontawesome-svg-core": "^6.1.0",
+    "@fortawesome/free-regular-svg-icons": "^6.1.0",
+    "@fortawesome/free-solid-svg-icons": "^6.1.0",
+    "@fortawesome/vue-fontawesome": "^2.0.6",
+    "bootstrap": "^4.6.0",
+    "bootstrap-vue": "^2.21.2",
+    "chart.js": "^2.9.4",
+    "js-md5": "^0.7.3",
+    "sass": "^1.49.0",
+    "vue": "2.6.12",
+    "vue-chartjs": "^3.5.1",
+    "vue-mq": "^1.0.1",
+    "vue-router": "^3.2.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "4.5.13",
     "@vue/cli-plugin-eslint": "4.5.13",
     "@vue/cli-service": "4.5.13",
+    "axios": "^0.26.1",
     "babel-eslint": "10.1.0",
     "eslint": "6.8.0",
     "eslint-plugin-vue": "6.2.2",
-    "vue-template-compiler": "2.6.12"
+    "postcss-loader": "^6.2.1",
+    "sass-loader": "^10.1.1",
+    "vue-template-compiler": "2.6.12",
+    "vuex": "^3.6.2"
   },
   "eslintConfig": {
     "root": true,
