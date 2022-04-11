@@ -4,3 +4,5 @@ node_modules
 obj
 .vs
 obj
+bin
+dist
