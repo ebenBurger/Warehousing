@@ -79,6 +79,7 @@ namespace WarehouseReport.Api
                 });
             
             services.TryAddScoped<IClientManager, ClientManager>();
+            services.TryAddScoped<ICargoManager, CargoManager>();
             
             services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
         }
