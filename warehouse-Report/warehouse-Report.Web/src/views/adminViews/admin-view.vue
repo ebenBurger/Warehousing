@@ -9,7 +9,7 @@
                                 <h4 class="m-0">Warehouse Report</h4>
                             </div>
                             <b-col class="text-right">
-                                <b-button variant="outline-primary" size="sm" squared >
+                                <b-button variant="outline-primary" size="sm" squared @click="openCargoModal">
                                     <font-awesome-icon icon="fa-plus" class="mr-1" />
                                     Add Entry
                                 </b-button>
@@ -57,10 +57,119 @@
                 </b-card>
             </b-col>
         </b-row>
+        <b-modal  id="cargoAddModal" size="xl" hide-footer hide-header-close class="text-center" title="Add Cargo">
+            <b-row class="align-items-center m-0 ">
+                <b-col class="d-flex justify-content-center">
+                    <B-form class="w-100">
+<!--                        <b-row>-->
+<!--                            <b-col>-->
+<!--                                <div class="d-flex justify-content-between align-items-center">-->
+<!--                                    <label class="text-primary font-weight-bold mb-4">Personal Details</label>-->
+<!--                                    <b-button variant="outline-red" squared @click="toggleDelete" size="sm">Delete</b-button>-->
+<!--                                </div>-->
+<!--                            </b-col>-->
+<!--                        </b-row>-->
+                        <b-row>
+                            <b-col>
+                                <label>Supplier</label>
+                                <b-form-select v-model="cargo.supplier">
+                                    
+                                </b-form-select>
+                            </b-col>
+                            <b-col>
+                                <label>Surname</label>
+                                <b-form-input ></b-form-input>
+                            </b-col>
+                            <b-col>
+                                <label>Mobile Number</label>
+                                <b-form-input ></b-form-input>
+                            </b-col>
+                        </b-row>
+                        <b-row>
+                            <b-col cols="4">
+                                <label>Email</label>
+                                <b-form-input ></b-form-input>
+                            </b-col>
+                            <b-col cols="4"></b-col>
+                            <b-col cols="4">
+                                <label>Landline</label>
+                                <b-form-input ></b-form-input>
+                            </b-col>
+                        </b-row>
+                        <b-row>
+
+                        </b-row>
+                        <hr class="mx-3">
+                        <b-row>
+                            <b-col>
+                                <label class="text-primary font-weight-bold mb-4">Company Details</label>
+                            </b-col>
+                        </b-row>
+                        <b-row>
+                            <b-col cols="6">
+                                <label>Company Name</label>
+                                <b-form-input ></b-form-input>
+                            </b-col>
+                        </b-row>
+                        <b-row>
+                            <b-col>
+                                <label>Building</label>
+                                <b-form-input></b-form-input>
+                            </b-col>
+                            <b-col>
+                                <label>Office Park</label>
+                                <b-form-input ></b-form-input>
+                            </b-col>
+                            <b-col>
+                                <label>Address</label>
+                                <b-form-input ></b-form-input>
+                            </b-col>
+                        </b-row>
+
+                        <b-row>
+                            <b-col>
+                                <label>Address</label>
+                                <b-form-input></b-form-input>
+                            </b-col>
+                            <b-col>
+                                <label>City</label>
+                                <b-form-input></b-form-input>
+                            </b-col>
+                            <b-col>
+                                <!--                                        TODO update typo-->
+                                <label>Province</label>
+                                <b-form-input></b-form-input>
+                            </b-col>
+                        </b-row>
+                        <b-row>
+                            <b-col class="col-2">
+                                <label>Postal Code</label>
+                                <b-form-input ></b-form-input>
+                            </b-col>
+                        </b-row>
+                        <hr class="mx-3">
+                        <b-row>
+                            <b-col>
+                                <div class="d-flex justify-content-end">
+                                    <div>
+                                        <b-button variant="outline-red" squared @click="hideCargoModal" class="ml-2">Cancel</b-button>
+                                    </div>
+                                    <div>
+                                        <b-button variant="primary" squared @click="save" class="ml-2">Save</b-button>
+                                    </div>
+                                </div>
+                            </b-col>
+                        </b-row>
+                    </B-form>
+                </b-col>
+            </b-row>
+        </b-modal>
     </div>
 </template>
 
 <script>
+import {mapActions} from "vuex";
+
 export default {
     data: () => ({
         cargo: {
@@ -114,6 +223,7 @@ export default {
                 },
             ]
         },
+        supplier: [],
     }),
     beforeCreate() {
     },
@@ -122,13 +232,31 @@ export default {
     beforeMount() {
     },
     mounted() {
+        this.getSupplier()
     },
     beforeUpdate() {
     },
     updated() {
     },
     methods: {
+        ...mapActions(["requestSupplier"]),
         openCargo() {},
+        openCargoModal() {
+            this.$bvModal.show('cargoAddModal')
+        },
+        hideCargoModal() {
+            this.$bvModal.hide('cargoAddModal')
+        },
+        getSupplier() {
+            const request = []
+            this.$store.commit('setSupplierRequest', request)
+            this.requestSupplier()
+                .then(response => {
+                    this.supplier = response.data
+                })
+        },
+        goBack() {},
+        save() {},
     },
     computed: {
         rows() {

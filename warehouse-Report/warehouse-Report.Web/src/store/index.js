@@ -11,12 +11,14 @@ export default new Vuex.Store({
         user: null,//not used
         
         //selected Item
-        selectedClient: null,
+        selectedSupplier: null,
         
         
         //request objects
         loginRequest: null,
-        createClientRequest: null,
+        
+        createSupplierRequest: null,
+        supplierRequest: null,
     },
     mutations: {
         setApiUrl: (state, payload) => {
@@ -26,9 +28,9 @@ export default new Vuex.Store({
 
         setLoginRequest: (state, payload) => {state.loginRequest = payload},
         
-        setCreateClientRequest: (state, payload) => {state.createClientRequest = payload},
-        
-        setSelectedClient: (state, payload) => {state.selectedClient = payload},
+        setSupplierRequest: (state, payload) => {state.supplierRequest = payload},
+        setSupplierClientRequest: (state, payload) => {state.createSupplierRequest = payload},
+        setSelectedSupplier: (state, payload) => {state.selectedSupplier = payload},
     },
     actions: {
         login: ({state}) => {
@@ -46,8 +48,32 @@ export default new Vuex.Store({
                     })
             })
         },
-        createClient: ({state}) => {
-            const payload = state.createClientRequest
+        
+        //client
+        requestSupplier: ({state}) => {
+            console.log("STATE", state)
+          return new Promise((resolve, reject) => {
+              const callConfig = {
+                  method: 'get',
+                  url: state.baseUrl + '/Client/GetAllClient',
+                  headers: {
+                      'Authorization': 'Bearer '+ localStorage.getItem('jwt'),
+                      'Content-Type': 'application/json'
+                  },
+              }
+              axios(callConfig)
+                  .then(response => {
+                      state.supplierRequest = response.data
+                      resolve(response)
+                  })
+                  .catch(err => {
+                      reject(err)
+                      console.log("CLIENT REQUEST ERROR", err)
+                  })
+          })  
+        },
+        createSupplier: ({state}) => {
+            const payload = state.createSupplierRequest
             
             return new Promise((resolve, reject) => {
                 const callConfig = {
@@ -70,6 +96,31 @@ export default new Vuex.Store({
                     })
             })
         },
+        updateSupplier: ({state}) => {
+            const payload = state.selectedSupplier
+            
+            return new Promise((resolve, reject) => {
+                const callConfig = {
+                    method: 'post',
+                    url: state.baseUrl + '/Client/UpdateClient',
+                    headers: {
+                        'Authorization': 'Bearer '+ localStorage.getItem('jwt'),
+                        'Content-Type': 'application/json'
+                    },
+                    data: payload,
+                }
+
+                axios(callConfig)
+                    .then(response => {
+                        resolve(response)
+                    })
+                    .catch(err => {
+                        reject(err)
+                    })
+            })
+        }
+        
+        //stock
     },
     modules: {},
 })

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-row class="align-items-center vh-100 m-0 ">
+        <b-row class="align-items-center m-0 ">
             <b-col class="d-flex justify-content-center vw-100">
                 <b-card class="w-50">
                     <b-row>
@@ -33,12 +33,13 @@
                                 <label>Landline</label>
                                 <b-form-input v-model="clientDetails.landline"></b-form-input>
                             </b-col>
-                        </b-row>
-                        <b-row>
-                            <b-col cols="6">
+                            <b-col>
                                 <label>Email</label>
                                 <b-form-input v-model="clientDetails.email"></b-form-input>
                             </b-col>
+                        </b-row>
+                        <b-row>
+                            
                         </b-row>
                         <hr class="mx-3">
                         <b-row>
@@ -61,25 +62,22 @@
                                 <label>Office Park</label>
                                 <b-form-input v-model="clientDetails.officePark"></b-form-input>
                             </b-col>
-                        </b-row>
-                        <b-row>
                             <b-col>
-                                <label>Address Line 1</label>
+                                <label>Address</label>
                                 <b-form-input v-model="clientDetails.addressLine1"></b-form-input>
                             </b-col>
+                        </b-row>
+                        <b-row>
                             <b-col>
-                                <label>Address Line 2</label>
+                                <label>Address</label>
                                 <b-form-input v-model="clientDetails.addressLine2"></b-form-input>
                             </b-col>
-                        </b-row>
-
-                        <b-row>
                             <b-col>
                                 <label>City</label>
                                 <b-form-input v-model="clientDetails.city"></b-form-input>
                             </b-col>
                             <b-col>
-                                <label>Provence</label>
+                                <label>Province</label>
                                 <b-form-input v-model="clientDetails.provence"></b-form-input>
                             </b-col>
                         </b-row>
