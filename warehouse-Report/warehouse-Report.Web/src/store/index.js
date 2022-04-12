@@ -11,6 +11,7 @@ export default new Vuex.Store({
         user: null,//not used
         
         //selected Item
+        selectedClient: null,
         
         
         //request objects
@@ -24,7 +25,10 @@ export default new Vuex.Store({
         },
 
         setLoginRequest: (state, payload) => {state.loginRequest = payload},
+        
         setCreateClientRequest: (state, payload) => {state.createClientRequest = payload},
+        
+        setSelectedClient: (state, payload) => {state.selectedClient = payload},
     },
     actions: {
         login: ({state}) => {
