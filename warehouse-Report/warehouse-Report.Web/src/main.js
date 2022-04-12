@@ -5,7 +5,7 @@ import router from './router'
 import store from "@/store";
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import {faCogs, faPlus, faPowerOff, faUserPlus} from '@fortawesome/free-solid-svg-icons'
+import {faCogs, faHouseUser, faPlus, faPowerOff, faUserEdit, faUserPlus} from '@fortawesome/free-solid-svg-icons'
 
 import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 
@@ -21,7 +21,7 @@ Vue.use(IconsPlugin)
 Vue.use(VueRouter)
 
 //FA icons
-library.add( faUserPlus, faPowerOff, faPlus, faCogs )
+library.add( faUserPlus, faPowerOff, faPlus, faCogs, faUserEdit, faHouseUser )
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 

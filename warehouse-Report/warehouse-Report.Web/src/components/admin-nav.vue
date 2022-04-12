@@ -6,15 +6,19 @@
             </b-navbar-brand>
             <div>
                 <b-navbar-nav class="align-items-center">
-                    <router-link exact-active-class="active navItem" to="/client">
+                    <router-link exact-active-class="active" to="/admin-home">
+                        <font-awesome-icon icon="fa-house-user" />
+                        Home
+                    </router-link>
+                    <router-link exact-active-class="active" to="/clientAdd">
                         <font-awesome-icon icon="fa-user-plus" />
                         Client
                     </router-link>
-                    <div v-b-toggle.sidebar-backdrop class=" admin navItem">
+                    <div v-b-toggle.sidebar-backdrop class=" admin navItemSpacing">
                         <font-awesome-icon icon="fa-cogs" />
                         Admin
                     </div>
-                    <div @click="openLogoutModal" class="logout navItem">
+                    <div @click="openLogoutModal" class="logout navItemSpacing">
                         <font-awesome-icon icon="fa-power-off" />
                         Log Out
                     </div>
@@ -37,7 +41,6 @@
 
         <b-sidebar id="sidebar-backdrop"
                    title="Edit Pages"
-                   :backdrop-variant="success"
                    backdrop
                    shadow>
             <template #default="{ hide }">
@@ -45,7 +48,10 @@
                     <h4 id="sidebar-no-header-title">Choose the page to edit</h4>
                     <nav class="mb-3">
                         <b-nav vertical>
-                            <b-nav-item to="/client">Edit Client</b-nav-item>
+                            <b-nav-item to="/clientView">
+                                <font-awesome-icon icon="fa-user-edit" />
+                                Clients
+                            </b-nav-item>
                         </b-nav>
                     </nav>
                     <b-button variant="primary" @click="hide">Close</b-button>
@@ -95,6 +101,8 @@ export default {
 
 a {
     color: black;
+    margin: 0 0.3rem;
+    padding: 0.1rem 0.4rem;
 }
 
 .collapsed {
@@ -125,7 +133,7 @@ ul a:hover {
     color: black;
 }
 
-.navItem {
+.navItemSpacing {
     margin: 0 0.3rem;
     padding: 0.1rem 0.4rem;
 }

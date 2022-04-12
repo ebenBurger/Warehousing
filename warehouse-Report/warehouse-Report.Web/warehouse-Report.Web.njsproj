@@ -42,6 +42,8 @@
     <Content Include="src\style.scss" />
     <Content Include="src\views\admin-view.vue" />
     <Content Include="src\views\clientViews\createClient.vue" />
+    <Content Include="src\views\clientViews\editClient.vue" />
+    <Content Include="src\views\clientViews\viewClient.vue" />
     <Content Include="src\views\layouts\adminLayout.vue" />
     <Content Include="src\views\layouts\layout.vue" />
     <Content Include="src\views\login.vue" />
