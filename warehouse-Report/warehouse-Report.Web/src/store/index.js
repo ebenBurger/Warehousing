@@ -19,6 +19,8 @@ export default new Vuex.Store({
         
         createSupplierRequest: null,
         supplierRequest: null,
+        
+        createCargoRequest: null,
     },
     mutations: {
         setApiUrl: (state, payload) => {
@@ -29,8 +31,10 @@ export default new Vuex.Store({
         setLoginRequest: (state, payload) => {state.loginRequest = payload},
         
         setSupplierRequest: (state, payload) => {state.supplierRequest = payload},
-        setSupplierClientRequest: (state, payload) => {state.createSupplierRequest = payload},
+        setCreateSupplierRequest: (state, payload) => {state.createSupplierRequest = payload},
         setSelectedSupplier: (state, payload) => {state.selectedSupplier = payload},
+
+        setCreateCargoRequest: (state, payload) => {state.createCargoRequest = payload},
     },
     actions: {
         login: ({state}) => {
@@ -49,7 +53,7 @@ export default new Vuex.Store({
             })
         },
         
-        //client
+        //Supplier
         requestSupplier: ({state}) => {
             console.log("STATE", state)
           return new Promise((resolve, reject) => {
@@ -118,9 +122,33 @@ export default new Vuex.Store({
                         reject(err)
                     })
             })
-        }
+        },
         
-        //stock
+        //cargo
+        createCargo: ({state}) => {
+            const payload = state.createCargoRequest
+
+            return new Promise((resolve, reject) => {
+                const callConfig = {
+                    method: 'post',
+                    url: state.baseUrl + '/Cargo/AddCargo',
+                    headers: {
+                        'Authorization': 'Bearer '+ localStorage.getItem('jwt'),
+                        'Content-Type': 'application/json'
+                    },
+                    data: payload,
+                }
+
+                axios(callConfig)
+                    .then((response) => {
+                        resolve(response)
+                    })
+                    .catch(err => {
+                        console.log('CARGO SAVING ERROR', err)
+                        reject(err)
+                    })
+            })
+        },
     },
     modules: {},
 })

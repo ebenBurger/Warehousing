@@ -5,7 +5,7 @@
                 <b-card class="w-50">
                     <b-row>
                         <B-col>
-                            <h4>Add Client</h4>
+                            <h4>Add Supplier</h4>
                         </B-col>
                     </b-row>
                     <B-form>
@@ -17,25 +17,25 @@
                         <b-row>
                             <b-col>
                                 <label>Name</label>
-                                <b-form-input v-model="clientDetails.name"></b-form-input>
+                                <b-form-input v-model="supplierDetails.name"></b-form-input>
                             </b-col>
                             <b-col>
                                 <label>Surname</label>
-                                <b-form-input v-model="clientDetails.surname"></b-form-input>
+                                <b-form-input v-model="supplierDetails.surname"></b-form-input>
                             </b-col>
                         </b-row>
                         <b-row>
                             <b-col>
                                 <label>Mobile Number</label>
-                                <b-form-input v-model="clientDetails.mobile"></b-form-input>
+                                <b-form-input v-model="supplierDetails.mobile"></b-form-input>
                             </b-col>
                             <b-col>
                                 <label>Landline</label>
-                                <b-form-input v-model="clientDetails.landline"></b-form-input>
+                                <b-form-input v-model="supplierDetails.landline"></b-form-input>
                             </b-col>
                             <b-col>
                                 <label>Email</label>
-                                <b-form-input v-model="clientDetails.email"></b-form-input>
+                                <b-form-input v-model="supplierDetails.email"></b-form-input>
                             </b-col>
                         </b-row>
                         <b-row>
@@ -50,48 +50,48 @@
                         <b-row>
                             <b-col cols="6">
                                 <label>Company Name</label>
-                                <b-form-input v-model="clientDetails.companyName"></b-form-input>
+                                <b-form-input v-model="supplierDetails.companyName"></b-form-input>
                             </b-col>
                         </b-row>
                         <b-row>
                             <b-col>
                                 <label>Building</label>
-                                <b-form-input v-model="clientDetails.building"></b-form-input>
+                                <b-form-input v-model="supplierDetails.building"></b-form-input>
                             </b-col>
                             <b-col>
                                 <label>Office Park</label>
-                                <b-form-input v-model="clientDetails.officePark"></b-form-input>
+                                <b-form-input v-model="supplierDetails.officePark"></b-form-input>
                             </b-col>
                             <b-col>
                                 <label>Address</label>
-                                <b-form-input v-model="clientDetails.addressLine1"></b-form-input>
+                                <b-form-input v-model="supplierDetails.addressLine1"></b-form-input>
                             </b-col>
                         </b-row>
                         <b-row>
                             <b-col>
                                 <label>Address</label>
-                                <b-form-input v-model="clientDetails.addressLine2"></b-form-input>
+                                <b-form-input v-model="supplierDetails.addressLine2"></b-form-input>
                             </b-col>
                             <b-col>
                                 <label>City</label>
-                                <b-form-input v-model="clientDetails.city"></b-form-input>
+                                <b-form-input v-model="supplierDetails.city"></b-form-input>
                             </b-col>
                             <b-col>
                                 <label>Province</label>
-                                <b-form-input v-model="clientDetails.provence"></b-form-input>
+                                <b-form-input v-model="supplierDetails.provence"></b-form-input>
                             </b-col>
                         </b-row>
                         <b-row>
                             <b-col class="col-2">
                                 <label>Post Code</label>
-                                <b-form-input v-model="clientDetails.postalCode"></b-form-input>
+                                <b-form-input v-model="supplierDetails.postalCode"></b-form-input>
                             </b-col>
                         </b-row>
                         <hr class="mx-3">
                         <b-row>
                             <b-col>
                                 <label>Special Instructions</label>
-                                <b-textarea v-model="clientDetails.specialInstructions"/>
+                                <b-textarea v-model="supplierDetails.specialInstructions"/>
                             </b-col>
                         </b-row>
                         <hr class="mx-3">
@@ -121,7 +121,7 @@ import {mapActions} from "vuex";
 
 export default {
     data: () => ({
-        clientDetails: {
+        supplierDetails: {
             name: null,
             surname: null,
             mobile: null,
@@ -154,17 +154,19 @@ export default {
     updated() {
     },
     methods: {
-        ...mapActions(["createClient"]),
+        ...mapActions(["createSupplier"]),
         
         goBack() {
             this.$router.back()
         },
         save() {
-            this.$store.commit('setCreateClientRequest', this.clientDetails)
+            this.$store.commit('setCreateSupplierRequest', this.supplierDetails)
             this.state = 'loading'
-            this.createClient()
+            this.createSupplier()
             .then(() => {
                 this.$router.push({path: '/admin-home'})
+            })
+            .catch(() => {
             })
         },
     },

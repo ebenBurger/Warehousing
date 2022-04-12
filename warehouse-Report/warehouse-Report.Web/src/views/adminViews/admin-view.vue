@@ -70,81 +70,54 @@
 <!--                            </b-col>-->
 <!--                        </b-row>-->
                         <b-row>
-                            <b-col>
+                            <b-col cols="4">
                                 <label>Supplier</label>
                                 <b-form-select v-model="cargo.supplier">
-                                    
+                                    <b-form-select-option v-for="(item, index) in suppliers" :key="index" :value="item.supplier">{{item.companyName}}</b-form-select-option>
                                 </b-form-select>
                             </b-col>
-                            <b-col>
-                                <label>Surname</label>
-                                <b-form-input ></b-form-input>
+                            <b-col cols="4">
+                                <label>Date Collected</label>
+                                <b-form-datepicker v-model="cargo.dateCollected"></b-form-datepicker>
                             </b-col>
-                            <b-col>
-                                <label>Mobile Number</label>
-                                <b-form-input ></b-form-input>
+                            <b-col cols="4">
+                                <label>Order Number</label>
+                                <b-form-input v-model="cargo.orderNumber"></b-form-input>
                             </b-col>
                         </b-row>
                         <b-row>
                             <b-col cols="4">
-                                <label>Email</label>
-                                <b-form-input ></b-form-input>
+                                <label>Description</label>
+                                <b-form-input v-model="cargo.description"></b-form-input>
                             </b-col>
                             <b-col cols="4"></b-col>
-                            <b-col cols="4">
-                                <label>Landline</label>
-                                <b-form-input ></b-form-input>
-                            </b-col>
-                        </b-row>
-                        <b-row>
-
                         </b-row>
                         <hr class="mx-3">
                         <b-row>
                             <b-col>
-                                <label class="text-primary font-weight-bold mb-4">Company Details</label>
-                            </b-col>
-                        </b-row>
-                        <b-row>
-                            <b-col cols="6">
-                                <label>Company Name</label>
-                                <b-form-input ></b-form-input>
+                                <label class="text-primary font-weight-bold mb-4">Cargo Details</label>
                             </b-col>
                         </b-row>
                         <b-row>
                             <b-col>
-                                <label>Building</label>
-                                <b-form-input></b-form-input>
+                                <label>Quantity</label>
+                                <b-form-input type="number" v-model="cargo.quantity"></b-form-input>
                             </b-col>
                             <b-col>
-                                <label>Office Park</label>
-                                <b-form-input ></b-form-input>
+                                <label>Weight (kg)</label>
+                                <b-form-input type="number" v-model="cargo.weight"></b-form-input>
                             </b-col>
                             <b-col>
-                                <label>Address</label>
-                                <b-form-input ></b-form-input>
-                            </b-col>
-                        </b-row>
-
-                        <b-row>
-                            <b-col>
-                                <label>Address</label>
-                                <b-form-input></b-form-input>
+                                <label>Length</label>
+                                <b-form-input type="number" v-model="cargo.length"></b-form-input>
                             </b-col>
                             <b-col>
-                                <label>City</label>
-                                <b-form-input></b-form-input>
+                                <label>Width</label>
+                                <b-form-input type="number" v-model="cargo.width"></b-form-input>
                             </b-col>
                             <b-col>
-                                <!--                                        TODO update typo-->
-                                <label>Province</label>
-                                <b-form-input></b-form-input>
-                            </b-col>
-                        </b-row>
-                        <b-row>
-                            <b-col class="col-2">
-                                <label>Postal Code</label>
-                                <b-form-input ></b-form-input>
+                                <label>Height</label>
+                                <b-form-input type="number" v-model="cargo.height"></b-form-input>
                             </b-col>
                         </b-row>
                         <hr class="mx-3">
@@ -174,22 +147,23 @@ export default {
     data: () => ({
         cargo: {
             supplier: null,
-            dateOfCollection: null,
-            freeStorageDate: null,
-            cargoReadyPlace: null,
+            dateCollected: null,
+            // freeStorageDate: null,
+            // cargoReadyPlace: null,
             orderNumber: null,
             invoiceNumber: null,
             description: null,
             quantity: null,
-            weights: null,
-            cbmConversion: null,
+            weight: null,
+            // cbmConversion: null,
             length: null,
             width: null,
             height: null,
-            volume: null,
-            chargeableWeight: null,
-            numberOfStorageDays: null,
-            storageCost: null,
+            isActive: true,
+            // volume: null,
+            // chargeableWeight: null,
+            // numberOfStorageDays: null,
+            // storageCost: null,
         },
         cargoTable: {
             resultsPerPage: 10,
@@ -223,7 +197,7 @@ export default {
                 },
             ]
         },
-        supplier: [],
+        suppliers: [],
     }),
     beforeCreate() {
     },
@@ -232,14 +206,14 @@ export default {
     beforeMount() {
     },
     mounted() {
-        this.getSupplier()
+        this.getSupplierList()
     },
     beforeUpdate() {
     },
     updated() {
     },
     methods: {
-        ...mapActions(["requestSupplier"]),
+        ...mapActions(["requestSupplier", "createCargo"]),
         openCargo() {},
         openCargoModal() {
             this.$bvModal.show('cargoAddModal')
@@ -247,16 +221,24 @@ export default {
         hideCargoModal() {
             this.$bvModal.hide('cargoAddModal')
         },
-        getSupplier() {
-            const request = []
-            this.$store.commit('setSupplierRequest', request)
+        getSupplierList() {
             this.requestSupplier()
                 .then(response => {
-                    this.supplier = response.data
+                    this.suppliers = response.data
+                    console.log('SUPPLIER', this.supplier)
                 })
         },
         goBack() {},
-        save() {},
+        save() {
+            this.$store.commit('setCreateCargoRequest', this.cargo)
+            this.state = 'loading'
+            this.createCargo()
+                .then(() => {
+                    this.$bvModal.hide('cargoAddModal')
+                })
+                .catch(() => {
+                })
+        },
     },
     computed: {
         rows() {

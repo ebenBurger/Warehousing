@@ -9,9 +9,6 @@
                     <b-card-text>
                         <b-form>
                             <b-row class="mb-0 px-0">
-                                <!--                            <b-col cols="12" class="px-0 mb-2"  v-for="(item, index) in messages" :key ="index">-->
-                                <!--                                <b-alert show dismissible :variant="item.type">{{item.message}}</b-alert>-->
-                                <!--                            </b-col>-->
                                 <b-col cols="12" class="px-0">
                                     <label>Username</label>
                                     <b-form-input v-model="username"></b-form-input>
@@ -90,6 +87,16 @@ export default {
                 if (response.data.role[0] === "Admin") {
                     this.$router.push({path: '/admin-home'})
                 }
+                
+            })
+            .catch(() => {
+                console.log('USer not logged in')
+                this.isLoading = false
+                this.$bvToast.toast('Username or Password incorrect', {
+                    variant: 'danger',
+                    solid: true,
+                    autoHideDelay: 5000,
+                })
             })
         },
     },

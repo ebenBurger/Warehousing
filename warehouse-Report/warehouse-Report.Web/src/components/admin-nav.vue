@@ -50,7 +50,15 @@
                         <b-nav vertical>
                             <b-nav-item to="/clientView">
                                 <font-awesome-icon icon="fa-user-edit" />
-                                Clients
+                                Suppliers
+                            </b-nav-item>
+                            <b-nav-item to="/clientView">
+                                <font-awesome-icon icon="fa-user-edit" />
+                                Add User
+                            </b-nav-item>
+                            <b-nav-item to="/clientView">
+                                <font-awesome-icon icon="fa-user-edit" />
+                                Add Admin User
                             </b-nav-item>
                         </b-nav>
                     </nav>

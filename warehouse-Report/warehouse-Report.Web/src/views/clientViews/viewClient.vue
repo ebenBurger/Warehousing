@@ -12,12 +12,12 @@
                         <b-col>
                             <b-table
                                 striped hover
-                                :items="SupplierTable.dataSource"
-                                :fields="SupplierTable.tableColumns"
-                                :busy="SupplierTable.isLoading"
+                                :items="supplierTable.dataSource"
+                                :fields="supplierTable.tableColumns"
+                                :busy="supplierTable.isLoading"
                                 @row-clicked="openContact"
                                 id="vehicleTable"
-                                :current-page="SupplierTable.currentPage"
+                                :current-page="supplierTable.currentPage"
                             >
                                 <template #table-busy>
                                     <div class="text-center my-2">
@@ -37,9 +37,9 @@
 
                             <b-row align-h="center" >
                                 <b-pagination
-                                    v-model="SupplierTable.currentPage"
+                                    v-model="supplierTable.currentPage"
                                     :total-rows="rows"
-                                    :per-page="SupplierTable.resultsPerPage"
+                                    :per-page="supplierTable.resultsPerPage"
                                     aria-controls="contactTable"
                                 ></b-pagination>
                             </b-row>
@@ -50,7 +50,7 @@
             </b-col>
         </b-row>
 
-        <slot v-if="selectedClient">
+        <slot v-if="selectedSupplier">
             <b-modal  id="supplierEditModal" size="xl" hide-footer hide-header-close class="text-center" title="Edit Client">
                 <div>
                    <div v-if="!isDeleteSelected">
@@ -69,26 +69,26 @@
                                    <b-row>
                                        <b-col>
                                            <label>Name</label>
-                                           <b-form-input v-model="selectedClient.name"></b-form-input>
+                                           <b-form-input v-model="selectedSupplier.name"></b-form-input>
                                        </b-col>
                                        <b-col>
                                            <label>Surname</label>
-                                           <b-form-input v-model="selectedClient.surname"></b-form-input>
+                                           <b-form-input v-model="selectedSupplier.surname"></b-form-input>
                                        </b-col>
                                        <b-col>
                                            <label>Mobile Number</label>
-                                           <b-form-input v-model="selectedClient.mobile"></b-form-input>
+                                           <b-form-input v-model="selectedSupplier.mobile"></b-form-input>
                                        </b-col>
                                    </b-row>
                                    <b-row>
                                        <b-col cols="4">
                                            <label>Email</label>
-                                           <b-form-input v-model="selectedClient.email"></b-form-input>
+                                           <b-form-input v-model="selectedSupplier.email"></b-form-input>
                                        </b-col>
                                        <b-col cols="4"></b-col>
                                        <b-col cols="4">
                                            <label>Landline</label>
-                                           <b-form-input v-model="selectedClient.landline"></b-form-input>
+                                           <b-form-input v-model="selectedSupplier.landline"></b-form-input>
                                        </b-col>
                                    </b-row>
                                    <b-row>
@@ -103,50 +103,50 @@
                                    <b-row>
                                        <b-col cols="6">
                                            <label>Company Name</label>
-                                           <b-form-input v-model="selectedClient.companyName"></b-form-input>
+                                           <b-form-input v-model="selectedSupplier.companyName"></b-form-input>
                                        </b-col>
                                    </b-row>
                                    <b-row>
                                        <b-col>
                                            <label>Building</label>
-                                           <b-form-input v-model="selectedClient.building"></b-form-input>
+                                           <b-form-input v-model="selectedSupplier.building"></b-form-input>
                                        </b-col>
                                        <b-col>
                                            <label>Office Park</label>
-                                           <b-form-input v-model="selectedClient.officePark"></b-form-input>
+                                           <b-form-input v-model="selectedSupplier.officePark"></b-form-input>
                                        </b-col>
                                        <b-col>
                                            <label>Address</label>
-                                           <b-form-input v-model="selectedClient.addressLine1"></b-form-input>
+                                           <b-form-input v-model="selectedSupplier.addressLine1"></b-form-input>
                                        </b-col>
                                    </b-row>
 
                                    <b-row>
                                        <b-col>
                                            <label>Address</label>
-                                           <b-form-input v-model="selectedClient.addressLine2"></b-form-input>
+                                           <b-form-input v-model="selectedSupplier.addressLine2"></b-form-input>
                                        </b-col>
                                        <b-col>
                                            <label>City</label>
-                                           <b-form-input v-model="selectedClient.city"></b-form-input>
+                                           <b-form-input v-model="selectedSupplier.city"></b-form-input>
                                        </b-col>
                                        <b-col>
                                            <!--                                        TODO update typo-->
                                            <label>Province</label>
-                                           <b-form-input v-model="selectedClient.provence"></b-form-input>
+                                           <b-form-input v-model="selectedSupplier.provence"></b-form-input>
                                        </b-col>
                                    </b-row>
                                    <b-row>
                                        <b-col class="col-2">
                                            <label>Postal Code</label>
-                                           <b-form-input v-model="selectedClient.postalCode"></b-form-input>
+                                           <b-form-input v-model="selectedSupplier.postalCode"></b-form-input>
                                        </b-col>
                                    </b-row>
                                    <hr class="mx-3">
                                    <b-row>
                                        <b-col>
                                            <label>Special Instructions</label>
-                                           <b-textarea v-model="selectedClient.specialInstructions"/>
+                                           <b-textarea v-model="selectedSupplier.specialInstructions"/>
                                        </b-col>
                                    </b-row>
                                    <hr class="mx-3">
@@ -169,7 +169,7 @@
                    <div v-if="isDeleteSelected">
                        <div class="d-flex justify-content-center">
                            <p class="h4">
-                               Are you sure you want to delete <span class="text-danger font-weight-bold">{{selectedClient.name}} {{selectedClient.surname}}</span>
+                               Are you sure you want to delete the supplier <span class="text-danger font-weight-bold">{{selectedSupplier.name}} {{selectedSupplier.surname}}</span>
                            </p>
                        </div>
                        <hr class="mx-3">
@@ -217,7 +217,7 @@ export default {
             officeId: null,
             specialInstructions: null,
         },
-        SupplierTable: {
+        supplierTable: {
             resultsPerPage: 10,
             currentPage: 1,
             dataSource: [],
@@ -275,46 +275,62 @@ export default {
             this.$bvModal.hide('supplierEditModal')
         },
         
-        getClients() {
-            this.SupplierTable.isLoading = true
+        getSupplier() {
+            this.supplierTable.isLoading = true
             
-            const request = []
-            this.$store.commit('setClientRequest', request)
             this.requestSupplier()
             .then(response => {
                 console.log("CLIENT DATA", response.data)
-                this.SupplierTable.dataSource = response.data
-                this.SupplierTable.isLoading = false
+                this.supplierTable.dataSource = response.data
+                this.supplierTable.isLoading = false
             })
         },
         
         update() {
-            this.$store.commit('setSelectedClient', this.selectedClient)
+            this.$store.commit('setSelectedSupplier', this.selectedSupplier)
             this.updateSupplier()
             .then(() => {
-                this.$bvModal.hide('clientEditModal')
+                this.toast('Supplier Updated Successfully','Job WELL DONE!', 'success')
+                this.$bvModal.hide('supplierEditModal')
+            })
+            .catch(() => {
+                this.toast('Something Happened, You are going to have toi redo all that work again.!', 'OOPS !', 'danger')
             })
         },
         deleteClient() {
-            this.selectedClient.isActive = false
-            this.$store.commit('setSelectedClient', this.selectedClient)
+            this.selectedSupplier.isActive = false
+            this.$store.commit('setSelectedSupplier', this.selectedSupplier)
             this.updateSupplier()
                 .then(() => {
-                    this.$bvModal.hide('clientEditModal')
-                    this.getClients()
+                    this.$bvModal.hide('supplierEditModal')
+                    this.getSupplier()
+                    this.toast('Supplier was successfully deleted','Success','success')
                 })
+            .catch(() => {
+                this.toast('This action was not completed successfully','Bad News','danger')
+            })
         },
         
         toggleDelete() {
             this.isDeleteSelected = !this.isDeleteSelected
         },
+        
+        toast(message, title, variant) {
+            this.$bvToast.toast(message, {
+                title: title,
+                variant: variant,
+                toaster: 'b-toaster-top-center',
+                solid: true,
+                autoHideDelay: 5000,
+            })
+        },
     },
     computed: {
         ...mapState([
-           "selectedClient" 
+           "selectedSupplier" 
         ]),
         rows() {
-            return this.SupplierTable.dataSource.length
+            return this.supplierTable.dataSource.length
         },
     },
 }
