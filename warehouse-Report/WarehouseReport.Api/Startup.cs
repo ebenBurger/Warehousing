@@ -15,8 +15,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using WarehouseReport.Api.Authentication;
+using WarehouseReport.Api.Interface;
+using WarehouseReport.Api.Managers;
 using WarehouseReport.Api.Models;
 
 namespace WarehouseReport.Api
@@ -40,6 +43,11 @@ namespace WarehouseReport.Api
             services.AddCors(c =>
             {
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+            });
+            
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WarehouseReport.Api", Version = "v1" });
             });
             
             //sql Connection
@@ -70,10 +78,9 @@ namespace WarehouseReport.Api
                     };
                 });
             
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WarehouseReport.Api", Version = "v1" });
-            });
+            services.TryAddScoped<IClientManager, ClientManager>();
+            
+            services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

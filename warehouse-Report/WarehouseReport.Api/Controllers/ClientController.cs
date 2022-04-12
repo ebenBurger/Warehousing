@@ -6,14 +6,13 @@ using WarehouseReport.Api.Models;
 
 namespace WarehouseReport.Api.Controllers
 {
-    [Authorize(Roles = "Admin")]
     [Route("[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     
     public class ClientController : Controller
     {
         private readonly IClientManager _clientManager;
-
 
         public ClientController(IClientManager clientManager)
         {

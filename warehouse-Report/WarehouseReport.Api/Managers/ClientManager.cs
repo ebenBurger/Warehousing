@@ -19,7 +19,7 @@ namespace WarehouseReport.Api.Managers
         
         public List<ClientModel> GetAllClients()
         {
-            var client = _context.ClientModels
+            var client = _context.Client
                 .Where(a => a.IsActive == true)
                 .ToList();
             return client;
