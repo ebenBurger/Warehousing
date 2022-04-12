@@ -5,9 +5,11 @@ import VueRouter from 'vue-router'
 import layout from "@/views/layouts/layout";
 import userView from "@/views/user-view";
 
-import adminView from "@/views/admin-view";
 import adminLayout from "@/views/layouts/adminLayout";
+import adminView from "@/views/admin-view";
 import createClient from "@/views/clientViews/createClient";
+import editClient from "@/views/clientViews/editClient";
+import viewClient from "@/views/clientViews/viewClient";
 
 Vue.use(VueRouter)
 
@@ -55,9 +57,25 @@ const routes = [
                 }
             },
             {
-                path: '/client',
-                name: 'client',
+                path: '/clientAdd',
+                name: 'createClient',
                 component: createClient,
+                meta: {
+                    requiresAuth: true,
+                }
+            },
+            {
+                path: '/clientView',
+                name: 'viewClient',
+                component: viewClient,
+                meta: {
+                    requiresAuth: true,
+                }
+            },
+            {
+                path: '/clientEdit',
+                name: 'editClient',
+                component: editClient,
                 meta: {
                     requiresAuth: true,
                 }
