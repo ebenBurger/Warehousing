@@ -7,7 +7,7 @@ import userView from "@/views/user-view";
 
 import adminView from "@/views/admin-view";
 import adminLayout from "@/views/layouts/adminLayout";
-import createClient from "@/views/createClient";
+import createClient from "@/views/clientViews/createClient";
 
 Vue.use(VueRouter)
 

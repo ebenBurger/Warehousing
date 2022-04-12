@@ -5,12 +5,16 @@
                 Atrax Logistics - Warehousing - Admin Portal
             </b-navbar-brand>
             <div>
-                <b-navbar-nav>
-                    <router-link exact-active-class="active" to="/client">
+                <b-navbar-nav class="align-items-center">
+                    <router-link exact-active-class="active navItem" to="/client">
                         <font-awesome-icon icon="fa-user-plus" />
                         Client
                     </router-link>
-                    <div @click="openLogoutModal" class="logout">
+                    <div v-b-toggle.sidebar-backdrop class=" admin navItem">
+                        <font-awesome-icon icon="fa-cogs" />
+                        Admin
+                    </div>
+                    <div @click="openLogoutModal" class="logout navItem">
                         <font-awesome-icon icon="fa-power-off" />
                         Log Out
                     </div>
@@ -30,6 +34,24 @@
             </b-row>
             <div class="d-block"></div>
         </b-modal>
+
+        <b-sidebar id="sidebar-backdrop"
+                   title="Edit Pages"
+                   :backdrop-variant="success"
+                   backdrop
+                   shadow>
+            <template #default="{ hide }">
+                <div class="p-3">
+                    <h4 id="sidebar-no-header-title">Choose the page to edit</h4>
+                    <nav class="mb-3">
+                        <b-nav vertical>
+                            <b-nav-item to="/client">Edit Client</b-nav-item>
+                        </b-nav>
+                    </nav>
+                    <b-button variant="primary" @click="hide">Close</b-button>
+                </div>
+            </template>
+        </b-sidebar>
 
     </div>
 </template>
@@ -73,29 +95,38 @@ export default {
 
 a {
     color: black;
-    margin: 0 0.3rem;
-    background: lightgrey;
-    padding: 0.1rem 0.4rem;
-    /*border-radius: 12px;*/
+}
+
+.collapsed {
+    color: black;
+}
+.not-collapsed {
+    color: white;
 }
 
 ul a:hover {
     color: blue;
     text-decoration: none;
-    /*background: blue;*/
-    padding: 0.1rem 0.4rem;
     border-radius: 12px;
 }
 
 .active {
     color: white;
     text-decoration: none;
-    /*background: blue;*/
-    padding: 0.1rem 0.4rem;
     border-radius: 12px;
 }
 
 .logout {
     cursor: pointer;
+    color: red;
+}
+
+.logout:hover {
+    color: black;
+}
+
+.navItem {
+    margin: 0 0.3rem;
+    padding: 0.1rem 0.4rem;
 }
 </style>
