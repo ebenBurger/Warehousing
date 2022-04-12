@@ -19,7 +19,7 @@ namespace WarehouseReport.Api.Controllers
             _clientManager = clientManager;
         }
 
-        [HttpGet("GetAllClients")]
+        [HttpGet("GetAllClient")]
         public IActionResult GetAllClients()
         {
             try
@@ -44,6 +44,25 @@ namespace WarehouseReport.Api.Controllers
             try
             {
                 var data = _clientManager.SaveClient(clientModel);
+                if (data == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(data);
+            }
+            catch (Exception e)
+            {
+                return Problem(e.Message);
+            }
+        }
+
+        [HttpPost("UpdateClient")]
+        public IActionResult UpdateClient(ClientModel clientModel)
+        {
+            try
+            {
+                var data = _clientManager.UpdateClient(clientModel);
                 if (data == null)
                 {
                     return NotFound();

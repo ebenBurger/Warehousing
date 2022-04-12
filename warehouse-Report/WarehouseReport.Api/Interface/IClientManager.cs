@@ -8,5 +8,6 @@ namespace WarehouseReport.Api.Interface
     {
         List<ClientModel> GetAllClients();
         Task<int> SaveClient(ClientModel clientModel);
+        Task<ClientModel> UpdateClient(ClientModel clientModel);
     }
 }

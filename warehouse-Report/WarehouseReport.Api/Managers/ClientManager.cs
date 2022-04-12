@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Threading.Tasks;
 using WarehouseReport.Api.Interface;
@@ -42,6 +43,26 @@ namespace WarehouseReport.Api.Managers
 
             await _context.SaveChangesAsync();
             return clientModel.ClientId;
+        }
+
+        public async Task<ClientModel> UpdateClient(ClientModel clientModel)
+        {
+            try
+            {
+                if (clientModel.ClientId == 0)
+                {
+                    throw new Exception("Invalid Client ID");
+                }
+
+                _context.Client.Update(clientModel);
+                await _context.SaveChangesAsync();
+                return clientModel;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
     }
 }
