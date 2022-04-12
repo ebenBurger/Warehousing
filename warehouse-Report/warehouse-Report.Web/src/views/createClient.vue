@@ -162,7 +162,7 @@ export default {
             this.$router.back()
         },
         save() {
-            this.$store.commit('setCreateClientRequest',)
+            this.$store.commit('setCreateClientRequest', this.clientDetails)
             this.state = 'loading'
             this.createClient()
             .then(() => {

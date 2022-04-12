@@ -7,7 +7,7 @@ import userView from "@/views/user-view";
 
 import adminView from "@/views/admin-view";
 import adminLayout from "@/views/layouts/adminLayout";
-import client from "@/views/client";
+import createClient from "@/views/createClient";
 
 Vue.use(VueRouter)
 
@@ -57,7 +57,7 @@ const routes = [
             {
                 path: '/client',
                 name: 'client',
-                component: client,
+                component: createClient,
                 meta: {
                     requiresAuth: true,
                 }
@@ -72,6 +72,7 @@ const router = new VueRouter({
     routes
 })
 
+//TODO fix Route Guarding for the whole app.
 router.beforeEach((to, from, next) => {
     if(to.matched.some(record => record.meta.requiresAuth)) {
 
