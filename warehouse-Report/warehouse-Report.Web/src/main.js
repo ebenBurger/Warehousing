@@ -5,7 +5,15 @@ import router from './router'
 import store from "@/store";
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import {faCogs, faHouseUser, faPlus, faPowerOff, faUserEdit, faUserPlus} from '@fortawesome/free-solid-svg-icons'
+import {
+    faCogs,
+    faHouseUser,
+    faPlus,
+    faPowerOff, faUserCircle,
+    faUserCog,
+    faUserEdit,
+    faUserPlus, faUserTie
+} from '@fortawesome/free-solid-svg-icons'
 
 import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 
@@ -34,7 +42,7 @@ Vue.filter('dateFilter', function (value) {
 })
 
 //FA icons
-library.add( faUserPlus, faPowerOff, faPlus, faCogs, faUserEdit, faHouseUser )
+library.add( faUserPlus, faPowerOff, faPlus, faCogs, faUserEdit, faHouseUser, faUserCog, faUserTie, faUserCircle )
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 

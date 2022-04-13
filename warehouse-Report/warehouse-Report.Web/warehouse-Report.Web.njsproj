@@ -47,6 +47,8 @@
     <Content Include="src\views\layouts\layout.vue" />
     <Content Include="src\views\login.vue" />
     <Content Include="src\views\user-view.vue" />
+    <Content Include="src\views\user\addAdminUser.vue" />
+    <Content Include="src\views\user\addUser.vue" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="public\" />

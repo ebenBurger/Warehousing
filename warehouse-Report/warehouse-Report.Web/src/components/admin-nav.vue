@@ -10,8 +10,8 @@
                         <font-awesome-icon icon="fa-house-user" />
                         Home
                     </router-link>
-                    <router-link exact-active-class="active" to="/clientAdd">
-                        <font-awesome-icon icon="fa-user-plus" />
+                    <router-link exact-active-class="active" to="/clientView">
+                        <font-awesome-icon icon="fa-user-tie" />
                         Client
                     </router-link>
                     <div v-b-toggle.sidebar-backdrop class=" admin navItemSpacing">
@@ -48,16 +48,16 @@
                     <h4 id="sidebar-no-header-title">Choose the page to edit</h4>
                     <nav class="mb-3">
                         <b-nav vertical>
-                            <b-nav-item to="/clientView">
-                                <font-awesome-icon icon="fa-user-edit" />
-                                Suppliers
+                            <b-nav-item to="/clientAdd">
+                                <font-awesome-icon icon="fa-user-plus" />
+                                Add Client
                             </b-nav-item>
-                            <b-nav-item to="/clientView">
-                                <font-awesome-icon icon="fa-user-edit" />
+                            <b-nav-item to="/addUser">
+                                <font-awesome-icon icon="fa-user-cog" />
                                 Add User
                             </b-nav-item>
-                            <b-nav-item to="/clientView">
-                                <font-awesome-icon icon="fa-user-edit" />
+                            <b-nav-item to="/addAdminUser">
+                                <font-awesome-icon icon="fa-user-cog" />
                                 Add Admin User
                             </b-nav-item>
                         </b-nav>
