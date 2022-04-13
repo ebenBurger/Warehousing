@@ -21,6 +21,7 @@ export default new Vuex.Store({
         supplierRequest: null,
         
         createCargoRequest: null,
+        cargoRequest: null,
     },
     mutations: {
         setApiUrl: (state, payload) => {
@@ -35,6 +36,7 @@ export default new Vuex.Store({
         setSelectedSupplier: (state, payload) => {state.selectedSupplier = payload},
 
         setCreateCargoRequest: (state, payload) => {state.createCargoRequest = payload},
+        setCargoRequest: (state, payload) => {state.cargoRequest = payload},
     },
     actions: {
         login: ({state}) => {
@@ -55,7 +57,6 @@ export default new Vuex.Store({
         
         //Supplier
         requestSupplier: ({state}) => {
-            console.log("STATE", state)
           return new Promise((resolve, reject) => {
               const callConfig = {
                   method: 'get',
@@ -72,7 +73,6 @@ export default new Vuex.Store({
                   })
                   .catch(err => {
                       reject(err)
-                      console.log("CLIENT REQUEST ERROR", err)
                   })
           })  
         },
@@ -146,6 +146,28 @@ export default new Vuex.Store({
                     .catch(err => {
                         console.log('CARGO SAVING ERROR', err)
                         reject(err)
+                    })
+            })
+        },
+        requestCargo: ({state}) => {
+            console.log("STATE", state)
+            return new Promise((resolve, reject) => {
+                const callConfig = {
+                    method: 'get',
+                    url: state.baseUrl + '/Cargo/GetAllCargo',
+                    headers: {
+                        'Authorization': 'Bearer '+ localStorage.getItem('jwt'),
+                        'Content-Type': 'application/json'
+                    },
+                }
+                axios(callConfig)
+                    .then(response => {
+                        state.supplierRequest = response.data
+                        resolve(response)
+                    })
+                    .catch(err => {
+                        reject(err)
+                        console.log("CLIENT REQUEST ERROR", err)
                     })
             })
         },

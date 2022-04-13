@@ -20,6 +20,19 @@ Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(VueRouter)
 
+Vue.filter('dateTimeFilter', function (value) {
+    if (!value) return ''
+    let localeValue = new Date(value)
+    let response = localeValue.toLocaleDateString() + ' ' + localeValue.getHours().toString().padStart(2, '0') + ':' + localeValue.getMinutes().toString().padStart(2, '0')
+    return response
+})
+Vue.filter('dateFilter', function (value) {
+    if (!value) return ''
+    let localeValue = new Date(value)
+    let response = localeValue.toLocaleDateString()
+    return response
+})
+
 //FA icons
 library.add( faUserPlus, faPowerOff, faPlus, faCogs, faUserEdit, faHouseUser )
 Vue.component('font-awesome-icon', FontAwesomeIcon)

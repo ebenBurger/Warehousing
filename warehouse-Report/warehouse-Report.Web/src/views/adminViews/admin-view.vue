@@ -32,6 +32,42 @@
                                         <b-spinner style="width: 3rem; height: 3rem;"></b-spinner>
                                     </div>
                                 </template>
+                                
+                                <template #cell(dateCollected)="row">
+                                    <b-row align-v="center">
+                                        <span class="mr-auto">{{row.item.dateCollected | dateFilter}}</span>
+                                    </b-row>
+                                </template>
+
+                                <template #cell(endDateOfFreeStorage)="row">
+                                    <b-row align-v="center">
+                                        <span class="mr-auto">{{row.item.endDateOfFreeStorage | dateFilter}}</span>
+                                    </b-row>
+                                </template>
+
+                                <template #cell(kgCBMConvertion)="row">
+                                    <b-row align-v="center">
+                                        <span class="mr-auto">{{row.item.kgCBMConvertion.toFixed(3)}}</span>
+                                    </b-row>
+                                </template>
+
+                                <template #cell(volume)="row">
+                                    <b-row align-v="center">
+                                        <span class="mr-auto">{{row.item.volume.toFixed(3)}}</span>
+                                    </b-row>
+                                </template>
+
+                                <template #cell(chargeableWeigth)="row">
+                                    <b-row align-v="center">
+                                        <span class="mr-auto">{{row.item.chargeableWeigth.toFixed(3)}}</span>
+                                    </b-row>
+                                </template>
+
+                                <template #cell(storageCost)="row">
+                                    <b-row align-v="center">
+                                        <span class="mr-auto">{{row.item.storageCost.toFixed(2)}}</span>
+                                    </b-row>
+                                </template>
 
                                 <template #cell(actions)="row">
                                     <b-row align-v="center" align-h="end">
@@ -148,22 +184,15 @@ export default {
         cargo: {
             supplier: null,
             dateCollected: null,
-            // freeStorageDate: null,
-            // cargoReadyPlace: null,
             orderNumber: null,
             invoiceNumber: null,
             description: null,
             quantity: null,
             weight: null,
-            // cbmConversion: null,
             length: null,
             width: null,
             height: null,
             isActive: true,
-            // volume: null,
-            // chargeableWeight: null,
-            // numberOfStorageDays: null,
-            // storageCost: null,
         },
         cargoTable: {
             resultsPerPage: 10,
@@ -172,20 +201,104 @@ export default {
             isLoading: false,
             tableColumns: [
                 {
-                    label: 'Name',
-                    key: 'name',
+                    label: 'Supplier',
+                    key: 'supplier',
                     sortable: true,
                     tdClass:'',
                 },
                 {
-                    label: 'Surname',
-                    key: 'surname',
+                    label: 'Date Of Collection',
+                    key: 'dateCollected',
                     sortable: true,
                     tdClass:'',
                 },
                 {
-                    label: 'Company Name',
-                    key: 'companyName',
+                    label: 'Date Charge Start',
+                    key: 'endDateOfFreeStorage',
+                    sortable: true,
+                    tdClass:'',
+                },
+                {
+                    label: 'Cargo Ready Place',
+                    key: 'cargoReadyPlace',
+                    sortable: true,
+                    tdClass:'',
+                },
+                {
+                    label: 'Order Number',
+                    key: 'orderNumber',
+                    sortable: true,
+                    tdClass:'',
+                },
+                {
+                    label: 'Invoice Number',
+                    key: 'invoiceNumber',
+                    sortable: true,
+                    tdClass:'',
+                },
+                {
+                    label: 'Description',
+                    key: 'description',
+                    sortable: true,
+                    tdClass:'',
+                },
+                {
+                    label: 'Quantity',
+                    key: 'quantity',
+                    sortable: true,
+                    tdClass:'',
+                },
+                {
+                    label: 'Weight (KG)',
+                    key: 'weight',
+                    sortable: true,
+                    tdClass:'',
+                },
+                {
+                    label: 'KG - CBM Conv.',
+                    key: 'kgCBMConvertion',
+                    sortable: true,
+                    tdClass:'',
+                },
+                {
+                    label: 'Length',
+                    key: 'length',
+                    sortable: true,
+                    tdClass:'',
+                },
+                {
+                    label: 'Width',
+                    key: 'width',
+                    sortable: true,
+                    tdClass:'',
+                },
+                {
+                    label: 'Height',
+                    key: 'height',
+                    sortable: true,
+                    tdClass:'',
+                },
+                {
+                    label: 'Volume',
+                    key: 'volume',
+                    sortable: true,
+                    tdClass:'',
+                },
+                {
+                    label: 'Chargeable Weight',
+                    key: 'chargeableWeigth',
+                    sortable: true,
+                    tdClass:'',
+                },
+                {
+                    label: 'Storage Days',
+                    key: 'numberOfStorageDays',
+                    sortable: true,
+                    tdClass:'',
+                },
+                {
+                    label: 'Storage Cost',
+                    key: 'storageCost',
                     sortable: true,
                     tdClass:'',
                 },
@@ -207,13 +320,14 @@ export default {
     },
     mounted() {
         this.getSupplierList()
+        this.getCargoList()
     },
     beforeUpdate() {
     },
     updated() {
     },
     methods: {
-        ...mapActions(["requestSupplier", "createCargo"]),
+        ...mapActions(["requestSupplier", "createCargo", "requestCargo"]),
         openCargo() {},
         openCargoModal() {
             this.$bvModal.show('cargoAddModal')
@@ -228,7 +342,14 @@ export default {
                     console.log('SUPPLIER', this.supplier)
                 })
         },
-        goBack() {},
+        getCargoList() {
+            this.requestCargo()
+            .then(response => {
+                this.cargoTable.dataSource = response.data
+                console.log('CARGO', response.data)
+                console.log('CARGO TABLE', this.cargoTable.dataSource)
+            })
+        },
         save() {
             const newCargo = {}
             newCargo.supplier = this.cargo.supplier
