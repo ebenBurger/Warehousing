@@ -21,6 +21,7 @@ namespace WarehouseReport.Api.Managers
     {
         var data = _context.Cargo
             .Where(a => a.IsActive == true)
+            .(b => b.CurrentDate = DateTime.Now)
             .ToList();
 
         return data;
@@ -39,9 +40,9 @@ namespace WarehouseReport.Api.Managers
             cargoModel.Volume = ((cargoModel.Length * cargoModel.Width * cargoModel.Height) / 1000000) *
                                 cargoModel.Quantity;
             cargoModel.ChargeableWeight = Math.Max(cargoModel.Volume, cargoModel.KgCBMConvertion);
-            DateTime thisDay = DateTime.Today;
-            cargoModel.NumberOfStorageDays = (thisDay - cargoModel.EndDateOfFreeStorage).Days;
-            cargoModel.StorageCost = (2.7 * cargoModel.ChargeableWeight) * cargoModel.NumberOfStorageDays;
+            // DateTime thisDay = DateTime.Today;
+            // cargoModel.NumberOfStorageDays = (thisDay - cargoModel.EndDateOfFreeStorage).Days;
+            // cargoModel.StorageCost = (2.7 * cargoModel.ChargeableWeight) * cargoModel.NumberOfStorageDays;
             _context.Add(cargoModel);
         }
         catch (Exception e)

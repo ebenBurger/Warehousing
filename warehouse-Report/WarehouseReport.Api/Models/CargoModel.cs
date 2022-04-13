@@ -26,5 +26,9 @@ namespace WarehouseReport.Api.Models
         public double StorageCost { get; set; }
         public bool IsActive { get; set; }
         public DateTime DateCreated { get; set; }
+        public DateTime StorageInvoiceDate { get; set; }
+        public DateTime CurrentDate { get; set; }
+        public double DollarRate { get; set; }
     }
+    
 }
