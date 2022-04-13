@@ -12,6 +12,7 @@ export default new Vuex.Store({
         
         //selected Item
         selectedSupplier: null,
+        selectedCargo: null,
         
         
         //request objects
@@ -37,6 +38,7 @@ export default new Vuex.Store({
 
         setCreateCargoRequest: (state, payload) => {state.createCargoRequest = payload},
         setCargoRequest: (state, payload) => {state.cargoRequest = payload},
+        setSelectedCargo: (state, payload) => {state.selectedCargo = payload}
     },
     actions: {
         login: ({state}) => {
@@ -164,10 +166,34 @@ export default new Vuex.Store({
                     .then(response => {
                         state.supplierRequest = response.data
                         resolve(response)
+                        console.log("CARGO LIST", response.data)
                     })
                     .catch(err => {
                         reject(err)
                         console.log("CLIENT REQUEST ERROR", err)
+                    })
+            })
+        },
+        updateCargo: ({state}) => {
+            const payload = state.selectedCargo
+
+            return new Promise((resolve, reject) => {
+                const callConfig = {
+                    method: 'post',
+                    url: state.baseUrl + '/Cargo/UpdateCargo',
+                    headers: {
+                        'Authorization': 'Bearer '+ localStorage.getItem('jwt'),
+                        'Content-Type': 'application/json'
+                    },
+                    data: payload,
+                }
+
+                axios(callConfig)
+                    .then(response => {
+                        resolve(response)
+                    })
+                    .catch(err => {
+                        reject(err)
                     })
             })
         },
