@@ -73,7 +73,7 @@
                             <b-col cols="4">
                                 <label>Supplier</label>
                                 <b-form-select v-model="cargo.supplier">
-                                    <b-form-select-option v-for="(item, index) in suppliers" :key="index" :value="item.supplier">{{item.companyName}}</b-form-select-option>
+                                    <b-form-select-option v-for="(item, index) in suppliers" :key="index" :value="item.companyName">{{item.companyName}}</b-form-select-option>
                                 </b-form-select>
                             </b-col>
                             <b-col cols="4">
@@ -230,6 +230,8 @@ export default {
         },
         goBack() {},
         save() {
+            const newCargo = {}
+            newCargo.supplier = this.cargo.supplier
             this.$store.commit('setCreateCargoRequest', this.cargo)
             this.state = 'loading'
             this.createCargo()
