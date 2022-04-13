@@ -57,9 +57,9 @@
                                     </b-row>
                                 </template>
 
-                                <template #cell(chargeableWeigth)="row">
+                                <template #cell(chargeableWeight)="row">
                                     <b-row align-v="center">
-                                        <span class="mr-auto">{{row.item.chargeableWeigth.toFixed(3)}}</span>
+                                        <span class="mr-auto">{{row.item.chargeableWeight.toFixed(3)}}</span>
                                     </b-row>
                                 </template>
 
