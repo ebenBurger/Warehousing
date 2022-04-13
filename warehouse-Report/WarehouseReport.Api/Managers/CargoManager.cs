@@ -21,7 +21,8 @@ namespace WarehouseReport.Api.Managers
     {
         var data = _context.Cargo
             .Where(a => a.IsActive == true)
-            .(b => b.CurrentDate = DateTime.Now)
+            //TODO update the currentDate var to the actual current date.
+            // .(b => b.CurrentDate = DateTime.Now)
             .ToList();
 
         return data;
