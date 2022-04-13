@@ -21,7 +21,7 @@ namespace WarehouseReport.Api.Models
         public string InvoieNumber { get; set; }
         public double KgCBMConvertion { get; set; }
         public double Volume { get; set; }
-        public double ChargeableWeigth { get; set; }
+        public double ChargeableWeight { get; set; }
         public double NumberOfStorageDays { get; set; }
         public double StorageCost { get; set; }
         public bool IsActive { get; set; }

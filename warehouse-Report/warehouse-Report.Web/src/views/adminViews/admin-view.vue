@@ -286,7 +286,7 @@ export default {
                 },
                 {
                     label: 'Chargeable Weight',
-                    key: 'chargeableWeigth',
+                    key: 'chargeableWeight',
                     sortable: true,
                     tdClass:'',
                 },

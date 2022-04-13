@@ -38,10 +38,10 @@ namespace WarehouseReport.Api.Managers
             cargoModel.KgCBMConvertion = cargoModel.Weight / 1000;
             cargoModel.Volume = ((cargoModel.Length * cargoModel.Width * cargoModel.Height) / 1000000) *
                                 cargoModel.Quantity;
-            cargoModel.ChargeableWeigth = Math.Max(cargoModel.Volume, cargoModel.KgCBMConvertion);
+            cargoModel.ChargeableWeight = Math.Max(cargoModel.Volume, cargoModel.KgCBMConvertion);
             DateTime thisDay = DateTime.Today;
             cargoModel.NumberOfStorageDays = (thisDay - cargoModel.EndDateOfFreeStorage).Days;
-            cargoModel.StorageCost = (2.7 * cargoModel.ChargeableWeigth) * cargoModel.NumberOfStorageDays;
+            cargoModel.StorageCost = (2.7 * cargoModel.ChargeableWeight) * cargoModel.NumberOfStorageDays;
             _context.Add(cargoModel);
         }
         catch (Exception e)
