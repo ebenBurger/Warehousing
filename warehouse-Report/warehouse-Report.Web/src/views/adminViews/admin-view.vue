@@ -266,7 +266,7 @@
                             </b-col>
                             <b-col cols="3">
                                 <label>Invoice Date</label>
-                                <b-form-datepicker></b-form-datepicker>
+                                <b-form-datepicker v-model="selectedCargo.atraxInvoiceDate"></b-form-datepicker>
                             </b-col>
                         </b-row>
                         <b-row>
