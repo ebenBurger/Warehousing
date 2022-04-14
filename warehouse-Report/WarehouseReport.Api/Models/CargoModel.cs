@@ -18,9 +18,10 @@ namespace WarehouseReport.Api.Models
         public double Height { get; set; }
         public string CargoReadyPlace { get; set; }
         public DateTime EndDateOfFreeStorage { get; set; }
-        public string InvoieNumber { get; set; }
+        public string InvoiceNumber { get; set; }
         public double KgCBMConvertion { get; set; }
-        public double Volume { get; set; }
+        public double VolumeCbm { get; set; }
+        public double VolumeMetric { get; set; }
         public double ChargeableWeight { get; set; }
         public double NumberOfStorageDays { get; set; }
         public double StorageCost { get; set; }
@@ -29,6 +30,14 @@ namespace WarehouseReport.Api.Models
         public DateTime StorageInvoiceDate { get; set; }
         public DateTime CurrentDate { get; set; }
         public double DollarRate { get; set; }
+        public string DeliveryArea { get; set; }
+        public DateTime DateOfCollection { get; set; }
+        public double TransportedCost { get; set; }
+        public string Transporter { get; set; }
+        public bool BilledToJkn { get; set; }
+        public bool CommercialInvoiceReceived { get; set; }
+        public bool PackingListReceived { get; set; }
+        public bool Hazardous { get; set; }
     }
     
 }
