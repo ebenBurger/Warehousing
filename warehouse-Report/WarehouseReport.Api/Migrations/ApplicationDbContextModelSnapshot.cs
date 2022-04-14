@@ -222,6 +222,12 @@ namespace WarehouseReport.Api.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTime>("AtraxInvoiceDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("AtraxInvoiceNumber")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("BilledToJkn")
                         .HasColumnType("bit");
 
@@ -246,6 +252,9 @@ namespace WarehouseReport.Api.Migrations
                     b.Property<DateTime>("DateOfCollection")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("DeleteReason")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("DeliveryArea")
                         .HasColumnType("nvarchar(max)");
 
@@ -264,13 +273,13 @@ namespace WarehouseReport.Api.Migrations
                     b.Property<double>("Height")
                         .HasColumnType("float");
 
-                    b.Property<string>("InvoiceNumber")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<double>("KgCBMConvertion")
+                    b.Property<bool>("IsComplete")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("KgCBMConversion")
                         .HasColumnType("float");
 
                     b.Property<double>("Length")
@@ -288,6 +297,9 @@ namespace WarehouseReport.Api.Migrations
                     b.Property<double>("Quantity")
                         .HasColumnType("float");
 
+                    b.Property<string>("SpecialRequirements")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double>("StorageCost")
                         .HasColumnType("float");
 
@@ -301,6 +313,12 @@ namespace WarehouseReport.Api.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("Transporter")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("TransporterInvoiceDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TransporterInvoiceNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("VolumeCbm")
