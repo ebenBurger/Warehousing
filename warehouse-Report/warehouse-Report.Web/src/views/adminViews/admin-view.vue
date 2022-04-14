@@ -371,29 +371,29 @@
                         <b-row>
                             <b-col>
                                 <label>Area</label>
-                                <b-form-input />
+                                <b-form-input v-model="selectedCargo.area"/>
                             </b-col>
                             <b-col>
                                 <label>Date to Collect</label>
-                                <b-form-datepicker />
+                                <b-form-datepicker v-model="selectedCargo.dateOfCollection"/>
                             </b-col>
                             <b-col>
                                 <label>Transporter Name</label>
-                                <b-form-input />
+                                <b-form-input v-model="selectedCargo.transporter"/>
                             </b-col>
                             <b-col>
                                 <label>Transporter Cost</label>
-                                <b-form-input />
+                                <b-form-input v-model="selectedCargo.transporterCost"/>
                             </b-col>
                         </b-row>
                         <b-row>
                             <b-col>
                                 <label>Transporter Invoice Number</label>
-                                <b-form-input />
+                                <b-form-input v-model="selectedCargo.transportedInvoiceNumber"/>
                             </b-col>
                             <b-col>
                                 <label>Transporter Invoice Date</label>
-                                <b-form-input />
+                                <b-form-input v-model="selectedCargo.transportedInvoiceDate"/>
                             </b-col>
                         </b-row>
                         <hr class="mx-3">
@@ -619,6 +619,7 @@ export default {
         },
         hideCargoEditModal() {
             this.$bvModal.hide('cargoEdit')
+            //TODO clear the pervasive memory on changes not saved.
         },
         openCargoModal() {
             this.$bvModal.show('cargoAddModal')
