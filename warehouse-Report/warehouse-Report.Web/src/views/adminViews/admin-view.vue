@@ -53,7 +53,7 @@
 
                                 <template #cell(volume)="row">
                                     <b-row align-v="center">
-                                        <span class="mr-auto">{{row.item.volume.toFixed(3)}}</span>
+                                        <span class="mr-auto">{{row.item.volumeCbm.toFixed(3)}}</span>
                                     </b-row>
                                 </template>
 
@@ -100,7 +100,7 @@
                         <b-row>
                             <b-col>
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <label class="text-primary font-weight-bold mb-4">Personal Details</label>
+                                    <label class="text-primary font-weight-bold mb-4">Cargo Details</label>
                                     <b-button variant="outline-red" squared @click="toggleDelete" size="sm">Delete</b-button>
                                 </div>
                             </b-col>
@@ -117,7 +117,7 @@
                                 <b-form-datepicker v-model="cargo.dateCollected"></b-form-datepicker>
                             </b-col>
                             <b-col cols="4">
-                                <label>Order Number</label>
+                                <label>Order/ BPO Number</label>
                                 <b-form-input v-model="cargo.orderNumber"></b-form-input>
                             </b-col>
                         </b-row>
@@ -126,12 +126,38 @@
                                 <label>Description</label>
                                 <b-form-input v-model="cargo.description"></b-form-input>
                             </b-col>
-                            <b-col cols="4"></b-col>
+                            <b-col cols="4">
+                                
+                                
+                            </b-col>
+                        </b-row>
+                        <b-row>
+                            <b-col class="text-center">
+                                <label>Hazard</label>
+                                <toggle-button :value="false"
+                                               v-model="cargo.hazardous"
+                                               class="d-flex justify-content-center"
+                                               :labels="{checked: 'Yes'}"/>
+                            </b-col>
+                            <b-col class="text-center">
+                                <label>Commercial Invoice Received</label>
+                                <toggle-button :value="false"
+                                               v-model="cargo.commercialInvoiceReceived"
+                                               class="d-flex justify-content-center"
+                                               :labels="{checked: 'Yes'}"/>
+                            </b-col>
+                            <b-col class="text-center">
+                                <label>Packing List Received</label>
+                                <toggle-button :value="false"
+                                               class="justify-content-center d-flex"
+                                               v-model="cargo.packingListReceived"
+                                               :labels="{checked: 'Yes'}"/>
+                            </b-col>
                         </b-row>
                         <hr class="mx-3">
                         <b-row>
                             <b-col>
-                                <label class="text-primary font-weight-bold mb-4">Cargo Details</label>
+                                <label class="text-primary font-weight-bold mb-4">Parcel Details</label>
                             </b-col>
                         </b-row>
                         <b-row>
@@ -159,6 +185,17 @@
                         <hr class="mx-3">
                         <b-row>
                             <b-col>
+                                <label class="text-primary font-weight-bold mb-4">Special Requirements</label>
+                            </b-col>
+                        </b-row>
+                        <b-row>
+                            <b-col>
+                                <b-textarea v-model="cargo.specialRequirements"></b-textarea>
+                            </b-col>
+                        </b-row>
+                        <hr class="mx-3">
+                        <b-row>
+                            <b-col>
                                 <div class="d-flex justify-content-end">
                                     <div>
                                         <b-button variant="outline-red" squared @click="hideCargoModal" class="ml-2">Cancel</b-button>
@@ -176,7 +213,7 @@
 
         <div v-if="this.selectedCargo">
             <b-modal id="cargoEdit" size="xl" hide-footer hide-header class="text-center" title="Edit Cargo Entry">
-            <b-row class="align-items-center m-0 ">
+            <b-row v-if="!isDeleteSelected" class="align-items-center m-0 ">
                 <b-col class="d-flex justify-content-center">
                     <B-form class="w-100">
                         <b-row>
@@ -194,7 +231,7 @@
                             </b-col>
                             <b-col>
                                 <label><span class="font-weight-bold">Date Collected:</span> </label>
-                                <label>{{selectedCargo.dateCollected}}</label>
+                                <label>{{selectedCargo.dateCollected | dateFilter}}</label>
                             </b-col>
                             <b-col>
                                 <label><span class="font-weight-bold">Order Number:</span> </label>
@@ -202,7 +239,7 @@
                             </b-col>
                             <b-col>
                                 <label>Invoice Number</label>
-                                <b-form-input v-model="selectedCargo.invoiceNumber" />
+                                <b-form-input v-model="selectedCargo.atraxInvoiceNumber" />
                             </b-col>
                         </b-row>
                         <b-row>
@@ -210,7 +247,63 @@
                                 <label><span class="font-weight-bold">Description:</span> </label>
                                 <label>{{selectedCargo.description}}</label>
                             </b-col>
-                            <b-col cols="4"></b-col>
+                            <b-col cols="3">
+                                <label>Cargo Overview</label>
+                                <b-row>
+                                    <b-col cols="4" v-if="selectedCargo.hazardous" >
+                                        <font-awesome-icon class="text-danger h4" icon="fa-biohazard" />
+                                    </b-col>
+                                    <b-col cols="4" v-if="selectedCargo.commercialInvoiceReceived" >
+                                        <font-awesome-icon icon="fa-file-invoice-dollar" />
+                                    </b-col>
+                                    <b-col cols="4" v-if="selectedCargo.packingListReceived" >
+                                        <font-awesome-icon icon="fa-list-ol"/> 
+                                    </b-col>
+                                    <b-col cols="4" v-if="selectedCargo.billedToJkn" >
+                                        <font-awesome-icon icon="fa-receipt" />
+                                    </b-col>
+                                </b-row>
+                            </b-col>
+                            <b-col cols="3">
+                                <label>Invoice Date</label>
+                                <b-form-datepicker></b-form-datepicker>
+                            </b-col>
+                        </b-row>
+                        <b-row>
+                            <b-col>
+                                <label class="font-weight-bold">Special Requirement</label>
+                                <b-form-input v-model="selectedCargo.specialRequirements" />
+                            </b-col>
+                        </b-row>
+                        <b-row>
+                            <b-col class="text-center" v-if="!selectedCargo.hazardous">
+                                <label>Hazard</label>
+                                <toggle-button :value="false"
+                                               v-model="selectedCargo.hazardous"
+                                               class="d-flex justify-content-center"
+                                               :labels="{checked: 'Yes'}"/>
+                            </b-col>
+                            <b-col class="text-center" v-if="!selectedCargo.commercialInvoiceReceived">
+                                <label>Commercial Invoice Received</label>
+                                <toggle-button :value="false"
+                                               v-model="selectedCargo.commercialInvoiceReceived"
+                                               class="d-flex justify-content-center"
+                                               :labels="{checked: 'Yes'}"/>
+                            </b-col>
+                            <b-col class="text-center" v-if="!selectedCargo.packingListReceived">
+                                <label>Packing List Received</label>
+                                <toggle-button :value="false"
+                                               class="justify-content-center d-flex"
+                                               v-model="selectedCargo.packingListReceived"
+                                               :labels="{checked: 'Yes'}"/>
+                            </b-col>
+                            <b-col class="text-center" v-if="!selectedCargo.billedToJkn">
+                                <label>Billed To JKN</label>
+                                <toggle-button :value="false"
+                                               class="justify-content-center d-flex"
+                                               v-model="selectedCargo.billedToJkn"
+                                               :labels="{checked: 'Yes'}"/>
+                            </b-col>
                         </b-row>
                         <hr class="mx-3">
                         <b-row>
@@ -244,23 +337,63 @@
                         <b-row class="m-0 colStyle">
                             <b-col>
                                 <label class="text-center font-weight-bold">CBM Conv.:</label>
-                                <h3 class="text-center">{{selectedCargo.kgCBMConvertion}}</h3>
+                                <h3 class="text-center">{{selectedCargo.kgCBMConversion}}</h3>
                             </b-col>
                             <b-col>
                                 <label class="text-center font-weight-bold">Volume:</label>
-                                <h3 class="text-center">{{selectedCargo.volume}}</h3>
-                            </b-col>
-                            <b-col>
-                                <label class="text-center font-weight-bold">Storage Days:</label>
-                                <h3 class="text-center">{{selectedCargo.numberOfStorageDays}}</h3>
+                                <h3 class="text-center">{{selectedCargo.volumeCbm}}</h3>
                             </b-col>
                             <b-col>
                                 <label class="text-center font-weight-bold">Chargable Weight:</label>
                                 <h3 class="text-center">{{selectedCargo.chargeableWeight}}</h3>
                             </b-col>
                             <b-col>
+                                <label class="text-center font-weight-bold">Storage Days:</label>
+                                <h3 class="text-center">{{selectedCargo.numberOfStorageDays}}</h3>
+                            </b-col>
+                            <b-col>
                                 <label class="text-center font-weight-bold">Storage Cost:</label>
-                                <h3 class="text-center">{{selectedCargo.storageCost.toFixed(2)}}</h3>
+                                <h3 class="text-center">{{selectedCargo.storageCost}}</h3>
+                            </b-col>
+                            <b-col>
+                                <label class="text-center font-weight-bold">Volume Metric</label>
+                                <h3 class="text-center">{{selectedCargo.volumeMetric}}</h3>
+                            </b-col>
+                        </b-row>
+                        <hr class="mx-3">
+                        <b-row>
+                            <b-col>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <label class="text-primary font-weight-bold mb-4">Transporter Details</label>
+                                </div>
+                            </b-col>
+                        </b-row>
+                        <b-row>
+                            <b-col>
+                                <label>Area</label>
+                                <b-form-input />
+                            </b-col>
+                            <b-col>
+                                <label>Date to Collect</label>
+                                <b-form-datepicker />
+                            </b-col>
+                            <b-col>
+                                <label>Transporter Name</label>
+                                <b-form-input />
+                            </b-col>
+                            <b-col>
+                                <label>Transporter Cost</label>
+                                <b-form-input />
+                            </b-col>
+                        </b-row>
+                        <b-row>
+                            <b-col>
+                                <label>Transporter Invoice Number</label>
+                                <b-form-input />
+                            </b-col>
+                            <b-col>
+                                <label>Transporter Invoice Date</label>
+                                <b-form-input />
                             </b-col>
                         </b-row>
                         <hr class="mx-3">
@@ -271,7 +404,7 @@
                                         <b-button variant="outline-red" squared @click="hideCargoEditModal" class="ml-2">Cancel</b-button>
                                     </div>
                                     <div>
-                                        <b-button variant="primary" squared @click="save" class="ml-2">Save</b-button>
+                                        <b-button variant="primary" squared @click="cargoUpdate" class="ml-2">Update</b-button>
                                     </div>
                                 </div>
                             </b-col>
@@ -279,10 +412,23 @@
                     </B-form>
                 </b-col>
             </b-row>
+            <b-row v-if="isDeleteSelected">
+                <b-col>
+                    <h1> delete section to go here</h1>
+                    <hr class="mx-3">
+                    <b-row>
+                        <b-col>
+                            <div class="d-flex justify-content-end">
+                                <div>
+                                    <b-button variant="outline-red" squared @click="toggleDelete" class="ml-2">Cancel</b-button>
+                                </div>
+                            </div>
+                        </b-col>
+                    </b-row>
+                </b-col>
+            </b-row>
         </b-modal>
-            
         </div>
-
     </div>
 </template>
 
@@ -295,13 +441,39 @@ export default {
             supplier: null,
             dateCollected: null,
             orderNumber: null,
-            invoiceNumber: null,
             description: null,
             quantity: null,
             weight: null,
             length: null,
             width: null,
             height: null,
+            //cargo ready place
+            //end date of free storage
+            atraxInvoiceNumber: null,
+            // atraxInvoiceDate: '',
+            // kg cbm conversion
+            //volume cbm
+            //volume metric
+            //chargeable weight
+            
+            //number of storage days --- this needs to be calculated in UI 
+            //storage cost --- this needs to be calculated in UI
+            // storageInvoiceDate: null,
+            //current date ---- this needs to be populated in UI
+            // dollarRate: 0.0,
+            deliveryArea: null,
+            // dateOfCollection: '',
+            transporter: null,
+            transporterCost: null,
+            transportedInvoiceNumber: null,
+            // transporterInvoiceDate: null,
+            specialRequirements: null,
+            deleteReason: null,
+            billedToJkn: false,
+            commercialInvoiceReceived: false,
+            packingListReceived: false,
+            hazardous: false,
+            isComplete: false,
             isActive: true,
         },
         cargoTable: {
@@ -366,38 +538,38 @@ export default {
                 },
                 {
                     label: 'KG - CBM Conv.',
-                    key: 'kgCBMConvertion',
-                    sortable: true,
+                    key: 'kgCBMConversion',
+                    sortable: false,
                     tdClass:'',
                 },
                 {
                     label: 'Length',
                     key: 'length',
-                    sortable: true,
+                    sortable: false,
                     tdClass:'',
                 },
                 {
                     label: 'Width',
                     key: 'width',
-                    sortable: true,
+                    sortable: false,
                     tdClass:'',
                 },
                 {
                     label: 'Height',
                     key: 'height',
-                    sortable: true,
+                    sortable: false,
                     tdClass:'',
                 },
                 {
                     label: 'Volume',
                     key: 'volume',
-                    sortable: true,
+                    sortable: false,
                     tdClass:'',
                 },
                 {
                     label: 'Chargeable Weight',
                     key: 'chargeableWeight',
-                    sortable: true,
+                    sortable: false,
                     tdClass:'',
                 },
                 {
@@ -407,15 +579,9 @@ export default {
                     tdClass:'',
                 },
                 {
-                    label: 'TEST Storage Days',
-                    key: 'test',
-                    sortable: true,
-                    tdClass:'',
-                },
-                {
                     label: 'Storage Cost',
                     key: 'storageCost',
-                    sortable: true,
+                    sortable: false,
                     tdClass:'',
                 },
                 {
@@ -428,23 +594,24 @@ export default {
         },
         suppliers: [],
         isDeleteSelected: false,
+        selectedCargoItem: {},
     }),
     beforeCreate() {
     },
     created() {
+        this.getSupplierList()
+        this.getCargoList()
     },
     beforeMount() {
     },
     mounted() {
-        this.getSupplierList()
-        this.getCargoList()
     },
     beforeUpdate() {
     },
     updated() {
     },
     methods: {
-        ...mapActions(["requestSupplier", "createCargo", "requestCargo"]),
+        ...mapActions(["requestSupplier", "createCargo", "requestCargo", "updateCargo", "getById"]),
         openCargoEntry(rowItem) {
             this.$bvModal.show('cargoEdit')
             this.$store.commit('setSelectedCargo', rowItem)
@@ -470,13 +637,9 @@ export default {
             this.requestCargo()
             .then(response => {
                 this.cargoTable.dataSource = response.data
-                console.log('CARGO', response.data)
-                console.log('CARGO TABLE', this.cargoTable.dataSource)
             })
         },
         save() {
-            const newCargo = {}
-            newCargo.supplier = this.cargo.supplier
             this.$store.commit('setCreateCargoRequest', this.cargo)
             this.state = 'loading'
             this.createCargo()
@@ -487,9 +650,23 @@ export default {
                 .catch(() => {
                 })
         },
+        cargoUpdate() {
+            this.$store.commit('setSelectedCargo', this.selectedCargo)
+            this.updateCargo()
+            .then(() => {
+                this.hideCargoEditModal()
+            })
+        },
         toggleDelete() {
             this.isDeleteSelected = !this.isDeleteSelected
-        }
+            
+        },
+        getCargoItem() {
+            this.getById()
+            .then(() => {
+                
+            })
+        },
     },
     computed: {
         rows() {

@@ -1,15 +1,17 @@
 import Vue from 'vue';
 import App from './App.vue';
 import VueRouter from "vue-router";
+import ToggleButton from 'vue-js-toggle-button'
 import router from './router'
 import store from "@/store";
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {
-    faCogs,
-    faHouseUser,
+    faBiohazard,
+    faCogs, faFileInvoiceDollar,
+    faHouseUser, faListOl,
     faPlus,
-    faPowerOff, faUserCircle,
+    faPowerOff, faReceipt, faUserCircle,
     faUserCog,
     faUserEdit,
     faUserPlus, faUserTie
@@ -27,6 +29,7 @@ Vue.config.productionTip = true;
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(VueRouter)
+Vue.use(ToggleButton)
 
 Vue.filter('dateTimeFilter', function (value) {
     if (!value) return ''
@@ -42,7 +45,7 @@ Vue.filter('dateFilter', function (value) {
 })
 
 //FA icons
-library.add( faUserPlus, faPowerOff, faPlus, faCogs, faUserEdit, faHouseUser, faUserCog, faUserTie, faUserCircle )
+library.add( faUserPlus, faPowerOff, faPlus, faCogs, faUserEdit, faHouseUser, faUserCog, faUserTie, faUserCircle, faBiohazard, faFileInvoiceDollar, faListOl, faReceipt )
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 
