@@ -88,6 +88,8 @@ export default {
     methods: {
         logout() {
             this.$router.push({path: '/'})
+            localStorage.removeItem('jwt')
+            localStorage.removeItem('user')
         },
         openLogoutModal() {
             this.$bvModal.show('logoutModal')
