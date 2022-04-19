@@ -32,7 +32,6 @@ namespace WarehouseReport.Api.Managers
             {
                 clientModel.DateCreated = Convert.ToDateTime(DateTime.Now.ToLocalTime()
                     .ToString(System.Globalization.CultureInfo.InvariantCulture));
-                clientModel.DateCreated = clientModel.DateCreated;
                 _context.Add(clientModel);
             }
             catch (Exception e)

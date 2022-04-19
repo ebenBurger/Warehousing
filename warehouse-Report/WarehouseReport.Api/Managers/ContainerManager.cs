@@ -32,6 +32,8 @@ namespace WarehouseReport.Api.Managers
         {
             try
             {
+                containerModel.DateCreated = Convert.ToDateTime(DateTime.Now.ToLocalTime()
+                    .ToString(System.Globalization.CultureInfo.InvariantCulture));
                 _context.Add(containerModel);
             }
             catch (Exception e)
@@ -51,6 +53,12 @@ namespace WarehouseReport.Api.Managers
                 if (containerModel.ContainerId == 0)
                 {
                     throw new Exception("Invalid Container Id");
+                }
+
+                if (containerModel.IsComplete)
+                {
+                    containerModel.DateCompleted = Convert.ToDateTime(DateTime.Now.ToLocalTime()
+                        .ToString(System.Globalization.CultureInfo.InvariantCulture));
                 }
 
                 _context.Container.Update(containerModel);
