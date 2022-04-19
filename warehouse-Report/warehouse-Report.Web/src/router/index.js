@@ -20,8 +20,10 @@ const routes = [
         name: 'login',
         component: login,
         meta: {
-            requiresAuth: false
-        }
+            requiresAuth: false,
+            adminAuth: false,
+            userAuth: false,
+        },
     },
 
     //CLIENT PORTAL
@@ -37,7 +39,9 @@ const routes = [
                 component: userView,
                 meta: {
                     requiresAuth: true,
-                }
+                    adminAuth: false,
+                    userAuth: true,
+                },
             },
         ]
     },
@@ -55,7 +59,9 @@ const routes = [
                 component: adminView,
                 meta: {
                     requiresAuth: true,
-                }
+                    adminAuth: true,
+                    userAuth: false,
+                },
             },
             {
                 path: '/clientAdd',
@@ -63,7 +69,9 @@ const routes = [
                 component: createClient,
                 meta: {
                     requiresAuth: true,
-                }
+                    adminAuth: true,
+                    userAuth: false,
+                },
             },
             {
                 path: '/clientView',
@@ -71,7 +79,9 @@ const routes = [
                 component: viewClient,
                 meta: {
                     requiresAuth: true,
-                }
+                    adminAuth: true,
+                    userAuth: false,
+                },
             },
             {
                 path: '/addUser',
@@ -79,7 +89,9 @@ const routes = [
                 component: addUser,
                 meta: {
                     requiresAuth: true,
-                }
+                    adminAuth: true,
+                    userAuth: false,
+                },
             },
             {
                 path: '/addAdminUser',
@@ -87,7 +99,19 @@ const routes = [
                 component: addAdminUser,
                 meta: {
                     requiresAuth: true,
-                }
+                    adminAuth: true,
+                    userAuth: false,
+                },
+            },
+            {
+                path: '/addContainer',
+                name: 'addContainer',
+                component: addAdminUser,
+                meta: {
+                    requiresAuth: true,
+                    adminAuth: true,
+                    userAuth: false,
+                },
             },
         ]
     },
@@ -101,22 +125,54 @@ const router = new VueRouter({
 
 //TODO fix Route Guarding for the whole app.
 router.beforeEach((to, from, next) => {
-    if(to.matched.some(record => record.meta.requiresAuth)) {
+    let role = localStorage.getItem('role')
+    const token = localStorage.getItem('jwt')
 
-        if (localStorage.getItem('jwt') !== null && localStorage.getItem('jwt') !== '') {
-            next()
-        }
-        else{
-            if (to.name !== 'Login') {
-                next('')
-            } else {
-                next()
+    if (to.meta.requiresAuth) {
+        if (!role || !token) {
+            router.push({path: '/'})
+        } else {
+            if (to.meta.adminAuth) {
+                if (role === "Admin") {
+                    return next()
+                } else {
+                    router.push({path: '/'})
+                    localStorage.removeItem('jwt')
+                    localStorage.removeItem('role')
+                }
+            } else if (to.meta.userAuth) {
+                if (role === "User") {
+                    return next()
+                } else {
+                    router.push({path: '/'})
+                    localStorage.removeItem('jwt')
+                    localStorage.removeItem('role')
+                }
             }
         }
 
     } else {
-        next()
+        return next()
     }
 })
+    
+    
+//     if(to.matched.some(record => record.meta.requiresAuth)) {
+//
+//         if (localStorage.getItem('jwt') !== null && localStorage.getItem('jwt') !== '') {
+//             next()
+//         }
+//         else{
+//             // if (to.name !== 'Login') {
+//                 next('/')
+//             // } else {
+//             //     next()
+//             // }
+//         }
+//
+//     } else {
+//         next()
+//     }
+// })
 
 export default router
