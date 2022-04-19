@@ -50,7 +50,7 @@
                                         <b-button variant="outline-red" squared @click="goBack" class="ml-2">Cancel</b-button>
                                     </div>
                                     <div>
-                                        <b-button variant="primary" squared @click="save" class="ml-2">Save</b-button>
+                                        <b-button variant="primary" squared @click="showUserAddModal" class="ml-2">Save</b-button>
                                     </div>
                                 </div>
                             </b-col>
@@ -59,6 +59,22 @@
                 </b-card>
             </b-col>
         </b-row>
+        <b-modal id="UserAdd" hide-footer hide-header-close class="text-center" title="Add User">
+            <p>Are you sure you want to add <span class="text-success font-weight-bold font-italic">{{userDetails.userName}}</span> as a User</p>
+            <hr class="mx-3">
+            <b-row>
+                <b-col>
+                    <div class="d-flex justify-content-end">
+                        <div>
+                            <b-button variant="outline-red" squared @click="hideUserAddModal" class="ml-2">Cancel</b-button>
+                        </div>
+                        <div>
+                            <b-button variant="primary" squared @click="save" class="ml-2">Save</b-button>
+                        </div>
+                    </div>
+                </b-col>
+            </b-row>
+        </b-modal>
     </div>
 </template>
 
@@ -87,6 +103,12 @@ export default {
     methods: {
         goBack() {
             this.$router.push({path: '/admin-home'})
+        },
+        showUserAddModal() {
+            this.$bvModal.show('UserAdd')
+        },
+        hideUserAddModal() {
+            this.$bvModal.hide('UserAdd')
         },
         save() {},
     },
