@@ -3,14 +3,14 @@ import login from "@/views/login";
 import VueRouter from 'vue-router'
 
 import layout from "@/views/layouts/layout";
-import userView from "@/views/user-view";
+import userView from "@/views/user/userViews/user-view";
 
 import adminLayout from "@/views/layouts/adminLayout";
-import adminView from "@/views/adminViews/admin-view";
-import createClient from "@/views/clientViews/createClient";
-import viewClient from "@/views/clientViews/viewClient";
-import addUser from "@/views/user/addUser";
-import addAdminUser from "@/views/user/addAdminUser";
+import adminView from "@/views/admin/adminViews/admin-view";
+import createClient from "@/views/admin/clientViews/createClient";
+import viewClient from "@/views/admin/clientViews/viewClient";
+import addUser from "@/views/admin/user/addUser";
+import addAdminUser from "@/views/admin/user/addAdminUser";
 
 Vue.use(VueRouter)
 

@@ -41,15 +41,14 @@
     <Content Include="src\router\index.js" />
     <Content Include="src\store\index.js" />
     <Content Include="src\style.scss" />
-    <Content Include="src\views\adminViews\admin-view.vue" />
-    <Content Include="src\views\clientViews\createClient.vue" />
-    <Content Include="src\views\clientViews\viewClient.vue" />
+    <Content Include="src\views\admin\adminViews\admin-view.vue" />
+    <Content Include="src\views\admin\clientViews\createClient.vue" />
+    <Content Include="src\views\admin\clientViews\viewClient.vue" />
+    <Content Include="src\views\admin\user\addAdminUser.vue" />
+    <Content Include="src\views\admin\user\addUser.vue" />
     <Content Include="src\views\layouts\adminLayout.vue" />
     <Content Include="src\views\layouts\layout.vue" />
     <Content Include="src\views\login.vue" />
-    <Content Include="src\views\user-view.vue" />
-    <Content Include="src\views\user\addAdminUser.vue" />
-    <Content Include="src\views\user\addUser.vue" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="public\" />
@@ -59,10 +58,9 @@
     <Folder Include="src\router\" />
     <Folder Include="src\store\" />
     <Folder Include="src\views\" />
-    <Folder Include="src\views\adminViews\" />
-    <Folder Include="src\views\clientViews\" />
+    <Folder Include="src\views\admin\containers" />
     <Folder Include="src\views\layouts\" />
-    <Folder Include="src\views\user\" />
+    <Folder Include="src\views\user" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="babel.config.js" />
