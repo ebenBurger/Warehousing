@@ -11,7 +11,7 @@
                         Home
                     </router-link>
                     <router-link exact-active-class="active" to="/viewContainer">
-                        <font-awesome-icon icon="fa-user-tie" />
+                        <font-awesome-icon icon="fa-shipping-fast" />
                         Containers
                     </router-link>
                     <router-link exact-active-class="active" to="/clientView">
