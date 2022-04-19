@@ -8,7 +8,7 @@
                             <h4>Add Supplier</h4>
                         </B-col>
                     </b-row>
-                    <B-form>
+                    <b-form>
                         <b-row>
                             <b-col>
                                 <label class="text-primary font-weight-bold mb-4">Personal Details</label>
@@ -107,7 +107,7 @@
                                 </div>
                             </b-col>
                         </b-row>
-                    </B-form>
+                    </b-form>
                 </b-card>
             </b-col>
         </b-row>
