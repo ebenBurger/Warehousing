@@ -1,13 +1,15 @@
 <template>
     <div>
-        <h3>Layout</h3>
+        <client-nav />
         <br />
         <router-view />
     </div>
 </template>
 
 <script>
+import ClientNav from "@/components/client-nav";
 export default {
+    components: {ClientNav},
     data: () => ({}),
     beforeCreate() {
     },
