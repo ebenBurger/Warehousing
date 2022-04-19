@@ -246,9 +246,9 @@ export default new Vuex.Store({
                 }
                 axios(callConfig)
                     .then(response => {
-                        state.supplierRequest = response.data
+                        state.containerRequest = response.data
                         resolve(response)
-                        console.log("CARGO LIST", response.data)
+                        console.log("Container LIST", response.data)
                     })
                     .catch(err => {
                         reject(err)
