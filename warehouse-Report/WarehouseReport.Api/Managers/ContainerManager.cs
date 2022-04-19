@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using WarehouseReport.Api.Interface;
 using WarehouseReport.Api.Models;
 
@@ -21,6 +22,7 @@ namespace WarehouseReport.Api.Managers
         {
             var data = _context.Container
                 .Where(a => a.IsActive == true)
+                .Include(b => b.CargoModels)
                 .ToList();
 
             return data;
