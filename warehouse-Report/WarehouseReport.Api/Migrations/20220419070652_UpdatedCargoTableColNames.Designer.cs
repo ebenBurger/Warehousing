@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WarehouseReport.Api.Models;
 
 namespace WarehouseReport.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220419070652_UpdatedCargoTableColNames")]
+    partial class UpdatedCargoTableColNames
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -240,9 +242,6 @@ namespace WarehouseReport.Api.Migrations
                     b.Property<bool>("CommercialInvoiceReceived")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("ContainerModelContainerId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("CurrentDate")
                         .HasColumnType("datetime2");
 
@@ -338,8 +337,6 @@ namespace WarehouseReport.Api.Migrations
 
                     b.HasKey("CargoId");
 
-                    b.HasIndex("ContainerModelContainerId");
-
                     b.ToTable("Cargo");
                 });
 
@@ -406,21 +403,6 @@ namespace WarehouseReport.Api.Migrations
                     b.ToTable("Client");
                 });
 
-            modelBuilder.Entity("WarehouseReport.Api.Models.ContainerModel", b =>
-                {
-                    b.Property<int>("ContainerId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ContainerName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ContainerId");
-
-                    b.ToTable("ContainerModel");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -470,20 +452,6 @@ namespace WarehouseReport.Api.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("WarehouseReport.Api.Models.CargoModel", b =>
-                {
-                    b.HasOne("WarehouseReport.Api.Models.ContainerModel", "ContainerModel")
-                        .WithMany("CargoModels")
-                        .HasForeignKey("ContainerModelContainerId");
-
-                    b.Navigation("ContainerModel");
-                });
-
-            modelBuilder.Entity("WarehouseReport.Api.Models.ContainerModel", b =>
-                {
-                    b.Navigation("CargoModels");
                 });
 #pragma warning restore 612, 618
         }
