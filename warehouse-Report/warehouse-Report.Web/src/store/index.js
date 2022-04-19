@@ -163,7 +163,6 @@ export default new Vuex.Store({
             })
         },
         requestCargo: ({state}) => {
-            console.log("STATE", state)
             return new Promise((resolve, reject) => {
                 const callConfig = {
                     method: 'get',
@@ -233,7 +232,30 @@ export default new Vuex.Store({
                         reject(err)
                     })
             })
-        }
+        },
+        requestContainer: ({state}) => {
+            console.log("CONTAINER STATE", state)
+            return new Promise((resolve, reject) => {
+                const callConfig = {
+                    method: 'get',
+                    url: state.baseUrl + '/Container/GetAllContainer',
+                    headers: {
+                        'Authorization': 'Bearer '+ localStorage.getItem('jwt'),
+                        'Content-Type': 'application/json'
+                    },
+                }
+                axios(callConfig)
+                    .then(response => {
+                        state.supplierRequest = response.data
+                        resolve(response)
+                        console.log("CARGO LIST", response.data)
+                    })
+                    .catch(err => {
+                        reject(err)
+                        console.log("CLIENT REQUEST ERROR", err)
+                    })
+            })
+        },
     },
     modules: {},
 })
