@@ -219,7 +219,7 @@
             </b-row>
         </b-modal>
 
-        <div v-if="this.selectedCargo">
+        <div v-if="selectedCargo">
             <b-modal id="cargoEdit" size="lg" hide-footer hide-header class="text-center" title="Edit Cargo Entry">
                 <b-row v-if="!isDeleteSelected">
                     <b-col>
@@ -935,8 +935,10 @@ export default {
                 .then(() => {
                     this.$bvModal.hide('cargoAddModal')
                     this.getCargoList()
+                    this.toast('Cargo was successfully created','Success','success')
                 })
                 .catch(() => {
+                    this.toast('There was an error- please try again.','Error','danger')
                 })
         },
         cargoUpdate() {
@@ -944,6 +946,10 @@ export default {
             this.updateCargo()
             .then(() => {
                 this.hideCargoEditModal()
+                this.toast('Cargo was successfully updated','Successful Updated','success')
+            })
+            .catch(() => {
+                this.toast('There was an error- please try again.','Error','danger')
             })
         },
         toggleDelete() {
@@ -958,6 +964,15 @@ export default {
                     this.hideCargoEditModal()
                     this.getCargoList()
                 })
+        },
+        toast(message, title, variant) {
+            this.$bvToast.toast(message, {
+                title: title,
+                variant: variant,
+                toaster: 'b-toaster-top-center',
+                solid: true,
+                autoHideDelay: 5000,
+            })
         },
     },
     computed: {
