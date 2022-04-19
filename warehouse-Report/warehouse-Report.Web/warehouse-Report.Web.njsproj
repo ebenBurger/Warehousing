@@ -59,6 +59,11 @@
     <Folder Include="src\router\" />
     <Folder Include="src\store\" />
     <Folder Include="src\views\" />
+    <Folder Include="src\views\admin\" />
+    <Folder Include="src\views\admin\adminViews\" />
+    <Folder Include="src\views\admin\clientViews\" />
+    <Folder Include="src\views\admin\containers\" />
+    <Folder Include="src\views\admin\user\" />
     <Folder Include="src\views\layouts\" />
     <Folder Include="src\views\user" />
   </ItemGroup>

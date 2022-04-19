@@ -403,42 +403,6 @@
                                             <h3 class="text-center">{{selectedCargo.volumeMetric ? selectedCargo.volumeMetric.toFixed(3) : ''}}</h3>
                                         </b-col>
                                     </b-row>
-                                    <!--                                    <hr class="mx-3">
-                                                                        <b-row>
-                                                                            <b-col>
-                                                                                <div class="d-flex justify-content-between align-items-center">
-                                                                                    <label class="text-primary font-weight-bold mb-4">Transporter Details</label>
-                                                                                </div>
-                                                                            </b-col>
-                                                                        </b-row>
-                                                                        <b-row>
-                                                                            <b-col>
-                                                                                <label>Area</label>
-                                                                                <b-form-input v-model="selectedCargo.diliveryArea"/>
-                                                                            </b-col>
-                                                                            <b-col>
-                                                                                <label>Date to Collect</label>
-                                                                                <b-form-datepicker v-model="selectedCargo.dateOfCollection"/>
-                                                                            </b-col>
-                                                                            <b-col>
-                                                                                <label>Transporter Name</label>
-                                                                                <b-form-input v-model="selectedCargo.transporter"/>
-                                                                            </b-col>
-                                                                            <b-col>
-                                                                                <label>Transporter Cost</label>
-                                                                                <b-form-input v-model="selectedCargo.transporterCost"/>
-                                                                            </b-col>
-                                                                        </b-row>
-                                                                        <b-row>
-                                                                            <b-col cols="3">
-                                                                                <label>Transporter Invoice Number</label>
-                                                                                <b-form-input v-model="selectedCargo.transporterInvoiceNumber"/>
-                                                                            </b-col>
-                                                                            <b-col cols="3">
-                                                                                <label>Transporter Invoice Date</label>
-                                                                                <b-form-datepicker v-model="selectedCargo.transporterInvoiceDate"/>
-                                                                            </b-col>
-                                                                        </b-row>-->
                                     <hr class="mx-3">
                                     <b-row>
                                         <b-col>
@@ -957,6 +921,11 @@ export default {
             this.requestCargo()
             .then(response => {
                 this.cargoTable.dataSource = response.data
+            })
+            .catch(() => {
+                this.$router.push({path: '/'})
+                localStorage.removeItem('jwt')
+                localStorage.removeItem('user')
             })
         },
         save() {

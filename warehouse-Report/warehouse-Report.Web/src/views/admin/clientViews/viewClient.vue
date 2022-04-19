@@ -285,6 +285,11 @@ export default {
                 this.supplierTable.dataSource = response.data
                 this.supplierTable.isLoading = false
             })
+            .catch(() => {
+                this.$router.push({path: '/'})
+                localStorage.removeItem('jwt')
+                localStorage.removeItem('user')
+            })
         },
         
         update() {
