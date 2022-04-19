@@ -7,11 +7,10 @@ import store from "@/store";
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {
-    faBiohazard,
-    faCogs, faFileInvoiceDollar,
-    faHouseUser, faListOl,
+    faCogs, 
+    faHouseUser,
     faPlus,
-    faPowerOff, faReceipt, faUserCircle,
+    faPowerOff, faShippingFast, faUserCircle,
     faUserCog,
     faUserEdit,
     faUserPlus, faUserTie
@@ -45,7 +44,7 @@ Vue.filter('dateFilter', function (value) {
 })
 
 //FA icons
-library.add( faUserPlus, faPowerOff, faPlus, faCogs, faUserEdit, faHouseUser, faUserCog, faUserTie, faUserCircle, faBiohazard, faFileInvoiceDollar, faListOl, faReceipt )
+library.add( faUserPlus, faPowerOff, faPlus, faCogs, faUserEdit, faHouseUser, faUserCog, faUserTie, faUserCircle, faShippingFast )
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 
