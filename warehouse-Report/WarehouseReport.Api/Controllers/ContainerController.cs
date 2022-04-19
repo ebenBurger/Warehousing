@@ -8,22 +8,43 @@ namespace WarehouseReport.Api.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    [Authorize]
-    public class CargoController : Controller
+    [Authorize(Roles = "Admin")]
+    
+    public class ContainerController : Controller
     {
-        private readonly ICargoManager _cargoManager;
-
-        public CargoController(ICargoManager cargoManager)
+        private readonly IContainerManager _containerManager;
+        
+        public ContainerController(IContainerManager containerManager)
         {
-            _cargoManager = cargoManager;
+            _containerManager = containerManager;
         }
 
-        [HttpGet("GetAllCargo")]
-        public IActionResult GetAllCargo()
+        [HttpGet("GetAllContainer")]
+        public IActionResult GetAllContainer()
         {
             try
             {
-                var data = _cargoManager.GetAllCargo();
+                var data = _containerManager.GetAllContainers();
+
+                if (data == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(data);
+            }
+            catch (Exception e)
+            {
+                return Problem(e.Message);
+            }
+        }
+        
+        [HttpPost("CreateContainer")]
+        public IActionResult SaveContainer(ContainerModel containerModel)
+        {
+            try
+            {
+                var data = _containerManager.SaveContainer(containerModel);
                 if (data == null)
                 {
                     return NotFound();
@@ -37,13 +58,12 @@ namespace WarehouseReport.Api.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin")]
-        [HttpPost("AddCargo")]
-        public IActionResult SaveCargo(CargoModel cargoModel)
+        [HttpPost("UpdateContainer")]
+        public IActionResult UpdateContainer(ContainerModel containerModel)
         {
             try
             {
-                var data = _cargoManager.SaveCargo(cargoModel);
+                var data = _containerManager.UpdateContainer(containerModel);
                 if (data == null)
                 {
                     return NotFound();
@@ -57,25 +77,6 @@ namespace WarehouseReport.Api.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin")]
-        [HttpPost("UpdateCargo")]
-        public IActionResult UpdateCargo(CargoModel cargoModel)
-        {
-            try
-            {
-                var data = _cargoManager.UpdateCargo(cargoModel);
-                if (data == null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(data);
-            }
-            catch (Exception e)
-            {
-                return Problem(e.Message);
-            }
-        }
         
     }
 }

@@ -34,7 +34,7 @@ namespace WarehouseReport.Api.Models
         public string DeliveryArea { get; set; }
         public DateTime? DateOfCollection { get; set; }
         public string Transporter { get; set; }
-        public double TransportedCost { get; set; }
+        public double TransporterCost { get; set; }
         public string TransporterInvoiceNumber { get; set; }
         public DateTime? TransporterInvoiceDate { get; set; }
         public string SpecialRequirements { get; set; }
@@ -47,6 +47,8 @@ namespace WarehouseReport.Api.Models
         public bool Hazardous { get; set; }
         public bool IsComplete { get; set; }
         public bool IsActive { get; set; }
+
+        public ContainerModel ContainerModel { get; set; }
     }
     
 }

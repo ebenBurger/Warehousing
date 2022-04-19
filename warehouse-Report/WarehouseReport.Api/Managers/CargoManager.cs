@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using WarehouseReport.Api.Interface;
 using WarehouseReport.Api.Models;
 
@@ -20,6 +21,7 @@ namespace WarehouseReport.Api.Managers
     public List<CargoModel> GetAllCargo()
     {
         var data = _context.Cargo
+            .Include(a => a.ContainerModel)
             .Where(a => a.IsActive == true)
             //TODO update the currentDate var to the actual current date.
             // .(b => b.CurrentDate = DateTime.Now)
