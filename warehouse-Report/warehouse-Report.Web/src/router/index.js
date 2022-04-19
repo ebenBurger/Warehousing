@@ -11,6 +11,7 @@ import createClient from "@/views/admin/clientViews/createClient";
 import viewClient from "@/views/admin/clientViews/viewClient";
 import addUser from "@/views/admin/user/addUser";
 import addAdminUser from "@/views/admin/user/addAdminUser";
+import viewContainer from "@/views/admin/containers/viewContainer";
 
 Vue.use(VueRouter)
 
@@ -104,9 +105,9 @@ const routes = [
                 },
             },
             {
-                path: '/addContainer',
-                name: 'addContainer',
-                component: addAdminUser,
+                path: '/viewContainer',
+                name: 'viewContainer',
+                component: viewContainer,
                 meta: {
                     requiresAuth: true,
                     adminAuth: true,
@@ -156,23 +157,4 @@ router.beforeEach((to, from, next) => {
     }
 })
     
-    
-//     if(to.matched.some(record => record.meta.requiresAuth)) {
-//
-//         if (localStorage.getItem('jwt') !== null && localStorage.getItem('jwt') !== '') {
-//             next()
-//         }
-//         else{
-//             // if (to.name !== 'Login') {
-//                 next('/')
-//             // } else {
-//             //     next()
-//             // }
-//         }
-//
-//     } else {
-//         next()
-//     }
-// })
-
 export default router

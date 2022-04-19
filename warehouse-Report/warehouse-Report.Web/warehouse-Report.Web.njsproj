@@ -44,6 +44,7 @@
     <Content Include="src\views\admin\adminViews\admin-view.vue" />
     <Content Include="src\views\admin\clientViews\createClient.vue" />
     <Content Include="src\views\admin\clientViews\viewClient.vue" />
+    <Content Include="src\views\admin\containers\viewContainer.vue" />
     <Content Include="src\views\admin\user\addAdminUser.vue" />
     <Content Include="src\views\admin\user\addUser.vue" />
     <Content Include="src\views\layouts\adminLayout.vue" />
@@ -58,7 +59,6 @@
     <Folder Include="src\router\" />
     <Folder Include="src\store\" />
     <Folder Include="src\views\" />
-    <Folder Include="src\views\admin\containers" />
     <Folder Include="src\views\layouts\" />
     <Folder Include="src\views\user" />
   </ItemGroup>

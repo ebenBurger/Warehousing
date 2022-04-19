@@ -10,6 +10,10 @@
                         <font-awesome-icon icon="fa-house-user" />
                         Home
                     </router-link>
+                    <router-link exact-active-class="active" to="/viewContainer">
+                        <font-awesome-icon icon="fa-user-tie" />
+                        Containers
+                    </router-link>
                     <router-link exact-active-class="active" to="/clientView">
                         <font-awesome-icon icon="fa-user-tie" />
                         Client

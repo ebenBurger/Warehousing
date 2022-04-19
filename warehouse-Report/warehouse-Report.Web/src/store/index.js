@@ -23,6 +23,9 @@ export default new Vuex.Store({
         
         createCargoRequest: null,
         cargoRequest: null,
+        
+        containerRequest: null,
+        createContainerRequest: null,
     },
     mutations: {
         setApiUrl: (state, payload) => {
@@ -38,7 +41,11 @@ export default new Vuex.Store({
 
         setCreateCargoRequest: (state, payload) => {state.createCargoRequest = payload},
         setCargoRequest: (state, payload) => {state.cargoRequest = payload},
-        setSelectedCargo: (state, payload) => {state.selectedCargo = payload}
+        setSelectedCargo: (state, payload) => {state.selectedCargo = payload},
+
+        setCreateContainerRequest: (state, payload) => {state.createContainerRequest = payload},
+        setContainerRequest: (state, payload) => {state.containerRequest = payload},
+        setSelectedContainer: (state, payload) => {state.selectedContainer = payload},
     },
     actions: {
         login: ({state}) => {
@@ -56,6 +63,10 @@ export default new Vuex.Store({
                     })
             })
         },
+        
+        //Add Users - Admin
+        
+        //Add User - User
         
         //Supplier
         requestSupplier: ({state}) => {
@@ -197,6 +208,32 @@ export default new Vuex.Store({
                     })
             })
         },
+        
+        //containers
+        createContainer: ({state}) => {
+            const payload = state.createContainerRequest
+
+            return new Promise((resolve, reject) => {
+                const callConfig = {
+                    method: 'post',
+                    url: state.baseUrl + '/Container/CreateContainer',
+                    headers: {
+                        'Authorization': 'Bearer '+ localStorage.getItem('jwt'),
+                        'Content-Type': 'application/json'
+                    },
+                    data: payload,
+                }
+
+                axios(callConfig)
+                    .then((response) => {
+                        resolve(response)
+                    })
+                    .catch(err => {
+                        console.log('CONTAINER SAVING ERROR', err)
+                        reject(err)
+                    })
+            })
+        }
     },
     modules: {},
 })
