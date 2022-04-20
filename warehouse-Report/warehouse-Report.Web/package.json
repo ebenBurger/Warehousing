@@ -38,6 +38,7 @@
     "postcss-loader": "^6.2.1",
     "sass-loader": "^10.1.1",
     "vue-template-compiler": "2.6.12",
+    "vue-toastification": "^1.7.14",
     "vuex": "^3.6.2"
   },
   "eslintConfig": {
