@@ -125,7 +125,7 @@
                             </b-col>
                             <b-col cols="4">
                                 <label>USD Rate</label>
-                                <b-form-input v-model="cargo.dollarRate" placeholder="Normal rate is at 0.55"></b-form-input>
+                                <b-form-input type="number" v-model="cargo.dollarRate" placeholder="Normal rate is at 0.55"></b-form-input>
                             </b-col>
                             <b-col cols="4">
                                 
@@ -219,7 +219,7 @@
             </b-row>
         </b-modal>
 
-        <div v-if="selectedCargo">
+        <div v-if="selectedCargo" >
             <b-modal id="cargoEdit" size="lg" hide-footer hide-header class="text-center" title="Edit Cargo Entry">
                 <b-row v-if="!isDeleteSelected">
                     <b-col>
@@ -896,7 +896,6 @@ export default {
             this.isLoading = true
             this.$bvModal.show('cargoEdit')
             this.$store.commit('setSelectedCargo', rowItem)
-            console.log("SELECTED CARGO", this.selectedCargo)
             this.isLoading = false
         },
         hideCargoEditModal() {
@@ -906,9 +905,49 @@ export default {
         },
         openCargoModal() {
             this.$bvModal.show('cargoAddModal')
+            
         },
         hideCargoModal() {
             this.$bvModal.hide('cargoAddModal')
+            this.cargo = {
+                supplier: null,
+                dateCollected: null,
+                orderNumber: null,
+                description: null,
+                quantity: null,
+                weight: null,
+                length: null,
+                width: null,
+                height: null,
+                //cargo ready place
+                //end date of free storage
+                atraxInvoiceNumber: null,
+                // atraxInvoiceDate: '',
+                // kg cbm conversion
+                //volume cbm
+                //volume metric
+                //chargeable weight
+
+                //number of storage days --- this needs to be calculated in UI 
+                //storage cost --- this needs to be calculated in UI
+                // storageInvoiceDate: null,
+                //current date ---- this needs to be populated in UI
+                // dollarRate: 0.0,
+                deliveryArea: null,
+                // dateOfCollection: '',
+                transporter: null,
+                transporterCost: null,
+                transportedInvoiceNumber: null,
+                // transporterInvoiceDate: null,
+                specialRequirements: null,
+                deleteReason: null,
+                billedToJkn: false,
+                commercialInvoiceReceived: false,
+                packingListReceived: false,
+                hazardous: false,
+                isComplete: false,
+                isActive: true,
+            }
         },
         getSupplierList() {
             this.requestSupplier()
@@ -976,12 +1015,12 @@ export default {
         },
     },
     computed: {
+        ...mapState([
+            "selectedCargo"
+        ]),
         rows() {
             return this.cargoTable.dataSource.length
         },
-        ...mapState([
-            "selectedCargo"
-        ])
     },
 }
 </script>
