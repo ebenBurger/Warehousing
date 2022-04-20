@@ -31,13 +31,13 @@ namespace WarehouseReport.Api.Models
         public DateTime? CurrentDate { get; set; }
         public double DollarRate { get; set; }
         
-        public string DeliveryArea { get; set; }
+        public string? DeliveryArea { get; set; }
         public DateTime? DateOfCollection { get; set; }
-        public string Transporter { get; set; }
-        public double TransporterCost { get; set; }
-        public string TransporterInvoiceNumber { get; set; }
+        public string? Transporter { get; set; }
+        public double? TransporterCost { get; set; }
+        public string? TransporterInvoiceNumber { get; set; }
         public DateTime? TransporterInvoiceDate { get; set; }
-        public string SpecialRequirements { get; set; }
+        public string? SpecialRequirements { get; set; }
 
         public string DeleteReason { get; set; }
         
