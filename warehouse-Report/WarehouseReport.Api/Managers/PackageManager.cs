@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +32,9 @@ namespace WarehouseReport.Api.Managers
         {
             try
             {
+                var data = _context.Cargo
+                    .Where(a => a.DateCreated == DateTime.MaxValue)
+                    .Include(b => b.CargoId);
                 var volume = (packageModel.Length * packageModel.Width * packageModel.Height);
                 packageModel.DateCreated = Convert.ToDateTime(DateTime.Now.ToLocalTime()
                 .ToString(System.Globalization.CultureInfo.InvariantCulture));

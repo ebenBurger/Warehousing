@@ -35,8 +35,8 @@ namespace WarehouseReport.Api.Managers
         try
         {
             // var volume = (cargoModel.Length * cargoModel.Width * cargoModel.Height);
-            // cargoModel.DateCreated = Convert.ToDateTime(DateTime.Now.ToLocalTime()
-            //     .ToString(System.Globalization.CultureInfo.InvariantCulture));
+            cargoModel.DateCreated = Convert.ToDateTime(DateTime.Now.ToLocalTime()
+            .ToString(System.Globalization.CultureInfo.InvariantCulture));
             // cargoModel.DateCreated = cargoModel.DateCreated;
             cargoModel.EndDateOfFreeStorage = cargoModel.DateCollected.AddDays(7);
             cargoModel.CargoReadyPlace = "Atrax";
