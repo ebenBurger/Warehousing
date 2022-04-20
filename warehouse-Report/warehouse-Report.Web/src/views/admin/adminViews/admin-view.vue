@@ -1,7 +1,7 @@
 <template>
     <div>
         <Loader v-if="isEnter"></Loader>
-        <b-row>
+        <b-row v-if="!isEnter">
             <b-col>
                 <b-card>
                     <b-row>
@@ -879,7 +879,7 @@ export default {
     mounted() {
         setTimeout(() => {
             this.isEnter = false
-        }, 2500)
+        }, 0)
     },
     beforeUpdate() {
     },
