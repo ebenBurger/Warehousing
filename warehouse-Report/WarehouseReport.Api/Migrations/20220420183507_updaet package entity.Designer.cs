@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WarehouseReport.Api.Models;
 
 namespace WarehouseReport.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220420183507_updaet package entity")]
+    partial class updaetpackageentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -413,14 +415,17 @@ namespace WarehouseReport.Api.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CargoId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("CargoModelCargoId")
                         .HasColumnType("int");
 
                     b.Property<double>("ChargeableWeight")
                         .HasColumnType("float");
+
+                    b.Property<int>("ContainerId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ContainerModelContainerId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
@@ -430,9 +435,6 @@ namespace WarehouseReport.Api.Migrations
 
                     b.Property<double>("Height")
                         .HasColumnType("float");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
 
                     b.Property<double>("KgCBMConversion")
                         .HasColumnType("float");
@@ -458,6 +460,8 @@ namespace WarehouseReport.Api.Migrations
                     b.HasKey("PackageId");
 
                     b.HasIndex("CargoModelCargoId");
+
+                    b.HasIndex("ContainerModelContainerId");
 
                     b.ToTable("Package");
                 });
@@ -524,11 +528,15 @@ namespace WarehouseReport.Api.Migrations
 
             modelBuilder.Entity("WarehouseReport.Api.Models.PackageModel", b =>
                 {
-                    b.HasOne("WarehouseReport.Api.Models.CargoModel", "CargoModel")
+                    b.HasOne("WarehouseReport.Api.Models.CargoModel", null)
                         .WithMany("PackageModels")
                         .HasForeignKey("CargoModelCargoId");
 
-                    b.Navigation("CargoModel");
+                    b.HasOne("WarehouseReport.Api.Models.ContainerModel", "ContainerModel")
+                        .WithMany()
+                        .HasForeignKey("ContainerModelContainerId");
+
+                    b.Navigation("ContainerModel");
                 });
 
             modelBuilder.Entity("WarehouseReport.Api.Models.CargoModel", b =>

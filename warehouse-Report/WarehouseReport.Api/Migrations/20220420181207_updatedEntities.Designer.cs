@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WarehouseReport.Api.Models;
 
 namespace WarehouseReport.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220420181207_updatedEntities")]
+    partial class updatedEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -406,62 +408,6 @@ namespace WarehouseReport.Api.Migrations
                     b.ToTable("Container");
                 });
 
-            modelBuilder.Entity("WarehouseReport.Api.Models.PackageModel", b =>
-                {
-                    b.Property<int>("PackageId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("CargoId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CargoModelCargoId")
-                        .HasColumnType("int");
-
-                    b.Property<double>("ChargeableWeight")
-                        .HasColumnType("float");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Height")
-                        .HasColumnType("float");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<double>("KgCBMConversion")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Length")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Quantity")
-                        .HasColumnType("float");
-
-                    b.Property<double>("VolumeCbm")
-                        .HasColumnType("float");
-
-                    b.Property<double>("VolumeMetric")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Weight")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Width")
-                        .HasColumnType("float");
-
-                    b.HasKey("PackageId");
-
-                    b.HasIndex("CargoModelCargoId");
-
-                    b.ToTable("Package");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -520,20 +466,6 @@ namespace WarehouseReport.Api.Migrations
                         .HasForeignKey("ContainerModelContainerId");
 
                     b.Navigation("ContainerModel");
-                });
-
-            modelBuilder.Entity("WarehouseReport.Api.Models.PackageModel", b =>
-                {
-                    b.HasOne("WarehouseReport.Api.Models.CargoModel", "CargoModel")
-                        .WithMany("PackageModels")
-                        .HasForeignKey("CargoModelCargoId");
-
-                    b.Navigation("CargoModel");
-                });
-
-            modelBuilder.Entity("WarehouseReport.Api.Models.CargoModel", b =>
-                {
-                    b.Navigation("PackageModels");
                 });
 
             modelBuilder.Entity("WarehouseReport.Api.Models.ContainerModel", b =>
