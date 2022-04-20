@@ -52,7 +52,7 @@ Vue.filter('dateTimeFilter', function (value) {
 Vue.filter('dateFilter', function (value) {
     if (!value) return ''
     let localeValue = new Date(value)
-    let response = localeValue.toLocaleDateString('en-ZA')
+    let response = localeValue.toLocaleDateString()
     return response
 })
 
