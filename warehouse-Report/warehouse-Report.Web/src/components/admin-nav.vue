@@ -49,7 +49,7 @@
                    shadow>
             <template #default="{ hide }">
                 <div class="p-3">
-                    <h4 id="sidebar-no-header-title">Choose the page to edit</h4>
+                    <h4 id="sidebar-no-header-title">Admin Selections</h4>
                     <nav class="mb-3">
                         <b-nav vertical>
                             <b-nav-item to="/clientAdd">
