@@ -26,6 +26,8 @@ export default new Vuex.Store({
         
         containerRequest: null,
         createContainerRequest: null,
+        
+        createPackageRequest: null,
     },
     mutations: {
         setApiUrl: (state, payload) => {
@@ -46,6 +48,8 @@ export default new Vuex.Store({
         setCreateContainerRequest: (state, payload) => {state.createContainerRequest = payload},
         setContainerRequest: (state, payload) => {state.containerRequest = payload},
         setSelectedContainer: (state, payload) => {state.selectedContainer = payload},
+        
+        setCreatePackageRequest: (state, payload) => {state.createPackageRequest = payload}
     },
     actions: {
         login: ({state}) => {
@@ -217,6 +221,33 @@ export default new Vuex.Store({
             })
         },
         
+        //Package
+        createPackage: ({state}) => {
+            const payload = state.createPackageRequest
+
+            return new Promise((resolve, reject) => {
+                const callConfig = {
+                    method: 'post',
+                    url: state.baseUrl + '/Package/CreatePackage',
+                    headers: {
+                        'Authorization': 'Bearer '+ localStorage.getItem('jwt'),
+                        'Content-Type': 'application/json'
+                    },
+                    data: payload,
+                }
+
+                axios(callConfig)
+                    .then((response) => {
+                        resolve(response)
+                        Vue.$toast.success("Package was saved");
+                    })
+                    .catch(err => {
+                        reject(err)
+                        Vue.$toast.error("There was an error");
+                    })
+            })
+        },
+        
         //containers
         createContainer: ({state}) => {
             const payload = state.createContainerRequest
@@ -244,7 +275,6 @@ export default new Vuex.Store({
             })
         },
         requestContainer: ({state}) => {
-            console.log("CONTAINER STATE", state)
             return new Promise((resolve, reject) => {
                 const callConfig = {
                     method: 'get',
