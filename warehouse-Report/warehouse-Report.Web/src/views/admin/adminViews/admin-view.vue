@@ -46,23 +46,23 @@
                                     </b-row>
                                 </template>
 
-                                <template #cell(kgCBMConvertion)="row">
-                                    <b-row align-v="center">
-                                        <span class="mr-auto">{{row.item.kgCBMConvertion.toFixed(3)}}</span>
-                                    </b-row>
-                                </template>
+<!--                                <template #cell(kgCBMConvertion)="row">-->
+<!--                                    <b-row align-v="center">-->
+<!--                                        <span class="mr-auto">{{row.item.kgCBMConvertion.toFixed(3)}}</span>-->
+<!--                                    </b-row>-->
+<!--                                </template>-->
 
-                                <template #cell(volume)="row">
-                                    <b-row align-v="center">
-                                        <span class="mr-auto">{{row.item.volumeCbm.toFixed(3)}}</span>
-                                    </b-row>
-                                </template>
+<!--                                <template #cell(volume)="row">-->
+<!--                                    <b-row align-v="center">-->
+<!--                                        <span class="mr-auto">{{row.item.volumeCbm.toFixed(3)}}</span>-->
+<!--                                    </b-row>-->
+<!--                                </template>-->
 
-                                <template #cell(chargeableWeight)="row">
-                                    <b-row align-v="center">
-                                        <span class="mr-auto">{{row.item.chargeableWeight.toFixed(3)}}</span>
-                                    </b-row>
-                                </template>
+<!--                                <template #cell(chargeableWeight)="row">-->
+<!--                                    <b-row align-v="center">-->
+<!--                                        <span class="mr-auto">{{row.item.chargeableWeight.toFixed(3)}}</span>-->
+<!--                                    </b-row>-->
+<!--                                </template>-->
 
                                 <template #cell(storageCost)="row">
                                     <b-row align-v="center">
@@ -172,23 +172,23 @@
                         <b-row>
                             <b-col>
                                 <label>Quantity</label>
-                                <b-form-input type="number" v-model="cargo.quantity"></b-form-input>
+                                <b-form-input type="number" v-model="packageData.quantity"></b-form-input>
                             </b-col>
                             <b-col>
                                 <label>Weight (kg)</label>
-                                <b-form-input type="number" v-model="cargo.weight"></b-form-input>
+                                <b-form-input type="number" v-model="packageData.weight"></b-form-input>
                             </b-col>
                             <b-col>
                                 <label>Length</label>
-                                <b-form-input type="number" v-model="cargo.length"></b-form-input>
+                                <b-form-input type="number" v-model="packageData.length"></b-form-input>
                             </b-col>
                             <b-col>
                                 <label>Width</label>
-                                <b-form-input type="number" v-model="cargo.width"></b-form-input>
+                                <b-form-input type="number" v-model="packageData.width"></b-form-input>
                             </b-col>
                             <b-col>
                                 <label>Height</label>
-                                <b-form-input type="number" v-model="cargo.height"></b-form-input>
+                                <b-form-input type="number" v-model="packageData.height"></b-form-input>
                             </b-col>
                         </b-row>
                         <hr class="mx-3">
@@ -722,12 +722,7 @@ export default {
             supplier: null,
             dateCollected: null,
             orderNumber: null,
-            description: null,
-            quantity: null,
-            weight: null,
-            length: null,
-            width: null,
-            height: null,
+            
             atraxInvoiceNumber: null,
             //TODO
             //number of storage days --- this needs to be calculated in UI 
@@ -745,6 +740,14 @@ export default {
             hazardous: false,
             isComplete: false,
             isActive: true,
+        },
+        packageData: {
+            description: null,
+            quantity: null,
+            weight: null,
+            length: null,
+            width: null,
+            height: null,
         },
         cargoTable: {
             resultsPerPage: 10,
@@ -886,7 +889,7 @@ export default {
     updated() {
     },
     methods: {
-        ...mapActions(["requestSupplier", "createCargo", "requestCargo", "updateCargo", "requestContainer"]),
+        ...mapActions(["requestSupplier", "createCargo", "requestCargo", "updateCargo", "requestContainer", "createPackage"]),
         openCargoEntry(rowItem) {
             this.$bvModal.show('cargoEdit')
             this.$store.commit('setSelectedCargo', rowItem)
@@ -949,8 +952,7 @@ export default {
                 })
         },
         getCargoList() {
-            
-            // this.isLoading = true
+            this.cargoTable.isLoading = true
             this.requestCargo()
             .then(response => {
                 this.cargoTable.dataSource = response.data
@@ -967,9 +969,14 @@ export default {
             this.state = 'loading'
             this.createCargo()
                 .then(() => {
+                    this.savePackage()
                     this.$bvModal.hide('cargoAddModal')
                     this.getCargoList()
                 })
+        },
+        savePackage() {
+            this.$store.commit("setCreatePackageRequest", this.packageData)
+            this.createPackage()
         },
         cargoUpdate() {
             this.$store.commit('setSelectedCargo', this.selectedCargo)
