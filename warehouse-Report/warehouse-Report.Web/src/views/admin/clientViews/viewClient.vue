@@ -308,7 +308,7 @@ export default {
             this.$store.commit('setSelectedSupplier', this.selectedSupplier)
             this.updateSupplier()
                 .then(() => {
-                    this.$bvModal.hide('supplierEditModal')
+                    this.closeClient()
                     this.getSupplier()
                     this.toast('Supplier was successfully deleted','Success','success')
                 })
@@ -332,8 +332,9 @@ export default {
         },
     },
     computed: {
+        //TODO- fix the -- (Computed property "selectedCargo" was assigned to but it has no setter.)
         ...mapState([
-           "selectedSupplier" 
+            "selectedSupplier"
         ]),
         rows() {
             return this.supplierTable.dataSource.length
