@@ -11,9 +11,11 @@ namespace WarehouseReport.Api.Models
 
         }
 
-        public DbSet<ClientModel> Client { get; set; }
         public DbSet<CargoModel> Cargo { get; set; }
+        public DbSet<ClientModel> Client { get; set; }
         public DbSet<ContainerModel> Container { get; set; }
+
+        public DbSet<PackageModel> Package { get; set; }
 
         //Updated dbSet object
         // public DbSet<ToDoItemModel> ToDoItems { get; set; }

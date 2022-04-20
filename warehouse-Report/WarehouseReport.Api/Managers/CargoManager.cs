@@ -34,17 +34,17 @@ namespace WarehouseReport.Api.Managers
     {
         try
         {
-            var volume = (cargoModel.Length * cargoModel.Width * cargoModel.Height);
-            cargoModel.DateCreated = Convert.ToDateTime(DateTime.Now.ToLocalTime()
-                .ToString(System.Globalization.CultureInfo.InvariantCulture));
-            cargoModel.DateCreated = cargoModel.DateCreated;
+            // var volume = (cargoModel.Length * cargoModel.Width * cargoModel.Height);
+            // cargoModel.DateCreated = Convert.ToDateTime(DateTime.Now.ToLocalTime()
+            //     .ToString(System.Globalization.CultureInfo.InvariantCulture));
+            // cargoModel.DateCreated = cargoModel.DateCreated;
             cargoModel.EndDateOfFreeStorage = cargoModel.DateCollected.AddDays(7);
             cargoModel.CargoReadyPlace = "Atrax";
-            cargoModel.KgCBMConversion = cargoModel.Weight / 1000;
-            cargoModel.VolumeCbm = (volume / 1000000) *
-                                cargoModel.Quantity;
-            cargoModel.ChargeableWeight = Math.Max(cargoModel.VolumeCbm, cargoModel.KgCBMConversion);
-            cargoModel.VolumeMetric = volume / 6000;
+            // cargoModel.KgCBMConversion = cargoModel.Weight / 1000;
+            // cargoModel.VolumeCbm = (volume / 1000000) *
+            //                     cargoModel.Quantity;
+            // cargoModel.ChargeableWeight = Math.Max(cargoModel.VolumeCbm, cargoModel.KgCBMConversion);
+            // cargoModel.VolumeMetric = volume / 6000;
             if (cargoModel.DollarRate == 0)
             {
                 cargoModel.DollarRate = 0.55;

@@ -1,9 +1,13 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace WarehouseReport.Api.Models
 {
-    public class package
+    public class PackageModel
     {
+        [Key]
+        public int PackageId { get; set; }
         public double Weight { get; set; }
         public double Length { get; set; }
         public double Width { get; set; }
@@ -14,8 +18,11 @@ namespace WarehouseReport.Api.Models
         public double VolumeCbm { get; set; }
         public double VolumeMetric { get; set; }
         public double ChargeableWeight { get; set; }
-        
+        public bool IsActive { get; set; }
         
         public DateTime DateCreated { get; set; }
+
+        public int  CargoId { get; set; }
+        public CargoModel CargoModel { get; set; }
     }
 }
