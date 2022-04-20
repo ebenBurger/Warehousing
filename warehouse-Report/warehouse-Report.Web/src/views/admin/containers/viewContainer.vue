@@ -21,6 +21,16 @@
                             <h4 class="m-0">Available Containers</h4>
                         </b-col>
                     </b-row>
+                    <b-row>
+                        <b-col class="d-flex w-100 h-100">
+                            <b-card class="containerItem" v-for="(container) in availableContainers" :key="container.containerId">
+                                <p>
+                                    {{container.containerName}}
+                                </p>
+
+                            </b-card>
+                        </b-col>
+                    </b-row>
                 </b-card>
             </b-col>
         </b-row>
@@ -74,6 +84,7 @@ export default {
     },
     methods: {
         ...mapActions(["createContainer", "requestContainer"]),
+        
         openContainerModal() {
             this.$bvModal.show('containerAddModal')
         },
@@ -87,6 +98,7 @@ export default {
             .then(() => {
                 this.toast('Container successfully created','Success','success')
                 this.hideContainerModal()
+                this.getContainers()
             })
             .catch(() => {
                 this.toast('There was an error- creating your container, Please try again','Bad News','danger')
@@ -96,14 +108,14 @@ export default {
         getContainers() {
             this.requestContainer()
             .then((response) => {
-                this.availableContainers = response.data 
-                console.log("CONTAINERS", this.response.data)
+                this.availableContainers = response.data
                 console.log("CONTAINERS AVAIL", this.availableContainers)
             })
-            .catch(() => {
+            .catch((err) => {
                 // this.$router.push({path: '/'})
                 // localStorage.removeItem('jwt')
                 // localStorage.removeItem('user')
+                console.log('ERROR', err)
             })
         },
         toast(message, title, variant) {
@@ -121,5 +133,20 @@ export default {
 </script>
 
 <style scoped>
+.containerItem {
+    background: red;
+    margin: 1rem;
+    width: 10rem;
+    height: 10rem;
+    cursor: pointer;
+    position: relative;
+}
 
+.containerItem p {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
 </style>
