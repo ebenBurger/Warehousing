@@ -164,7 +164,7 @@ export default {
             this.state = 'loading'
             this.createSupplier()
             .then(() => {
-                this.$router.push({path: '/admin-home'})
+                this.$router.push({path: '/clientView'})
             })
             .catch(() => {
             })

@@ -87,16 +87,10 @@ export default {
                 if (response.data.role[0] === "Admin") {
                     this.$router.push({path: '/admin-home'})
                 }
-                
             })
             .catch(() => {
                 console.log('USer not logged in')
                 this.isLoading = false
-                this.$bvToast.toast('Username or Password incorrect', {
-                    variant: 'danger',
-                    solid: true,
-                    autoHideDelay: 5000,
-                })
             })
         },
     },

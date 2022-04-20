@@ -296,11 +296,7 @@ export default {
             this.$store.commit('setSelectedSupplier', this.selectedSupplier)
             this.updateSupplier()
             .then(() => {
-                this.toast('Supplier Updated Successfully','Job WELL DONE!', 'success')
                 this.$bvModal.hide('supplierEditModal')
-            })
-            .catch(() => {
-                this.toast('Something Happened, You are going to have toi redo all that work again.!', 'OOPS !', 'danger')
             })
         },
         deleteClient() {
@@ -310,25 +306,11 @@ export default {
                 .then(() => {
                     this.closeClient()
                     this.getSupplier()
-                    this.toast('Supplier was successfully deleted','Success','success')
                 })
-            .catch(() => {
-                this.toast('This action was not completed successfully','Bad News','danger')
-            })
         },
         
         toggleDelete() {
             this.isDeleteSelected = !this.isDeleteSelected
-        },
-        
-        toast(message, title, variant) {
-            this.$bvToast.toast(message, {
-                title: title,
-                variant: variant,
-                toaster: 'b-toaster-top-center',
-                solid: true,
-                autoHideDelay: 5000,
-            })
         },
     },
     computed: {

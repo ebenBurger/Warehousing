@@ -38,9 +38,11 @@
     <Content Include="src\assets\login-img.jpg" />
     <Content Include="src\components\admin-nav.vue" />
     <Content Include="src\components\client-nav.vue" />
+    <Content Include="src\components\loader.vue" />
     <Content Include="src\router\index.js" />
     <Content Include="src\store\index.js" />
     <Content Include="src\style.scss" />
+    <Content Include="src\user\userViews\user-view.vue" />
     <Content Include="src\views\admin\adminViews\admin-view.vue" />
     <Content Include="src\views\admin\clientViews\createClient.vue" />
     <Content Include="src\views\admin\clientViews\viewClient.vue" />
@@ -65,7 +67,6 @@
     <Folder Include="src\views\admin\containers\" />
     <Folder Include="src\views\admin\user\" />
     <Folder Include="src\views\layouts\" />
-    <Folder Include="src\views\user" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="babel.config.js" />

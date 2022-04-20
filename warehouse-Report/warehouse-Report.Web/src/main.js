@@ -4,6 +4,7 @@ import VueRouter from "vue-router";
 import ToggleButton from 'vue-js-toggle-button'
 import router from './router'
 import store from "@/store";
+import Toast from "vue-toastification";
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {
@@ -18,6 +19,7 @@ import {
 
 import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 
+import "vue-toastification/dist/index.css";
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import './style.scss'
@@ -25,10 +27,21 @@ import './style.scss'
 
 Vue.config.productionTip = true;
 
+const options = {
+    icon: true,
+    position: 'top-center',
+    draggable: true,
+    pauseOnFocusLoss: true,
+    pauseOnHover: false,
+    timeout: 4000,
+    newestOnTop: true
+}
+
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(VueRouter)
 Vue.use(ToggleButton)
+Vue.use(Toast, options);
 
 Vue.filter('dateTimeFilter', function (value) {
     if (!value) return ''
@@ -39,7 +52,7 @@ Vue.filter('dateTimeFilter', function (value) {
 Vue.filter('dateFilter', function (value) {
     if (!value) return ''
     let localeValue = new Date(value)
-    let response = localeValue.toLocaleDateString()
+    let response = localeValue.toLocaleDateString('en-ZA')
     return response
 })
 

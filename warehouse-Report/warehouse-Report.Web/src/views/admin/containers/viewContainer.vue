@@ -109,12 +109,11 @@ export default {
             this.requestContainer()
             .then((response) => {
                 this.availableContainers = response.data
-                console.log("CONTAINERS AVAIL", this.availableContainers)
             })
             .catch((err) => {
-                // this.$router.push({path: '/'})
-                // localStorage.removeItem('jwt')
-                // localStorage.removeItem('user')
+                this.$router.push({path: '/'})
+                localStorage.removeItem('jwt')
+                localStorage.removeItem('user')
                 console.log('ERROR', err)
             })
         },

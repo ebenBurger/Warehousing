@@ -56,10 +56,12 @@ export default new Vuex.Store({
                         localStorage.setItem('jwt', response.data.token)
                         localStorage.setItem('role', response.data.role[0])
                         resolve(response)
+                        Vue.$toast("Welcome to the Portal");
                     })
                     .catch((err) => {
                         reject()
                         console.log("ERROR", err)
+                        Vue.$toast.error("Oops!!! try that again, seems like your username or password was incorrect there");
                     })
             })
         },
@@ -105,11 +107,13 @@ export default new Vuex.Store({
                 
                 axios(callConfig)
                     .then((response) => {
-                      resolve(response)  
+                      resolve(response)
+                      Vue.$toast.success("Lets welcome to the new guy");
                     })
                     .catch(err => {
                         console.log('CLIENT SAVING ERROR', err)
                         reject(err)
+                        Vue.$toast.error("There was an error");
                     })
             })
         },
@@ -130,9 +134,11 @@ export default new Vuex.Store({
                 axios(callConfig)
                     .then(response => {
                         resolve(response)
+                        Vue.$toast.success("Well, that was smooth, all good from this side");
                     })
                     .catch(err => {
                         reject(err)
+                        Vue.$toast.error("There was an error");
                     })
             })
         },
@@ -155,10 +161,11 @@ export default new Vuex.Store({
                 axios(callConfig)
                     .then((response) => {
                         resolve(response)
+                        Vue.$toast.success("Cargo captured and ready for packaging");
                     })
                     .catch(err => {
-                        console.log('CARGO SAVING ERROR', err)
                         reject(err)
+                        Vue.$toast.error("There was an error");
                     })
             })
         },
@@ -201,9 +208,11 @@ export default new Vuex.Store({
                 axios(callConfig)
                     .then(response => {
                         resolve(response)
+                        Vue.$toast.success("Cargo Updated");
                     })
                     .catch(err => {
                         reject(err)
+                        Vue.$toast.error("There was an error");
                     })
             })
         },
@@ -226,10 +235,11 @@ export default new Vuex.Store({
                 axios(callConfig)
                     .then((response) => {
                         resolve(response)
+                        Vue.$toast.success("Container Created");
                     })
                     .catch(err => {
-                        console.log('CONTAINER SAVING ERROR', err)
                         reject(err)
+                        Vue.$toast.error("There was an error");
                     })
             })
         },
@@ -248,11 +258,10 @@ export default new Vuex.Store({
                     .then(response => {
                         state.containerRequest = response.data
                         resolve(response)
-                        console.log("Container LIST", response.data)
                     })
                     .catch(err => {
                         reject(err)
-                        console.log("CLIENT REQUEST ERROR", err)
+                        console.log("CONTAINER REQUEST ERROR", err)
                     })
             })
         },
