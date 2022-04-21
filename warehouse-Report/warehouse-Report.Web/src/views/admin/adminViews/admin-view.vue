@@ -95,7 +95,7 @@
             </b-col>
         </b-row>
         <b-modal  id="cargoAddModal" size="xl" hide-footer hide-header-close class="text-center" title="Add Cargo">
-            <b-row class="align-items-center m-0 ">
+            <b-row v-if="!isCargoCreated" class="align-items-center m-0 ">
                 <b-col class="d-flex justify-content-center">
                     <B-form class="w-100">
                         <b-row>
@@ -129,8 +129,6 @@
                                 <b-form-input type="number" v-model="cargo.dollarRate" placeholder="Normal rate is at 0.55"></b-form-input>
                             </b-col>
                             <b-col cols="4">
-
-
                             </b-col>
                         </b-row>
                         <b-row>
@@ -163,34 +161,7 @@
                                                :labels="{checked: 'Yes'}"/>
                             </b-col>
                         </b-row>
-                        <hr class="mx-3">
-                        <b-row>
-                            <b-col>
-                                <label class="text-primary font-weight-bold mb-4">Parcel Details</label>
-                            </b-col>
-                        </b-row>
-                        <b-row>
-                            <b-col>
-                                <label>Quantity</label>
-                                <b-form-input type="number" v-model="packageData.quantity"></b-form-input>
-                            </b-col>
-                            <b-col>
-                                <label>Weight (kg)</label>
-                                <b-form-input type="number" v-model="packageData.weight"></b-form-input>
-                            </b-col>
-                            <b-col>
-                                <label>Length</label>
-                                <b-form-input type="number" v-model="packageData.length"></b-form-input>
-                            </b-col>
-                            <b-col>
-                                <label>Width</label>
-                                <b-form-input type="number" v-model="packageData.width"></b-form-input>
-                            </b-col>
-                            <b-col>
-                                <label>Height</label>
-                                <b-form-input type="number" v-model="packageData.height"></b-form-input>
-                            </b-col>
-                        </b-row>
+                        
                         <hr class="mx-3">
                         <b-row>
                             <b-col>
@@ -210,13 +181,101 @@
                                         <b-button variant="outline-red" squared @click="hideCargoModal" class="ml-2">Cancel</b-button>
                                     </div>
                                     <div>
-                                        <b-button variant="primary" squared @click="save" class="ml-2">Save</b-button>
+                                        <b-button variant="primary" squared @click="saveCargo" class="ml-2">Save</b-button>
                                     </div>
                                 </div>
                             </b-col>
                         </b-row>
                     </B-form>
                 </b-col>
+            </b-row>
+            <b-row v-if="isCargoCreated" class="align-items-center m-0 ">
+                <div v-if="!packageList" >
+                    <b-col class="d-flex justify-content-center">
+                        <b-form class="w-100">
+                            <b-row>
+                                <b-col>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <label class="text-primary font-weight-bold mb-4">Package Details</label>
+                                        <b-button variant="primary" squared @click="addPackage">
+                                            <font-awesome-icon icon="fa-plus" >Cargo</font-awesome-icon>
+                                        </b-button>
+                                    </div>
+                                </b-col>
+                            </b-row>
+                            <b-row>
+                                <label v-if="packageAdd.length <=1"> You hav {{packageAdd.length}} item on the packing list.</label>
+                                <label v-if="packageAdd.length >=2"> You hav {{packageAdd.length}} items on the packing list.</label>
+                            </b-row>
+                            <b-row>
+                                <b-col>
+                                    <label class="text-primary font-weight-bold mb-4">Package Details</label>
+                                </b-col>
+                            </b-row>
+                            <b-row>
+                                <b-col>
+                                    <label>Description</label>
+                                    <b-form-input v-model="packageData.description"></b-form-input>
+                                </b-col>
+                                <b-col>
+                                    <label>Quantity</label>
+                                    <b-form-input type="number" v-model="packageData.quantity"></b-form-input>
+                                </b-col>
+                                <b-col>
+                                    <label>Weight (kg)</label>
+                                    <b-form-input type="number" v-model="packageData.weight"></b-form-input>
+                                </b-col>
+                                <b-col>
+                                    <label>Length</label>
+                                    <b-form-input type="number" v-model="packageData.length"></b-form-input>
+                                </b-col>
+                                <b-col>
+                                    <label>Width</label>
+                                    <b-form-input type="number" v-model="packageData.width"></b-form-input>
+                                </b-col>
+                                <b-col>
+                                    <label>Height</label>
+                                    <b-form-input type="number" v-model="packageData.height"></b-form-input>
+                                </b-col>
+                            </b-row>
+                            <hr class="mx-3">
+                            <b-row>
+                                <b-table striped hover :items="packageAdd"></b-table>
+                            </b-row>
+                            <hr class="mx-3">
+                            <b-row>
+                                <b-col>
+                                    <div class="d-flex justify-content-end">
+                                        <div>
+                                            <b-button variant="outline-red" squared @click="hideCargoModal" class="ml-2">Cancel</b-button>
+                                        </div>
+                                        <div>
+                                            <b-button variant="primary" squared @click="confirmPackageList" class="ml-2">Save</b-button>
+                                        </div>
+                                    </div>
+                                </b-col>
+                            </b-row>
+                        </b-form>
+                    </b-col>
+                </div>
+                <div class="w-100" v-if="packageList">
+                   <b-col>
+                       <p>Have you added all the packages to this cargo?</p>
+                   </b-col>
+                   <hr class="mx-3">
+                   <b-row>
+                       <b-col>
+                           <div class="d-flex justify-content-end">
+                               <div>
+                                   <b-button variant="outline-red" squared @click="hideCargoModal" class="ml-2">Cancel</b-button>
+                               </div>
+                               <div>
+                                   <b-button variant="primary" squared @click="savePackage" class="ml-2">Save Package</b-button>
+                               </div>
+                           </div>
+                       </b-col>
+                   </b-row>
+               </div>
             </b-row>
         </b-modal>
 
@@ -870,6 +929,9 @@ export default {
         selectedCargoItem: {},
         isEnter: true,
         containerList: [],
+        isCargoCreated: false,
+        packageAdd: [],
+        packageList: false
     }),
     beforeCreate() {
     },
@@ -964,19 +1026,48 @@ export default {
                 localStorage.removeItem('user')
             })
         },
-        save() {
+        saveCargo() {
             this.$store.commit('setCreateCargoRequest', this.cargo)
             this.state = 'loading'
             this.createCargo()
                 .then(() => {
-                    this.savePackage()
-                    this.$bvModal.hide('cargoAddModal')
-                    this.getCargoList()
+                    this.requestCargo()
+                        .then((response) => {
+                            this.isCargoCreated = true
+                            console.log("CARGO CREATE REQUEST", response.data)
+                        })
+                    // this.$bvModal.hide('cargoAddModal')
+                    
                 })
         },
         savePackage() {
-            this.$store.commit("setCreatePackageRequest", this.packageData)
-            this.createPackage()
+            //TODO- loop through the array and add to the db
+            this.packageAdd.forEach((item) => {
+                this.$store.commit("setCreatePackageRequest", item)
+                this.createPackage()
+                console.log('ARRAY', item)
+            })
+           
+        },
+        addPackage() {
+            const parcel = {}
+            parcel.description = this.packageData.description
+            parcel.quantity = this.packageData.quantity
+            parcel.weight = this.packageData.weight
+            parcel.length = this.packageData.length
+            parcel.width = this.packageData.width
+            parcel.height = this.packageData.height
+            this.packageAdd.push(parcel)
+            
+            this.packageData.description = null
+            this.packageData.quantity = null
+            this.packageData.weight = null
+            this.packageData.length = null
+            this.packageData.width = null
+            this.packageData.height = null
+        },
+        confirmPackageList() {
+            this.packageList = true
         },
         cargoUpdate() {
             this.$store.commit('setSelectedCargo', this.selectedCargo)
