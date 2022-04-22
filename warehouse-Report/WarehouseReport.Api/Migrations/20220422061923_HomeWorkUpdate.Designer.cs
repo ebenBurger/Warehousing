@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WarehouseReport.Api.Models;
 
 namespace WarehouseReport.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220422061923_HomeWorkUpdate")]
+    partial class HomeWorkUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -416,6 +418,9 @@ namespace WarehouseReport.Api.Migrations
                     b.Property<int>("CargoId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("CargoModelCargoId")
+                        .HasColumnType("int");
+
                     b.Property<double>("ChargeableWeight")
                         .HasColumnType("float");
 
@@ -454,7 +459,7 @@ namespace WarehouseReport.Api.Migrations
 
                     b.HasKey("PackageId");
 
-                    b.HasIndex("CargoId");
+                    b.HasIndex("CargoModelCargoId");
 
                     b.ToTable("Package");
                 });
@@ -512,20 +517,20 @@ namespace WarehouseReport.Api.Migrations
 
             modelBuilder.Entity("WarehouseReport.Api.Models.CargoModel", b =>
                 {
-                    b.HasOne("WarehouseReport.Api.Models.ContainerModel", null)
+                    b.HasOne("WarehouseReport.Api.Models.ContainerModel", "ContainerModel")
                         .WithMany("CargoModels")
                         .HasForeignKey("ContainerModelContainerId");
+
+                    b.Navigation("ContainerModel");
                 });
 
             modelBuilder.Entity("WarehouseReport.Api.Models.PackageModel", b =>
                 {
-                    b.HasOne("WarehouseReport.Api.Models.CargoModel", "Cargo")
+                    b.HasOne("WarehouseReport.Api.Models.CargoModel", "CargoModel")
                         .WithMany("PackageModels")
-                        .HasForeignKey("CargoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CargoModelCargoId");
 
-                    b.Navigation("Cargo");
+                    b.Navigation("CargoModel");
                 });
 
             modelBuilder.Entity("WarehouseReport.Api.Models.CargoModel", b =>
