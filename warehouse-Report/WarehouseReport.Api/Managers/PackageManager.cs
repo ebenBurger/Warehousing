@@ -22,7 +22,7 @@ namespace WarehouseReport.Api.Managers
         {
             var data = _context.Package
                 .Where(a => a.IsActive == true)
-                .Include(b => b.CargoModel)
+                .Include(b => b.Cargo)
                 .ToList();
 
             return data;
@@ -32,13 +32,10 @@ namespace WarehouseReport.Api.Managers
         {
             try
             {
-                var data = _context.Cargo
-                    .Where(a => a.DateCreated == DateTime.MaxValue)
-                    .Include(b => b.CargoId);
+                
                 var volume = (packageModel.Length * packageModel.Width * packageModel.Height);
                 packageModel.DateCreated = Convert.ToDateTime(DateTime.Now.ToLocalTime()
                 .ToString(System.Globalization.CultureInfo.InvariantCulture));
-                packageModel.DateCreated = packageModel.DateCreated;
                 packageModel.KgCBMConversion = packageModel.Weight / 1000;
                 packageModel.VolumeCbm = (volume / 1000000) *
                 packageModel.Quantity;
@@ -54,7 +51,7 @@ namespace WarehouseReport.Api.Managers
             }
 
             await _context.SaveChangesAsync();
-            return packageModel.CargoId;
+            return packageModel.PackageId;
         }
 
         public async Task<PackageModel> UpdatePackage(PackageModel packageModel)

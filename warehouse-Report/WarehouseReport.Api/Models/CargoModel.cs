@@ -43,8 +43,6 @@ namespace WarehouseReport.Api.Models
         public bool Hazardous { get; set; }
         public bool IsComplete { get; set; }
         public bool IsActive { get; set; }
-
-        public ContainerModel ContainerModel { get; set; }
         
         public ICollection<PackageModel> PackageModels { get; set; }
     }

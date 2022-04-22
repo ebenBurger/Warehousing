@@ -60,6 +60,8 @@
     <Folder Include="src\components\" />
     <Folder Include="src\router\" />
     <Folder Include="src\store\" />
+    <Folder Include="src\user\" />
+    <Folder Include="src\user\userViews\" />
     <Folder Include="src\views\" />
     <Folder Include="src\views\admin\" />
     <Folder Include="src\views\admin\adminViews\" />

@@ -22,7 +22,7 @@ namespace WarehouseReport.Api.Models
         
         public DateTime DateCreated { get; set; }
 
-        public int  CargoId { get; set; }
-        public CargoModel CargoModel { get; set; }
+        public int CargoId { get; set; }
+        public CargoModel Cargo { get; set; }
     }
 }

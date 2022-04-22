@@ -76,6 +76,6 @@ namespace WarehouseReport.Api.Controllers
                 return Problem(e.Message);
             }
         }
-        
+
     }
 }
