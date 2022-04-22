@@ -13,6 +13,7 @@ export default new Vuex.Store({
         //selected Item
         selectedSupplier: null,
         selectedCargo: null,
+        selectedPackage: null,
         
         
         //request objects
@@ -49,7 +50,8 @@ export default new Vuex.Store({
         setContainerRequest: (state, payload) => {state.containerRequest = payload},
         setSelectedContainer: (state, payload) => {state.selectedContainer = payload},
         
-        setCreatePackageRequest: (state, payload) => {state.createPackageRequest = payload}
+        setCreatePackageRequest: (state, payload) => {state.createPackageRequest = payload},
+        setSelectedPackage: (state, payload) => {state.selectedPackage = payload},
     },
     actions: {
         login: ({state}) => {
@@ -240,6 +242,31 @@ export default new Vuex.Store({
                     .then((response) => {
                         resolve(response)
                         Vue.$toast.success("Package was saved");
+                    })
+                    .catch(err => {
+                        reject(err)
+                        Vue.$toast.error("There was an error");
+                    })
+            })
+        },
+        updatePackage: ({state}) => {
+            const payload = state.selectedPackage
+
+            return new Promise((resolve, reject) => {
+                const callConfig = {
+                    method: 'post',
+                    url: state.baseUrl + '/Package/UpdatePackage',
+                    headers: {
+                        'Authorization': 'Bearer '+ localStorage.getItem('jwt'),
+                        'Content-Type': 'application/json'
+                    },
+                    data: payload,
+                }
+
+                axios(callConfig)
+                    .then(response => {
+                        resolve(response)
+                        Vue.$toast.success("Package Updated");
                     })
                     .catch(err => {
                         reject(err)
