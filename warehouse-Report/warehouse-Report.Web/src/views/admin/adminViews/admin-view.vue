@@ -259,15 +259,23 @@
                     </b-col>
                 </div>
                 <div class="w-100" v-if="packageList">
-                   <b-col>
-                       <p>Have you added all the packages to this cargo?</p>
-                   </b-col>
+                   <b-row>
+                       <b-col>
+                           <p>Have you added all the packages to this cargo?</p>
+                       </b-col>
+                       <b-col v-if="packageAdd.length <= 1">
+                           You single Item on the packing list 
+                       </b-col>
+                       <b-col v-if="packageAdd.length >= 2">
+                           You have a total of {{packageAdd.length}} Items
+                       </b-col>
+                   </b-row>
                    <hr class="mx-3">
                    <b-row>
                        <b-col>
                            <div class="d-flex justify-content-end">
                                <div>
-                                   <b-button variant="outline-red" squared @click="hideCargoModal" class="ml-2">Cancel</b-button>
+                                   <b-button variant="outline-red" squared @click="packageList ? packageList : packageList" class="ml-2">Cancel</b-button>
                                </div>
                                <div>
                                    <b-button variant="primary" squared @click="savePackage" class="ml-2">Save Package</b-button>
@@ -290,7 +298,7 @@
                                         <b-col>
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <label class="text-primary font-weight-bold mb-4">Cargo Overview</label>
-                                                <b-button variant="outline-red" squared @click="toggleDelete" size="sm">Delete</b-button>
+                                                <b-button variant="outline-red" squared @click="toggleDeleteCargo" size="sm">Delete</b-button>
                                             </div>
                                         </b-col>
                                     </b-row>
@@ -311,12 +319,12 @@
                                     </b-row>
                                     <b-row>
                                         <b-col cols="4">
-                                            <label>Atrax Invoice Number</label>
-                                            <b-form-input v-model="selectedCargo.atraxInvoiceNumber" />
+                                            <label>Supplier Invoice Number</label>
+                                            <b-form-input v-model="selectedCargo.supplierInvoiceNumber" />
                                         </b-col>
                                         <b-col cols="5">
-                                            <label>Atrax Invoice Date</label>
-                                            <b-form-datepicker v-model="selectedCargo.atraxInvoiceDate"></b-form-datepicker>
+                                            <label>Supplier Invoice Date</label>
+                                            <b-form-datepicker v-model="selectedCargo.supplierInvoiceDate"></b-form-datepicker>
                                         </b-col>
                                     </b-row>
                                     <b-row>
@@ -403,80 +411,114 @@
                                 </b-form>
                             </b-tab >
                             <b-tab title="Cargo Details" title-item-class="tabItem">
-                                <b-form class="w-100">
-                                    <b-row>
-                                        <b-col>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <label class="text-primary font-weight-bold mb-4">Cargo Details</label>
-                                                <b-button variant="outline-red" squared @click="toggleDelete" size="sm">Delete</b-button>
-                                            </div>
-                                        </b-col>
-                                    </b-row>
-                                    <b-row class="m-0 colStyle">
-                                        <b-col>
-                                            <label class="text-center font-weight-bold">Quantity:</label>
-                                            <h3 class="text-center">{{selectedCargo.quantity}}</h3>
-                                        </b-col>
-                                        <b-col>
-                                            <label class="text-center font-weight-bold">Weight (kg):</label>
-                                            <h3 class="text-center">{{selectedCargo.weight}}</h3>
-                                        </b-col>
-                                        <b-col>
-                                            <label class="text-center font-weight-bold">Length:</label>
-                                            <h3 class="text-center">{{selectedCargo.length}}</h3>
-                                        </b-col>
-                                        <b-col>
-                                            <label class="text-center font-weight-bold">Width:</label>
-                                            <h3 class="text-center">{{selectedCargo.width}}</h3>
-                                        </b-col>
-                                    </b-row>
-                                    <b-row class="m-0 colStyle">
-                                        <b-col>
-                                            <label class="text-center font-weight-bold">Height:</label>
-                                            <h3 class="text-center">{{selectedCargo.height}}</h3>
-                                        </b-col>
-                                        <b-col>
-                                            <label class="text-center font-weight-bold">CBM Conv.:</label>
-                                            <h3 class="text-center">{{selectedCargo.kgCBMConversion ? selectedCargo.kgCBMConversion.toFixed(3) : ''}}</h3>
-                                        </b-col>
-                                        <b-col>
-                                            <label class="text-center font-weight-bold">Volume:</label>
-                                            <h3 class="text-center">{{selectedCargo.volumeCbm ? selectedCargo.volumeCbm.toFixed(3) : ''}}</h3>
-                                        </b-col>
-                                        <b-col>
-                                            <label class="text-center font-weight-bold">Chargable Weight:</label>
-                                            <h3 class="text-center">{{selectedCargo.chargeableWeight ? selectedCargo.chargeableWeight.toFixed(3) : ''}}</h3>
-                                        </b-col>
-                                        <b-col>
-                                            <label class="text-center font-weight-bold">Storage Days:</label>
-                                            <h3 class="text-center">{{selectedCargo.numberOfStorageDays}}</h3>
-                                        </b-col>
-
-                                    </b-row>
-                                    <b-row class="m-0 colStyle">
-                                        <b-col>
-                                            <label class="text-center font-weight-bold">Storage Cost:</label>
-                                            <h3 class="text-center">{{selectedCargo.storageCost}}</h3>
-                                        </b-col>
-                                        <b-col>
-                                            <label class="text-center font-weight-bold">Volume Metric</label>
-                                            <h3 class="text-center">{{selectedCargo.volumeMetric ? selectedCargo.volumeMetric.toFixed(3) : ''}}</h3>
-                                        </b-col>
-                                    </b-row>
-                                    <hr class="mx-3">
-                                    <b-row>
-                                        <b-col>
-                                            <div class="d-flex justify-content-end">
-                                                <div>
-                                                    <b-button variant="outline-red" squared @click="hideCargoEditModal" class="ml-2">Cancel</b-button>
+                                <div v-if="!packageSelected">
+                                    <div v-for="item in selectedCargo.packageModels" :key="item.index" class="w-100 my-2">
+                                        <div v-if="item.isActive">
+                                            <b-row >
+                                                <b-col>
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <label class="text-primary font-weight-bold mb-4 text-uppercase">{{item.description}}</label>
+                                                        <b-button variant="outline-red" squared @click="toggleDeletePackage(item)" size="sm">
+                                                            <font-awesome-icon icon="fa-trash" />
+                                                        </b-button>
+                                                    </div>
+                                                </b-col>
+                                            </b-row>
+                                            <b-row class="m-0 colStyle">
+                                                <b-col>
+                                                    <label class="text-center font-weight-bold">Quantity:</label>
+                                                    <h3 class="text-center">{{item.quantity}}</h3>
+                                                </b-col>
+                                                <b-col>
+                                                    <label class="text-center font-weight-bold">Weight (kg):</label>
+                                                    <h3 class="text-center">{{item.weight}}</h3>
+                                                </b-col>
+                                                <b-col>
+                                                    <label class="text-center font-weight-bold">Length:</label>
+                                                    <h3 class="text-center">{{item.length}}</h3>
+                                                </b-col>
+                                                <b-col>
+                                                    <label class="text-center font-weight-bold">Width:</label>
+                                                    <h3 class="text-center">{{item.width}}</h3>
+                                                </b-col>
+                                            </b-row>
+                                        
+                                            <b-row class="m-0 colStyle">
+                                                <b-col>
+                                                    <label class="text-center font-weight-bold">Height:</label>
+                                                    <h3 class="text-center">{{item.height}}</h3>
+                                                </b-col>
+                                                <b-col>
+                                                    <label class="text-center font-weight-bold">CBM Conv.:</label>
+                                                    <h3 class="text-center">{{item.kgCBMConversion ? item.kgCBMConversion.toFixed(3) : ''}}</h3>
+                                                </b-col>
+                                                <b-col>
+                                                    <label class="text-center font-weight-bold">Volume:</label>
+                                                    <h3 class="text-center">{{item.volumeCbm ? item.volumeCbm.toFixed(3) : ''}}</h3>
+                                                </b-col>
+                                                <b-col>
+                                                    <label class="text-center font-weight-bold">Chargable Weight:</label>
+                                                    <h3 class="text-center">{{item.chargeableWeight ? item.chargeableWeight.toFixed(3) : ''}}</h3>
+                                                </b-col>
+                                                <b-col>
+                                                    <label class="text-center font-weight-bold">Storage Days:</label>
+                                                    <h3 class="text-center">{{item.numberOfStorageDays}}</h3>
+                                                </b-col>
+    
+                                            </b-row>
+                                            <b-row class="m-0 colStyle">
+                                                <b-col>
+                                                    <label class="text-center font-weight-bold">Storage Cost:</label>
+                                                    <h3 class="text-center">{{item.storageCost}}</h3>
+                                                </b-col>
+                                                <b-col>
+                                                    <label class="text-center font-weight-bold">Volume Metric</label>
+                                                    <h3 class="text-center">{{item.volumeMetric ? item.volumeMetric.toFixed(3) : ''}}</h3>
+                                                </b-col>
+                                            </b-row>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div v-if="packageSelected">
+                                    <b-col>
+                                        <b-row>
+                                            <b-col>
+                                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                                    <label class="text-primary font-weight-bold mb-4">Delete package entry</label>
                                                 </div>
-                                                <div>
-                                                    <b-button variant="primary" squared @click="cargoUpdate" class="ml-2">Update</b-button>
+                                            </b-col>
+                                        </b-row>
+                                        <b-row>
+                                            <b-col>
+                                                <label>Are you sure you want to delete the {{itemSelectedForDelete.description}}</label>
+                                            </b-col>
+                                        </b-row>
+                                        <hr class="mx-3">
+                                        <b-row>
+                                            <b-col>
+                                                <div class="d-flex justify-content-end">
+                                                    <div>
+                                                        <b-button variant="outline-red" squared @click="toggleDeletePackage" class="ml-2">Cancel</b-button>
+                                                        <b-button variant="red" squared @click="deletePackage" class="ml-2">Delete</b-button>
+                                                    </div>
                                                 </div>
+                                            </b-col>
+                                        </b-row>
+                                    </b-col>
+                                </div>
+                                <hr v-if="!packageSelected" class="mx-3">
+                                <b-row v-if="!packageSelected">
+                                    <b-col>
+                                        <div class="d-flex justify-content-end">
+                                            <div>
+                                                <b-button variant="outline-red" squared @click="hideCargoEditModal" class="ml-2">Cancel</b-button>
                                             </div>
-                                        </b-col>
-                                    </b-row>
-                                </b-form>
+                                            <div>
+                                                <b-button variant="primary" squared @click="cargoUpdate" class="ml-2">Update</b-button>
+                                            </div>
+                                        </div>
+                                    </b-col>
+                                </b-row>
                             </b-tab>
                             <b-tab title="Transporter Details" class="tabItem">
                                 <b-form class="w-100">
@@ -484,7 +526,7 @@
                                         <b-col>
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <label class="text-primary font-weight-bold mb-4">Transporter Details</label>
-                                                <b-button variant="outline-red" squared @click="toggleDelete" size="sm">Delete</b-button>
+                                                <b-button variant="outline-red" squared @click="toggleDeleteCargo" size="sm">Delete</b-button>
                                             </div>
                                         </b-col>
                                     </b-row>
@@ -757,7 +799,7 @@
                             <b-col>
                                 <div class="d-flex justify-content-end">
                                     <div>
-                                        <b-button variant="outline-red" squared @click="toggleDelete" class="ml-2">Cancel</b-button>
+                                        <b-button variant="outline-red" squared @click="toggleDeleteCargo" class="ml-2">Cancel</b-button>
                                         <b-button variant="red" squared @click="deleteCargo" class="ml-2">Delete</b-button>
                                     </div>
                                 </div>
@@ -782,7 +824,7 @@ export default {
             dateCollected: null,
             orderNumber: null,
             
-            atraxInvoiceNumber: null,
+            supplierInvoiceNumber: null,
             //TODO
             //number of storage days --- this needs to be calculated in UI 
             //storage cost --- this needs to be calculated in UI
@@ -807,6 +849,7 @@ export default {
             length: null,
             width: null,
             height: null,
+            cargoModelCargoId: null,
         },
         cargoTable: {
             resultsPerPage: 10,
@@ -875,24 +918,6 @@ export default {
                     tdClass:'',
                 },
                 {
-                    label: 'Length',
-                    key: 'length',
-                    sortable: false,
-                    tdClass:'',
-                },
-                {
-                    label: 'Width',
-                    key: 'width',
-                    sortable: false,
-                    tdClass:'',
-                },
-                {
-                    label: 'Height',
-                    key: 'height',
-                    sortable: false,
-                    tdClass:'',
-                },
-                {
                     label: 'Volume',
                     key: 'volume',
                     sortable: false,
@@ -930,8 +955,11 @@ export default {
         isEnter: true,
         containerList: [],
         isCargoCreated: false,
+        cargoCreatedData: 0,
         packageAdd: [],
-        packageList: false
+        packageList: false,
+        packageSelected: false,
+        itemSelectedForDelete: {},
     }),
     beforeCreate() {
     },
@@ -951,10 +979,11 @@ export default {
     updated() {
     },
     methods: {
-        ...mapActions(["requestSupplier", "createCargo", "requestCargo", "updateCargo", "requestContainer", "createPackage"]),
+        ...mapActions(["requestSupplier", "createCargo", "requestCargo", "updateCargo", "requestContainer", "createPackage", "updatePackage"]),
         openCargoEntry(rowItem) {
             this.$bvModal.show('cargoEdit')
             this.$store.commit('setSelectedCargo', rowItem)
+            console.log("SELECTED CARGO", rowItem)
         },
         hideCargoEditModal() {
             this.$bvModal.hide('cargoEdit')
@@ -1030,22 +1059,30 @@ export default {
             this.$store.commit('setCreateCargoRequest', this.cargo)
             this.state = 'loading'
             this.createCargo()
-                .then(() => {
-                    this.requestCargo()
-                        .then((response) => {
-                            this.isCargoCreated = true
-                            console.log("CARGO CREATE REQUEST", response.data)
-                        })
-                    // this.$bvModal.hide('cargoAddModal')
-                    
+                .then((res) => {
+                    this.cargoCreatedId = res.data.result
+                    this.isCargoCreated = true
+                    console.log("CARGO CREATE REQUEST 2", res.data.result)
                 })
         },
         savePackage() {
             //TODO- loop through the array and add to the db
             this.packageAdd.forEach((item) => {
-                this.$store.commit("setCreatePackageRequest", item)
+                const packItem = {}
+                packItem.cargoId = this.cargoCreatedId
+                packItem.description = item.description
+                packItem.height = item.height
+                packItem.length = item.length
+                packItem.quantity = item.quantity
+                packItem.weight = item.weight
+                packItem.width = item.width
+                packItem.isActive = true
+                this.$store.commit("setCreatePackageRequest", packItem)
                 this.createPackage()
-                console.log('ARRAY', item)
+                    .then(() => {
+                        this.hideCargoModal()
+                        this.getCargoList()
+                    })
             })
            
         },
@@ -1057,7 +1094,10 @@ export default {
             parcel.length = this.packageData.length
             parcel.width = this.packageData.width
             parcel.height = this.packageData.height
+            parcel.cargoId = this.cargoCreatedId
+            parcel.isActive = true
             this.packageAdd.push(parcel)
+            console.log("PARCEL", parcel)
             
             this.packageData.description = null
             this.packageData.quantity = null
@@ -1065,6 +1105,7 @@ export default {
             this.packageData.length = null
             this.packageData.width = null
             this.packageData.height = null
+            this.packageData.cargoId = null
         },
         confirmPackageList() {
             this.packageList = true
@@ -1076,7 +1117,7 @@ export default {
                 this.hideCargoEditModal()
             })
         },
-        toggleDelete() {
+        toggleDeleteCargo() {
             this.isDeleteSelected = !this.isDeleteSelected
             
         },
@@ -1089,10 +1130,24 @@ export default {
                     this.getCargoList()
                 })
         },
+        toggleDeletePackage(item) {
+            this.packageSelected = !this.packageSelected
+            this.itemSelectedForDelete = item
+            console.log("ITEM", item)
+        },
+        deletePackage() {
+            this.itemSelectedForDelete.isActive = false
+            this.$store.commit('setSelectedPackage', this.itemSelectedForDelete)
+            this.updatePackage()
+                .then(() => {
+                    this.packageSelected = !this.packageSelected
+                })
+        },
     },
     computed: {
         ...mapState([
-            "selectedCargo"
+            "selectedCargo",
+            "selectedPackage"
         ]),
         rows() {
             return this.cargoTable.dataSource.length
