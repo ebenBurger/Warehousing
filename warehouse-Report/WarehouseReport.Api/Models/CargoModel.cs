@@ -46,7 +46,7 @@ namespace WarehouseReport.Api.Models
         
         public ICollection<PackageModel> PackageModels { get; set; }
 
-        public int ContainerId { get; set; }
+        public int? ContainerId { get; set; }
         public ContainerModel Container { get; set; }
     }
     

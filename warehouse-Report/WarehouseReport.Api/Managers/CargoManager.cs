@@ -22,6 +22,7 @@ namespace WarehouseReport.Api.Managers
     {
         var data = _context.Cargo
             .Include(b => b.PackageModels)
+            .Include(c => c.Container)
             .Where(a => a.IsActive == true)
             .ToList();
 
