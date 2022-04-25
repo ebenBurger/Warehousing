@@ -15,6 +15,6 @@ namespace WarehouseReport.Api.Models
         public DateTime? DateCompleted { get; set; }
         public bool IsActive { get; set; }
 
-        public ICollection<CargoModel> CargoModels { get; set; }
+        public ICollection<CargoModel> Cargo { get; set; }
     }
 }
