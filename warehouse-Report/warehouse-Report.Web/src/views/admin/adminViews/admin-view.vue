@@ -1,7 +1,7 @@
 <template>
     <div>
-        <Loader v-if="isEnter"></Loader>
-        <b-row v-if="!isEnter">
+        <Loader v-if="isEnterPage"></Loader>
+        <b-row v-if="!isEnterPage">
             <b-col>
                 <b-card>
                     <b-row>
@@ -97,7 +97,7 @@
         <b-modal  id="cargoAddModal" size="xl" hide-footer hide-header-close class="text-center" title="Add Cargo">
             <b-row v-if="!isCargoCreated" class="align-items-center m-0 ">
                 <b-col class="d-flex justify-content-center">
-                    <B-form class="w-100">
+                    <b-form class="w-100">
                         <b-row>
                             <b-col>
                                 <label class="text-primary font-weight-bold mb-4">Cargo Details</label>
@@ -132,34 +132,40 @@
                             </b-col>
                         </b-row>
                         <b-row>
-                            <b-col class="text-center">
-                                <label>Hazard</label>
-                                <toggle-button :value="false"
-                                               v-model="cargo.hazardous"
-                                               class="d-flex justify-content-center"
-                                               :labels="{checked: 'Yes'}"/>
-                            </b-col>
-                            <b-col class="text-center">
-                                <label>Commercial Invoice Received</label>
-                                <toggle-button :value="false"
-                                               v-model="cargo.commercialInvoiceReceived"
-                                               class="d-flex justify-content-center"
-                                               :labels="{checked: 'Yes'}"/>
-                            </b-col>
-                            <b-col class="text-center">
-                                <label>Packing List Received</label>
-                                <toggle-button :value="false"
-                                               class="justify-content-center d-flex"
-                                               v-model="cargo.packingListReceived"
-                                               :labels="{checked: 'Yes'}"/>
-                            </b-col>
-                            <b-col class="text-center">
-                                <label>Billded To JKN</label>
-                                <toggle-button :value="false"
-                                               class="justify-content-center d-flex"
-                                               v-model="cargo.billedToJkn"
-                                               :labels="{checked: 'Yes'}"/>
-                            </b-col>
+                           <b-form-group class="d-flex"> <b-col class="text-center">
+                               <label>Hazard</label>
+                               <toggle-button :value="false"
+                                              v-model="cargo.hazardous"
+                                              class="d-flex justify-content-center"
+                                              :sync= "true"
+                                              :labels="{checked: 'Yes'}"/>
+                           </b-col>
+                               <b-col class="text-center">
+                                   <label>Commercial Invoice Received</label>
+                                   <toggle-button :value="false"
+                                                  v-model="cargo.commercialInvoiceReceived"
+                                                  class="d-flex justify-content-center"
+                                                  :sync="true"
+                                                  />
+                               </b-col>
+                               <b-col class="text-center">
+                                   <label>Packing List Received</label>
+                                   <toggle-button :value="false"
+                                                  class="justify-content-center d-flex"
+                                                  v-model="cargo.packingListReceived"
+                                                  :sync="true"
+                                                  :labels="{checked: 'Yes'}"/>
+                               </b-col>
+                               <b-col class="text-center">
+                                   <label>Billded To JKN</label>
+                                   <toggle-button :value="false"
+                                                  class="justify-content-center d-flex"
+                                                  :sync="true"
+                                                  v-model="cargo.billedToJkn"
+                                                  :labels="{checked: 'Yes'}"/>
+                               </b-col>
+                               
+                           </b-form-group>
                         </b-row>
                         
                         <hr class="mx-3">
@@ -186,7 +192,7 @@
                                 </div>
                             </b-col>
                         </b-row>
-                    </B-form>
+                    </b-form>
                 </b-col>
             </b-row>
             <b-row v-if="isCargoCreated" class="align-items-center m-0 ">
@@ -275,10 +281,10 @@
                        <b-col>
                            <div class="d-flex justify-content-end">
                                <div>
-                                   <b-button variant="outline-red" squared @click="packageList ? packageList : packageList" class="ml-2">Cancel</b-button>
+                                   <b-button variant="outline-red" squared @click="togglePackageAdd" class="ml-2">Cancel</b-button>
                                </div>
                                <div>
-                                   <b-button variant="primary" squared @click="savePackage" class="ml-2">Save Package</b-button>
+                                   <b-button variant="primary" squared @click="savePackageToDb" class="ml-2">Save Package</b-button>
                                </div>
                            </div>
                        </b-col>
@@ -315,7 +321,20 @@
                                             <label><span class="font-weight-bold">Order Number:</span> </label>
                                             <label>{{selectedCargo.orderNumber}}</label>
                                         </b-col>
-
+                                    </b-row>
+                                    <b-row>
+                                        <b-col>
+                                            <label><span class="font-weight-bold">End Date of free Storge</span></label>
+                                            <label>{{selectedCargo.endDateOfFreeStorage | dateFilter}}</label>
+                                        </b-col>
+                                        <b-col>
+                                            <label><span class="font-weight-bold">Number of storage days</span></label>
+                                            <label>{{selectedCargo.numberOfStorageDays}}</label>
+                                        </b-col>
+                                        <b-col>
+                                            <label><span class="font-weight-bold">Storage cost</span> </label>
+                                            <label>{{selectedCargo.storageCost}}</label>
+                                        </b-col>
                                     </b-row>
                                     <b-row>
                                         <b-col cols="4">
@@ -410,76 +429,102 @@
                                     </b-row>
                                 </b-form>
                             </b-tab >
-                            <b-tab title="Cargo Details" title-item-class="tabItem">
-                                <div v-if="!packageSelected">
-                                    <div v-for="item in selectedCargo.packageModels" :key="item.index" class="w-100 my-2">
-                                        <div v-if="item.isActive">
-                                            <b-row >
-                                                <b-col>
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <label class="text-primary font-weight-bold mb-4 text-uppercase">{{item.description}}</label>
-                                                        <b-button variant="outline-red" squared @click="toggleDeletePackage(item)" size="sm">
-                                                            <font-awesome-icon icon="fa-trash" />
-                                                        </b-button>
-                                                    </div>
-                                                </b-col>
-                                            </b-row>
-                                            <b-row class="m-0 colStyle">
-                                                <b-col>
-                                                    <label class="text-center font-weight-bold">Quantity:</label>
-                                                    <h3 class="text-center">{{item.quantity}}</h3>
-                                                </b-col>
-                                                <b-col>
-                                                    <label class="text-center font-weight-bold">Weight (kg):</label>
-                                                    <h3 class="text-center">{{item.weight}}</h3>
-                                                </b-col>
-                                                <b-col>
-                                                    <label class="text-center font-weight-bold">Length:</label>
-                                                    <h3 class="text-center">{{item.length}}</h3>
-                                                </b-col>
-                                                <b-col>
-                                                    <label class="text-center font-weight-bold">Width:</label>
-                                                    <h3 class="text-center">{{item.width}}</h3>
-                                                </b-col>
-                                            </b-row>
-                                        
-                                            <b-row class="m-0 colStyle">
-                                                <b-col>
-                                                    <label class="text-center font-weight-bold">Height:</label>
-                                                    <h3 class="text-center">{{item.height}}</h3>
-                                                </b-col>
-                                                <b-col>
-                                                    <label class="text-center font-weight-bold">CBM Conv.:</label>
-                                                    <h3 class="text-center">{{item.kgCBMConversion ? item.kgCBMConversion.toFixed(3) : ''}}</h3>
-                                                </b-col>
-                                                <b-col>
-                                                    <label class="text-center font-weight-bold">Volume:</label>
-                                                    <h3 class="text-center">{{item.volumeCbm ? item.volumeCbm.toFixed(3) : ''}}</h3>
-                                                </b-col>
-                                                <b-col>
-                                                    <label class="text-center font-weight-bold">Chargable Weight:</label>
-                                                    <h3 class="text-center">{{item.chargeableWeight ? item.chargeableWeight.toFixed(3) : ''}}</h3>
-                                                </b-col>
-                                                <b-col>
-                                                    <label class="text-center font-weight-bold">Storage Days:</label>
-                                                    <h3 class="text-center">{{item.numberOfStorageDays}}</h3>
-                                                </b-col>
-    
-                                            </b-row>
-                                            <b-row class="m-0 colStyle">
-                                                <b-col>
-                                                    <label class="text-center font-weight-bold">Storage Cost:</label>
-                                                    <h3 class="text-center">{{item.storageCost}}</h3>
-                                                </b-col>
-                                                <b-col>
-                                                    <label class="text-center font-weight-bold">Volume Metric</label>
-                                                    <h3 class="text-center">{{item.volumeMetric ? item.volumeMetric.toFixed(3) : ''}}</h3>
-                                                </b-col>
-                                            </b-row>
+                            <b-tab title="Package Details" title-item-class="tabItem">
+                                <div v-if="!deleteSelected && !addSelected && !editSelected">
+                                    <div class="mt-2">
+                                        <b-row>
+                                            <b-col class="justify-content-end w-100 d-flex">
+                                                <b-button class="mx-1" variant="primary" squared @click="addClicked" size="sm">
+                                                    <font-awesome-icon icon="fa-plus" />
+                                                </b-button>
+                                            </b-col>
+                                        </b-row>
+                                        <div v-for="item in selectedCargo.packageModels" :key="item.index" class="w-100 my-2">
+                                            <div v-if="item.isActive" :key="packageKey">
+                                                <b-row >
+                                                    <b-col>
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <label class="text-primary font-weight-bold mb-4 text-uppercase">{{item.description}}</label>
+
+                                                            <b-button class="mx-1" variant="outline-primary" squared @click="editClicked(item)" size="sm">
+                                                                <font-awesome-icon icon="fa-edit" />
+                                                            </b-button>
+                                                            <b-button class="mx-1" variant="outline-red" squared @click="toggleDeletePackage(item)" size="sm">
+                                                                <font-awesome-icon icon="fa-trash" />
+                                                            </b-button>
+                                                        </div>
+                                                    </b-col>
+                                                </b-row>
+                                                <b-row class="m-0 colStyle">
+                                                    <b-col>
+                                                        <label class="text-center font-weight-bold">Quantity:</label>
+                                                        <h3 class="text-center">{{item.quantity}}</h3>
+                                                    </b-col>
+                                                    <b-col>
+                                                        <label class="text-center font-weight-bold">Weight (kg):</label>
+                                                        <h3 class="text-center">{{item.weight}}</h3>
+                                                    </b-col>
+                                                    <b-col>
+                                                        <label class="text-center font-weight-bold">Length:</label>
+                                                        <h3 class="text-center">{{item.length}}</h3>
+                                                    </b-col>
+                                                    <b-col>
+                                                        <label class="text-center font-weight-bold">Width:</label>
+                                                        <h3 class="text-center">{{item.width}}</h3>
+                                                    </b-col>
+                                                </b-row>
+                                                <b-row class="m-0 colStyle">
+                                                    <b-col>
+                                                        <label class="text-center font-weight-bold">Height:</label>
+                                                        <h3 class="text-center">{{item.height}}</h3>
+                                                    </b-col>
+                                                    <b-col>
+                                                        <label class="text-center font-weight-bold">CBM Conv.:</label>
+                                                        <h3 class="text-center">{{item.kgCBMConversion ? item.kgCBMConversion.toFixed(3) : ''}}</h3>
+                                                    </b-col>
+                                                    <b-col>
+                                                        <label class="text-center font-weight-bold">Volume:</label>
+                                                        <h3 class="text-center">{{item.volumeCbm ? item.volumeCbm.toFixed(3) : ''}}</h3>
+                                                    </b-col>
+                                                    <b-col>
+                                                        <label class="text-center font-weight-bold">Chargable Weight:</label>
+                                                        <h3 class="text-center">{{item.chargeableWeight ? item.chargeableWeight.toFixed(3) : ''}}</h3>
+                                                    </b-col>
+                                                    <b-col>
+                                                        <label class="text-center font-weight-bold">Storage Days:</label>
+                                                        <h3 class="text-center">{{item.numberOfStorageDays}}</h3>
+                                                    </b-col>
+
+                                                </b-row>
+                                                <b-row class="m-0 colStyle">
+                                                    <b-col>
+                                                        <label class="text-center font-weight-bold">Storage Cost:</label>
+                                                        <h3 class="text-center">{{item.storageCost}}</h3>
+                                                    </b-col>
+                                                    <b-col>
+                                                        <label class="text-center font-weight-bold">Volume Metric</label>
+                                                        <h3 class="text-center">{{item.volumeMetric ? item.volumeMetric.toFixed(3) : ''}}</h3>
+                                                    </b-col>
+                                                </b-row>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div v-if="packageSelected">
+                                
+                                <hr v-if="!deleteSelected && !addSelected && !editSelected" class="mx-3">
+                                <b-row v-if="!deleteSelected && !addSelected && !editSelected">
+                                    <b-col>
+                                        <div class="d-flex justify-content-end">
+                                            <div>
+                                                <b-button variant="outline-red" squared @click="hideCargoEditModal" class="ml-2">Cancel</b-button>
+                                            </div>
+                                            <div>
+                                                <b-button variant="primary" squared @click="cargoUpdate" class="ml-2">Update</b-button>
+                                            </div>
+                                        </div>
+                                    </b-col>
+                                </b-row>
+                                <div v-if="deleteSelected && !addSelected && ! editSelected">
                                     <b-col>
                                         <b-row>
                                             <b-col>
@@ -506,19 +551,123 @@
                                         </b-row>
                                     </b-col>
                                 </div>
-                                <hr v-if="!packageSelected" class="mx-3">
-                                <b-row v-if="!packageSelected">
-                                    <b-col>
-                                        <div class="d-flex justify-content-end">
-                                            <div>
-                                                <b-button variant="outline-red" squared @click="hideCargoEditModal" class="ml-2">Cancel</b-button>
-                                            </div>
-                                            <div>
-                                                <b-button variant="primary" squared @click="cargoUpdate" class="ml-2">Update</b-button>
-                                            </div>
-                                        </div>
-                                    </b-col>
-                                </b-row>
+                                <div v-if="addSelected" >
+                                    <b-form class="w-100">
+                                        <b-row>
+                                            <b-col>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <label class="text-primary font-weight-bold mb-4">Package Details</label>
+                                                    <b-button variant="primary" squared @click="addPackage">
+                                                        <font-awesome-icon icon="fa-plus" ></font-awesome-icon>
+                                                    </b-button>
+                                                </div>
+                                            </b-col>
+                                        </b-row>
+                                        <b-row>
+                                            <label v-if="packageAdd.length <=1"> You hav {{packageAdd.length}} item on the packing list.</label>
+                                            <label v-if="packageAdd.length >=2"> You hav {{packageAdd.length}} items on the packing list.</label>
+                                        </b-row>
+                                        <b-row>
+                                            <b-col>
+                                                <label>Description</label>
+                                                <b-form-input v-model="packageData.description"></b-form-input>
+                                            </b-col>
+                                            <b-col>
+                                                <label>Quantity</label>
+                                                <b-form-input type="number" v-model="packageData.quantity"></b-form-input>
+                                            </b-col>
+                                            <b-col>
+                                                <label>Weight (kg)</label>
+                                                <b-form-input type="number" v-model="packageData.weight"></b-form-input>
+                                            </b-col>
+                                            
+                                        </b-row>
+                                        <b-row>
+                                            <b-col>
+                                                <label>Length</label>
+                                                <b-form-input type="number" v-model="packageData.length"></b-form-input>
+                                            </b-col>
+                                            <b-col>
+                                                <label>Width</label>
+                                                <b-form-input type="number" v-model="packageData.width"></b-form-input>
+                                            </b-col>
+                                            <b-col>
+                                                <label>Height</label>
+                                                <b-form-input type="number" v-model="packageData.height"></b-form-input>
+                                            </b-col>
+                                        </b-row>
+                                        <hr class="mx-3">
+                                        <b-row>
+                                            <b-table striped hover :items="packageAdd"></b-table>
+                                        </b-row>
+                                        <hr class="mx-3">
+                                        <b-row>
+                                            <b-col>
+                                                <div class="d-flex justify-content-end">
+                                                    <div>
+                                                        <b-button variant="outline-red" squared @click="addClicked" class="ml-2">Cancel</b-button>
+                                                    </div>
+                                                    <div>
+                                                        <b-button variant="primary" squared @click="saveExtraPackageToDb" class="ml-2">Save</b-button>
+                                                    </div>
+                                                </div>
+                                            </b-col>
+                                        </b-row>
+                                    </b-form>
+                                </div>
+                                <div v-if="editSelected">
+                                    <b-form class="w-100">
+                                        <b-row>
+                                            <b-col>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <label class="text-primary font-weight-bold mb-4">Package Details</label>
+                                                </div>
+                                            </b-col>
+                                        </b-row>
+                                        <b-row>
+                                            <b-col>
+                                                <label>Description</label>
+                                                <b-form-input v-model="itemSelectedForEdit.description"></b-form-input>
+                                            </b-col>
+                                            <b-col>
+                                                <label>Quantity</label>
+                                                <b-form-input type="number" v-model="itemSelectedForEdit.quantity"></b-form-input>
+                                            </b-col>
+                                            <b-col>
+                                                <label>Weight (kg)</label>
+                                                <b-form-input type="number" v-model="itemSelectedForEdit.weight"></b-form-input>
+                                            </b-col>
+
+                                        </b-row>
+                                        <b-row>
+                                            <b-col>
+                                                <label>Length</label>
+                                                <b-form-input type="number" v-model="itemSelectedForEdit.length"></b-form-input>
+                                            </b-col>
+                                            <b-col>
+                                                <label>Width</label>
+                                                <b-form-input type="number" v-model="itemSelectedForEdit.width"></b-form-input>
+                                            </b-col>
+                                            <b-col>
+                                                <label>Height</label>
+                                                <b-form-input type="number" v-model="itemSelectedForEdit.height"></b-form-input>
+                                            </b-col>
+                                        </b-row>
+                                        <hr class="mx-3">
+                                        <b-row>
+                                            <b-col>
+                                                <div class="d-flex justify-content-end">
+                                                    <div>
+                                                        <b-button variant="outline-red" squared @click="editClicked" class="ml-2">Cancel</b-button>
+                                                    </div>
+                                                    <div>
+                                                        <b-button variant="primary" squared class="ml-2" @click="updatedEditPackage">Update</b-button>
+                                                    </div>
+                                                </div>
+                                            </b-col>
+                                        </b-row>
+                                    </b-form>
+                                </div>
                             </b-tab>
                             <b-tab title="Transporter Details" class="tabItem">
                                 <b-form class="w-100">
@@ -578,10 +727,39 @@
                                     </b-row>
                                 </b-form>
                             </b-tab>
+                            <b-tab title="Container" class="tabItem">
+                                <b-form class="w-100">
+                                    <b-row>
+                                        <b-col>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <label class="text-primary font-weight-bold mb-4">Container Details</label>
+                                            </div>
+                                        </b-col>
+                                    </b-row>
+                                    <b-row>
+                                        <b-form-select v-model="selectedContainer">
+                                            <b-form-select-option v-for="(item, index) in containerList" :key="index" :value="item.containerId">{{item.containerName}}</b-form-select-option>
+                                        </b-form-select>
+                                    </b-row>
+                                    <hr class="mx-3">
+                                    <b-row>
+                                        <b-col>
+                                            <div class="d-flex justify-content-end">
+                                                <div>
+                                                    <b-button variant="outline-red" squared @click="hideCargoEditModal" class="ml-2">Cancel</b-button>
+                                                </div>
+                                                <div>
+                                                    <b-button variant="primary" squared @click="cargoUpdate" class="ml-2">Update</b-button>
+                                                </div>
+                                            </div>
+                                        </b-col>
+                                    </b-row>
+                                </b-form>
+                            </b-tab>
                         </b-tabs>
                     </b-col>
                     <!--                    <b-col class="d-flex justify-content-center">
-                                            <B-form class="w-100">
+                                            <b-form class="w-100">
                                                 <b-row>
                                                     <b-col>
                                                         <div class="d-flex justify-content-between align-items-center">
@@ -776,7 +954,7 @@
                                                         </div>
                                                     </b-col>
                                                 </b-row>
-                                            </B-form>
+                                            </b-form>
                                         </b-col>-->
                 </b-row>
                 <b-row v-if="isDeleteSelected">
@@ -823,7 +1001,6 @@ export default {
             supplier: null,
             dateCollected: null,
             orderNumber: null,
-            
             supplierInvoiceNumber: null,
             //TODO
             //number of storage days --- this needs to be calculated in UI 
@@ -841,6 +1018,7 @@ export default {
             hazardous: false,
             isComplete: false,
             isActive: true,
+            containerId: null,
         },
         packageData: {
             description: null,
@@ -894,14 +1072,8 @@ export default {
                     tdClass:'',
                 },
                 {
-                    label: 'Description',
-                    key: 'description',
-                    sortable: true,
-                    tdClass:'',
-                },
-                {
                     label: 'Quantity',
-                    key: 'quantity',
+                    key: 'packageModels.quantity',
                     sortable: true,
                     tdClass:'',
                 },
@@ -952,26 +1124,32 @@ export default {
         suppliers: [],
         isDeleteSelected: false,
         selectedCargoItem: {},
-        isEnter: true,
+        isEnterPage: true,
         containerList: [],
+        selectedContainer: [],
         isCargoCreated: false,
         cargoCreatedData: 0,
-        packageAdd: [],
+        packageAdd: [], // update table cols
         packageList: false,
-        packageSelected: false,
         itemSelectedForDelete: {},
+        deleteSelected: false,
+        addSelected: false,
+        editSelected: false,
+        itemSelectedForEdit: [],
+        packageKey: 0,
     }),
     beforeCreate() {
     },
     created() {
         this.getSupplierList()
         this.getCargoList()
+        this.getContainerList()
     },
     beforeMount() {
     },
     mounted() {
         setTimeout(() => {
-            this.isEnter = false
+            this.isEnterPage = false
         }, 0)
     },
     beforeUpdate() {
@@ -979,7 +1157,16 @@ export default {
     updated() {
     },
     methods: {
-        ...mapActions(["requestSupplier", "createCargo", "requestCargo", "updateCargo", "requestContainer", "createPackage", "updatePackage"]),
+        ...mapActions([
+            "requestSupplier", 
+            "createCargo", 
+            "requestCargo", 
+            "updateCargo", 
+            "requestContainer", 
+            "createPackage", 
+            "updatePackage",
+            "requestContainer",
+        ]),
         openCargoEntry(rowItem) {
             this.$bvModal.show('cargoEdit')
             this.$store.commit('setSelectedCargo', rowItem)
@@ -1036,6 +1223,7 @@ export default {
                 isActive: true,
             }
         },
+        
         getSupplierList() {
             this.requestSupplier()
                 .then(response => {
@@ -1065,7 +1253,7 @@ export default {
                     console.log("CARGO CREATE REQUEST 2", res.data.result)
                 })
         },
-        savePackage() {
+        savePackageToDb() {
             //TODO- loop through the array and add to the db
             this.packageAdd.forEach((item) => {
                 const packItem = {}
@@ -1077,6 +1265,8 @@ export default {
                 packItem.weight = item.weight
                 packItem.width = item.width
                 packItem.isActive = true
+                console.log('PACKAGE ITEM', packItem)
+                console.log('SELECTED CARGO', this.selectedCargo)
                 this.$store.commit("setCreatePackageRequest", packItem)
                 this.createPackage()
                     .then(() => {
@@ -1085,6 +1275,29 @@ export default {
                     })
             })
            
+        },
+        saveExtraPackageToDb(rowItem) {
+            //TODO- loop through the array and add to the db
+            this.packageAdd.forEach((item) => {
+                const packItem = {}
+                packItem.cargoId = this.selectedCargo.cargoId
+                packItem.description = item.description
+                packItem.height = item.height
+                packItem.length = item.length
+                packItem.quantity = item.quantity
+                packItem.weight = item.weight
+                packItem.width = item.width
+                packItem.isActive = true
+                console.log('PACKAGE ITEM', packItem)
+                console.log('SELECTED CARGO', this.selectedCargo)
+                this.$store.commit("setCreatePackageRequest", packItem)
+                this.createPackage()
+                    .then(() => {
+                        this.hideCargoEditModal()
+                        this.openCargoEntry(rowItem)
+                    })
+            })
+
         },
         addPackage() {
             const parcel = {}
@@ -1097,7 +1310,6 @@ export default {
             parcel.cargoId = this.cargoCreatedId
             parcel.isActive = true
             this.packageAdd.push(parcel)
-            console.log("PARCEL", parcel)
             
             this.packageData.description = null
             this.packageData.quantity = null
@@ -1111,6 +1323,10 @@ export default {
             this.packageList = true
         },
         cargoUpdate() {
+            if (!this.selectedContainer) {
+                this.selectedCargo.containerId = this.selectedContainer
+            }
+            console.log('CARGO UPDATE', this.selectedCargo);
             this.$store.commit('setSelectedCargo', this.selectedCargo)
             this.updateCargo()
             .then(() => {
@@ -1131,7 +1347,7 @@ export default {
                 })
         },
         toggleDeletePackage(item) {
-            this.packageSelected = !this.packageSelected
+            this.deleteSelected = !this.deleteSelected
             this.itemSelectedForDelete = item
             console.log("ITEM", item)
         },
@@ -1140,8 +1356,45 @@ export default {
             this.$store.commit('setSelectedPackage', this.itemSelectedForDelete)
             this.updatePackage()
                 .then(() => {
-                    this.packageSelected = !this.packageSelected
+                    this.deleteSelected = !this.deleteSelected
                 })
+        },
+        updatedEditPackage() {
+            const updatedItem = {}
+            updatedItem.packageId = this.itemSelectedForEdit.packageId
+            updatedItem.cargoId = this.itemSelectedForEdit.cargoId
+            updatedItem.description = this.itemSelectedForEdit.description
+            updatedItem.quantity = this.itemSelectedForEdit.quantity
+            updatedItem.weight = this.itemSelectedForEdit.weight
+            updatedItem.length = this.itemSelectedForEdit.length
+            updatedItem.width = this.itemSelectedForEdit.width
+            updatedItem.height = this.itemSelectedForEdit.height
+            updatedItem.isActive = true
+            
+            this.$store.commit('setSelectedPackage', updatedItem)
+            this.updatePackage()
+                .then(() => {
+                    console.log("UPDATED ITEM", updatedItem);
+                    this.editSelected = !this.editSelected
+                })
+        },
+        getContainerList() {
+            this.requestContainer()
+                .then((response) => {
+                    this.containerList = response.data 
+                    console.log("CONTAINER LIST", this.containerList)
+                })
+        },
+        addClicked() {
+            this.addSelected = !this.addSelected
+        },
+        editClicked(item) {
+            this.editSelected = !this.editSelected
+            this.itemSelectedForEdit = item
+            console.log("ITEM SELECTED FOR EDIT", this.itemSelectedForEdit)
+        },
+        togglePackageAdd() {
+            this.packageList = !this.packageList
         },
     },
     computed: {

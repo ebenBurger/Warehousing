@@ -8,7 +8,7 @@ import Toast from "vue-toastification";
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {
-    faCogs,
+    faCogs, faEdit,
     faHouseUser,
     faPlus,
     faPowerOff, faShippingFast, faTrash, faUserCircle,
@@ -57,7 +57,7 @@ Vue.filter('dateFilter', function (value) {
 })
 
 //FA icons
-library.add( faUserPlus, faPowerOff, faPlus, faCogs, faUserEdit, faHouseUser, faUserCog, faUserTie, faUserCircle, faShippingFast, faTrash, faWindowClose )
+library.add( faUserPlus, faPowerOff, faPlus, faCogs, faUserEdit, faHouseUser, faUserCog, faUserTie, faUserCircle, faShippingFast, faTrash, faWindowClose, faEdit )
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 

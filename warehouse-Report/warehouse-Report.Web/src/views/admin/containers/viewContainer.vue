@@ -27,7 +27,7 @@
                                 <p>
                                     {{container.containerName}}
                                 </p>
-
+                                
                             </b-card>
                         </b-col>
                     </b-row>
@@ -39,6 +39,24 @@
                 <b-col>
                     <label>Container Name</label>
                     <b-form-input v-model="containerData.containerName" />
+                </b-col>
+            </b-row>
+            <b-row>
+                <b-col>
+                    <b-button-group class="d-flex">
+                        <toggle-button :value="false"
+                                       v-model="containerData.gp20ft"
+                                       class="d-flex justify-content-center"
+                                       :sync= "true"
+                                       @change="toggleContainers"
+                                       :labels="{checked: 'Yes'}"/>
+                        <toggle-button :value="false"
+                                       v-model="containerData.frig20ft"
+                                       class="d-flex justify-content-center"
+                                       :sync= "true"
+                                       @change="toggleContainers"
+                                       :labels="{checked: 'Yes'}"/>
+                    </b-button-group>
                 </b-col>
             </b-row>
             <hr class="mx-3">
@@ -65,9 +83,15 @@ export default {
     data: () => ({
         containerData: {
             containerName: null,
+            gp20ft: null,
+            frig20ft: null,
             isActive: null,
         },
         availableContainers: [],
+        selected: null,
+        slider: {
+            status: true
+        }
     }),
     beforeCreate() {
     },
@@ -96,12 +120,8 @@ export default {
             this.$store.commit('setCreateContainerRequest', this.containerData)
             this.createContainer()
             .then(() => {
-                this.toast('Container successfully created','Success','success')
                 this.hideContainerModal()
                 this.getContainers()
-            })
-            .catch(() => {
-                this.toast('There was an error- creating your container, Please try again','Bad News','danger')
             })
             
         },
@@ -117,14 +137,10 @@ export default {
                 console.log('ERROR', err)
             })
         },
-        toast(message, title, variant) {
-            this.$bvToast.toast(message, {
-                title: title,
-                variant: variant,
-                toaster: 'b-toaster-top-center',
-                solid: true,
-                autoHideDelay: 5000,
-            })
+        toggleContainers(id, event) {
+            let value = event.value;
+            console.log('VALUE', value);
+            console.log('ID', id);
         },
     },
     computed: {},
