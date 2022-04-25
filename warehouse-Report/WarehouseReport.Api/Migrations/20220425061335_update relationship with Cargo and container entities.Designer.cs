@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WarehouseReport.Api.Models;
 
 namespace WarehouseReport.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220425061335_update relationship with Cargo and container entities")]
+    partial class updaterelationshipwithCargoandcontainerentities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -232,6 +234,9 @@ namespace WarehouseReport.Api.Migrations
                         .HasColumnType("bit");
 
                     b.Property<int?>("ContainerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ContainreId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("CurrentDate")
