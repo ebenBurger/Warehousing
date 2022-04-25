@@ -2,6 +2,7 @@ import Vue from 'vue';
 import App from './App.vue';
 import VueRouter from "vue-router";
 import ToggleButton from 'vue-js-toggle-button'
+import ToggleSwitch from 'vuejs-toggle-switch'
 import router from './router'
 import store from "@/store";
 import Toast from "vue-toastification";
@@ -27,7 +28,7 @@ import './style.scss'
 
 Vue.config.productionTip = true;
 
-const options = {
+const toastOptions = {
     icon: true,
     position: 'top-center',
     draggable: true,
@@ -41,7 +42,8 @@ Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(VueRouter)
 Vue.use(ToggleButton)
-Vue.use(Toast, options);
+Vue.use(Toast, toastOptions)
+Vue.use(ToggleSwitch)
 
 Vue.filter('dateTimeFilter', function (value) {
     if (!value) return ''
