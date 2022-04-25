@@ -34,29 +34,27 @@
                 </b-card>
             </b-col>
         </b-row>
-        <b-modal id="containerAddModal" hide-footer hide-header-close class="text-center" title="Add Cargo">
+        <b-modal id="containerAddModal" hide-footer hide-header-close class="text-center" title="Add Cargo" size="xl">
             <b-row>
                 <b-col>
                     <label>Container Name</label>
                     <b-form-input v-model="containerData.containerName" />
                 </b-col>
             </b-row>
-            <b-row>
-                <b-col>
-                    <b-button-group class="d-flex">
-                        <toggle-button :value="false"
-                                       v-model="containerData.gp20ft"
-                                       class="d-flex justify-content-center"
-                                       :sync= "true"
-                                       @change="toggleContainers"
-                                       :labels="{checked: 'Yes'}"/>
-                        <toggle-button :value="false"
-                                       v-model="containerData.frig20ft"
-                                       class="d-flex justify-content-center"
-                                       :sync= "true"
-                                       @change="toggleContainers"
-                                       :labels="{checked: 'Yes'}"/>
-                    </b-button-group>
+            <b-row class="mt-3">
+                <b-col class="d-flex justify-content-center">
+                    <toggle-switch
+                        :options="option20ft"
+                        @change="toggleContainers($event.value)" 
+                    />
+                </b-col>
+            </b-row>
+            <b-row class="mt-3">
+                <b-col class="d-flex justify-content-center">
+                    <toggle-switch
+                        :options="option40ft"
+                        @change="toggleContainers($event.value)"
+                    />
                 </b-col>
             </b-row>
             <hr class="mx-3">
@@ -83,15 +81,86 @@ export default {
     data: () => ({
         containerData: {
             containerName: null,
-            gp20ft: null,
-            frig20ft: null,
+            gp20ft: false,
+            frig20ft: false,
+            froog20ft: false,
+            toig20ft: false,
+            otooog20ft: false,
+            
+            gp40ft: false,
+            hq40ft: false,
+            frig40ft: false,
+            feoog40ft: false,
+            otig40ft: false,
+            otoog40ft: false,
+            
             isActive: null,
         },
         availableContainers: [],
-        selected: null,
-        slider: {
-            status: true
-        }
+        option20ft: {
+            layout: {
+                color: 'black',
+                backgroundColor: 'white',
+                selectedColor: 'white',
+                selectedBackgroundColor: 'blue',
+                borderColor: 'black',
+                fontFamily: 'Arial',
+                fontWeight: 'normal',
+                fontWeightSelected: 'bold',
+                squareCorners: false,
+                noBorder: false
+            },
+            size: {
+                fontSize: 0.9,
+                height: 2,
+                padding: 0.3,
+                width: 35,
+            },
+            items: {
+                delay: .4,
+                preSelected: 'unknown',
+                disabled: false,
+                labels: [
+                    {name: '20ft GP'},
+                    {name: '20ft FR IG'},
+                    {name: '20ft FR OOG'},
+                    {name: '20ft TO OOG'},
+                    {name: '20ft OTO OOG'},
+                ]
+            }
+        },
+        option40ft: {
+            layout: {
+                color: 'black',
+                backgroundColor: 'white',
+                selectedColor: 'white',
+                selectedBackgroundColor: 'blue',
+                borderColor: 'black',
+                fontFamily: 'Arial',
+                fontWeight: 'normal',
+                fontWeightSelected: 'bold',
+                squareCorners: false,
+                noBorder: false
+            },
+            size: {
+                fontSize: 0.9,
+                height: 2,
+                padding: 0.3,
+                width: 35,
+            },
+            items: {
+                delay: .4,
+                preSelected: 'unknown',
+                disabled: false,
+                labels: [
+                    {name: '40ft GP'},
+                    {name: '40ft HQ'},
+                    {name: '40ft FR IG'},
+                    {name: '40ft TO IG'},
+                    {name: '40ft OT OOG'},
+                ]
+            }
+        },
     }),
     beforeCreate() {
     },
@@ -137,10 +206,26 @@ export default {
                 console.log('ERROR', err)
             })
         },
-        toggleContainers(id, event) {
-            let value = event.value;
-            console.log('VALUE', value);
-            console.log('ID', id);
+        toggleContainers(event) {
+            switch (event){
+                case '20ft GP':
+                    this.containerData.gp20ft = true
+                    this.containerData.frig20ft = false
+                    this.containerData.froog20ft = false
+                    this.containerData.toig20ft = false
+                    this.containerData.otooog20ft = false
+                    console.log('EVENT', event)
+                    console.log('GP20ft', this.containerData.gp20ft)
+                    console.log('FRIG20ft', this.containerData.frig20ft)
+                    break
+                case '20ft FR IG':
+                    this.containerData.gp20ft = false
+                    this.containerData.frig20ft = true
+                    console.log('EVENT', event)
+                    console.log('GP20ft', this.containerData.gp20ft)
+                    console.log('FRIG20ft', this.containerData.frig20ft)
+                    break
+            }
         },
     },
     computed: {},
