@@ -62,6 +62,13 @@ namespace WarehouseReport.Api.Managers
                 {
                     throw new Exception("Invalid Package Id");
                 }
+                
+                var volume = (packageModel.Length * packageModel.Width * packageModel.Height);
+                packageModel.KgCBMConversion = packageModel.Weight / 1000;
+                packageModel.VolumeCbm = (volume / 1000000) *
+                                         packageModel.Quantity;
+                packageModel.ChargeableWeight = Math.Max(packageModel.VolumeCbm, packageModel.KgCBMConversion);
+                packageModel.VolumeMetric = volume / 6000;
 
                 _context.Package.Update(packageModel);
                 await _context.SaveChangesAsync();
