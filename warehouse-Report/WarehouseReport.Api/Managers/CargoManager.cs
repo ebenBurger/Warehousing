@@ -24,6 +24,7 @@ namespace WarehouseReport.Api.Managers
             .Include(b => b.PackageModels)
             .Include(c => c.Container)
             .Where(a => a.IsActive == true)
+            .Where(d => d.IsComplete == false)
             .ToList();
 
         return data;
@@ -63,6 +64,13 @@ namespace WarehouseReport.Api.Managers
             if (cargoModel.CargoId == 0)
             {
                 throw new Exception("Invalid Cargo Id");
+            }
+
+            if (cargoModel.IsComplete)
+            {
+                DateTime thisDay = DateTime.Today;
+                cargoModel.NumberOfStorageDays = (thisDay - cargoModel.EndDateOfFreeStorage).Days;
+                // cargoModel.StorageCost = (2.7 * cargoModel.ChargeableWeight) * cargoModel.NumberOfStorageDays;
             }
 
             _context.Cargo.Update(cargoModel);
