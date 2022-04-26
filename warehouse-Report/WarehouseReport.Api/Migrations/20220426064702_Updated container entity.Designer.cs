@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WarehouseReport.Api.Models;
 
 namespace WarehouseReport.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220426064702_Updated container entity")]
+    partial class Updatedcontainerentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -398,13 +400,43 @@ namespace WarehouseReport.Api.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("FRIG20ft")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("FRIG40ft")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("FROOG20ft")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("FROOG40ft")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("GP20ft")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("GP40ft")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("HQ40ft")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsComplete")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("PackingDate")
+                    b.Property<bool>("OTIG40ft")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("OTOOG20ft")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("OTOOG40ft")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("PackingDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("PackingLocation")
@@ -415,6 +447,9 @@ namespace WarehouseReport.Api.Migrations
 
                     b.Property<string>("SealTwo")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TOIG20ft")
+                        .HasColumnType("bit");
 
                     b.HasKey("ContainerId");
 
