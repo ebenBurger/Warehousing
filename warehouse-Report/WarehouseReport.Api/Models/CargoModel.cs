@@ -9,6 +9,7 @@ namespace WarehouseReport.Api.Models
         [Key]
         public int CargoId { get; set; }
         public string Supplier { get; set; }
+        public string Description { get; set; }
         public DateTime DateCollected { get; set; }
         public string OrderNumber { get; set; }
         public double Quantity { get; set; }

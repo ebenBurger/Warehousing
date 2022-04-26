@@ -12,9 +12,6 @@ namespace WarehouseReport.Api.Models
         public int ContainerId { get; set; }
         public string ContainerName { get; set; }
         public string ContainerType { get; set; }
-
-        // public IEnumerable<ContainerType> ContainerTypes { get; set; }
-
         public string SealOne { get; set; }
         public string SealTwo { get; set; }
         public DateTime? PackingDate { get; set; }
@@ -25,5 +22,6 @@ namespace WarehouseReport.Api.Models
         public bool IsActive { get; set; }
 
         public ICollection<CargoModel> Cargo { get; set; }
+        public ICollection<PackageModel> Package { get; set; }
     }
 }
