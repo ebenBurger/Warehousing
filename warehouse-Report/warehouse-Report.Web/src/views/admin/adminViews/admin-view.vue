@@ -20,6 +20,8 @@
                     <b-row class="mt-3">
                         <b-col>
                             <b-table
+                                sort-icon-left
+                                sticky-header
                                 striped hover
                                 :items="cargoTable.dataSource"
                                 :fields="cargoTable.tableColumns"
@@ -45,12 +47,12 @@
                                         <span class="mr-auto">{{row.item.endDateOfFreeStorage | dateFilter}}</span>
                                     </b-row>
                                 </template>
-
-<!--                                <template #cell(kgCBMConvertion)="row">-->
-<!--                                    <b-row align-v="center">-->
-<!--                                        <span class="mr-auto">{{row.item.kgCBMConvertion.toFixed(3)}}</span>-->
-<!--                                    </b-row>-->
-<!--                                </template>-->
+                                
+                                <template #cell(storageDays)="row">
+                                    <b-row align-v="center">
+                                        <span class="mr-auto">{{row.this.storageDays}}</span>
+                                    </b-row>
+                                </template>
 
 <!--                                <template #cell(volume)="row">-->
 <!--                                    <b-row align-v="center">-->
@@ -826,7 +828,7 @@ export default {
                 {
                     label: 'Cargo Ready Place',
                     key: 'cargoReadyPlace',
-                    sortable: true,
+                    sortable: false,
                     tdClass:'',
                 },
                 {
@@ -844,19 +846,19 @@ export default {
                 {
                     label: 'Invoice Number',
                     key: 'supplierInvoiceNumber',
-                    sortable: true,
+                    sortable: false,
                     tdClass:'',
                 },
                 {
                     label: 'Quantity',
                     key: 'packageModels.quantity',
-                    sortable: true,
+                    sortable: false,
                     tdClass:'',
                 },
                 {
                     label: 'Weight (KG)',
                     key: 'weight',
-                    sortable: true,
+                    sortable: false,
                     tdClass:'',
                 },
                 {
@@ -880,15 +882,18 @@ export default {
                 {
                     label: 'Storage Days',
                     key: 'this.storageDays',
-                    sortable: true,
-                    tdClass:'',
-                },
-                {
-                    label: 'Storage Cost',
-                    key: 'storageCost',
                     sortable: false,
                     tdClass:'',
+                    // formatter: (value, key, item) => {
+                    //     return 
+                    // }
                 },
+                // {
+                //     label: 'Storage Cost',
+                //     key: 'storageCost',
+                //     sortable: false,
+                //     tdClass:'',
+                // },
                 {
                     label: '',
                     key: 'actions',
@@ -1178,7 +1183,12 @@ export default {
             const todayDate = new Date()
             const dbDate = new Date(this.selectedCargo.endDateOfFreeStorage)
             const differanceInTime = todayDate.getTime() - dbDate.getTime()
-            this.storageDays = (differanceInTime / (1000 * 3600 * 24) - 1).toFixed(0)
+            const calcDays = (differanceInTime / (1000 * 3600 * 24) - 1).toFixed(0)
+            
+            if (calcDays !== 0) {
+                this.storageDays = calcDays
+            }
+            this.storageDays = 0
             console.log('STORAGE DAYS', this.storageDays)
         },
     },
