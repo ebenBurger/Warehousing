@@ -22,39 +22,39 @@
                         </b-col>
                     </b-row>
                     <b-row>
-                        <b-col class="d-flex w-100 h-100">
-                            <b-card class="containerItem" v-for="(container) in availableContainers" :key="container.containerId">
-                                <p>
-                                    {{container.containerName}}
-                                </p>
-                                
+                        <b-col class="d-flex cursor-pointer">
+                            <b-card class="containerItem cursor-pointer" v-for="(container) in availableContainers" :key="container.containerId" @click="openContainerContentModal(container)">
+                                    <div class="contentCount">
+                                        <div class="content">
+                                            <label>Cargo Items:</label>
+                                            <label>{{container.cargo.length}}</label>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="w-100">
+                                            {{container.containerName}}
+                                        </label>
+                                        <label class="w-100">
+                                            ({{container.containerType}})
+                                        </label>
+                                    </div>
                             </b-card>
                         </b-col>
                     </b-row>
                 </b-card>
             </b-col>
         </b-row>
-        <b-modal id="containerAddModal" hide-footer hide-header-close class="text-center" title="Add Cargo" size="xl">
+        <b-modal id="containerAddModal" hide-footer hide-header-close class="text-center" title="Create Container" size="xl">
             <b-row>
-                <b-col>
+                <b-col cols="3">
                     <label>Container Name</label>
                     <b-form-input v-model="containerData.containerName" />
                 </b-col>
             </b-row>
-            <b-row class="mt-3">
-                <b-col class="d-flex justify-content-center">
-                    <toggle-switch
-                        :options="option20ft"
-                        @change="toggleContainers($event.value)" 
-                    />
-                </b-col>
-            </b-row>
-            <b-row class="mt-3">
-                <b-col class="d-flex justify-content-center">
-                    <toggle-switch
-                        :options="option40ft"
-                        @change="toggleContainers($event.value)"
-                    />
+            <b-row>
+                <b-col cols="3">
+                    <label>Container Type</label>
+                    <b-form-select v-model="containerData.containerType" :options="options"></b-form-select>
                 </b-col>
             </b-row>
             <hr class="mx-3">
@@ -71,96 +71,102 @@
                 </b-col>
             </b-row>
         </b-modal>
+
+        <b-modal v-if="selectedContainer" id="containerContentModal" hide-footer hide-header-close class="text-center" title="Update/ View Container">
+            <b-row>
+                <b-col>
+                    {{selectedContainer.containerName}}
+                </b-col>
+            </b-row>
+            <b-tabs fill>
+                <b-tab title="Update Container">
+                    <b-form>
+                        <b-row>
+                            <b-col>
+                                <label>Seal One</label>
+                                <b-form-input />
+                            </b-col>
+                            <b-col>
+                                <label>Seal Two</label>
+                                <b-form-input />
+                            </b-col>
+                        </b-row>
+                        <b-row>
+                            <b-col>
+                                <label>Packing Date</label>
+                                <b-form-datepicker />
+                            </b-col>
+                            <b-col>
+                                <label>Packing Loacation</label>
+                                <b-form-input />
+                            </b-col>
+                        </b-row>
+                        <b-row>
+                            <b-col cols="2">
+                                <label>Complete</label>
+                                <toggle-button :value="false"
+                                               v-model="selectedContainer.isComplete"/>
+                            </b-col>
+                        </b-row>
+                    </b-form>
+                </b-tab>
+                <b-tab title="View Cargo">
+<!--                    <div v-if="selectedContainer">-->
+                        <div v-show="selectedContainer.cargo === 0">
+                            <h4 class="my-5 text-center">
+                                This container is empty
+                            </h4>
+                        </div>
+                        <div v-show="selectedContainer.cargo !== 0">
+                            <p v-for="(item, index) in selectedContainer.cargo" :key="index">{{item.description}}</p>
+                        </div>
+<!--                    </div>-->
+                    
+                </b-tab>
+            </b-tabs>
+            <hr class="mx-3">
+            <b-row>
+                <b-col>
+                    <div class="d-flex justify-content-end">
+                        <div>
+                            <b-button variant="outline-red" squared @click="hideContainerContentModal" class="ml-2">Cancel</b-button>
+                        </div>
+                        <div>
+                            <b-button variant="primary" squared @click="containerUpdate" class="ml-2">Update</b-button>
+                        </div>
+                    </div>
+                </b-col>
+            </b-row>
+        </b-modal>
+
     </div>
 </template>
 
 <script>
-import {mapActions} from "vuex";
+import {mapActions, mapState} from "vuex";
 
 export default {
     data: () => ({
         containerData: {
             containerName: null,
-            gp20ft: false,
-            frig20ft: false,
-            froog20ft: false,
-            toig20ft: false,
-            otooog20ft: false,
-            
-            gp40ft: false,
-            hq40ft: false,
-            frig40ft: false,
-            feoog40ft: false,
-            otig40ft: false,
-            otoog40ft: false,
-            
+            containerType: null,
             isActive: null,
         },
         availableContainers: [],
-        option20ft: {
-            layout: {
-                color: 'black',
-                backgroundColor: 'white',
-                selectedColor: 'white',
-                selectedBackgroundColor: 'blue',
-                borderColor: 'black',
-                fontFamily: 'Arial',
-                fontWeight: 'normal',
-                fontWeightSelected: 'bold',
-                squareCorners: false,
-                noBorder: false
-            },
-            size: {
-                fontSize: 0.9,
-                height: 2,
-                padding: 0.3,
-                width: 35,
-            },
-            items: {
-                delay: .4,
-                preSelected: 'unknown',
-                disabled: false,
-                labels: [
-                    {name: '20ft GP'},
-                    {name: '20ft FR IG'},
-                    {name: '20ft FR OOG'},
-                    {name: '20ft TO OOG'},
-                    {name: '20ft OTO OOG'},
-                ]
-            }
-        },
-        option40ft: {
-            layout: {
-                color: 'black',
-                backgroundColor: 'white',
-                selectedColor: 'white',
-                selectedBackgroundColor: 'blue',
-                borderColor: 'black',
-                fontFamily: 'Arial',
-                fontWeight: 'normal',
-                fontWeightSelected: 'bold',
-                squareCorners: false,
-                noBorder: false
-            },
-            size: {
-                fontSize: 0.9,
-                height: 2,
-                padding: 0.3,
-                width: 35,
-            },
-            items: {
-                delay: .4,
-                preSelected: 'unknown',
-                disabled: false,
-                labels: [
-                    {name: '40ft GP'},
-                    {name: '40ft HQ'},
-                    {name: '40ft FR IG'},
-                    {name: '40ft TO IG'},
-                    {name: '40ft OT OOG'},
-                ]
-            }
-        },
+        options: [
+            {value: null, text: "Please select a container type"},
+            {value: '20ft GP', text: '20ft GP'},
+            {value: '20ft FR IG', text: '20ft FR IG'},
+            {value: '20ft FR OOG', text: '20ft FR OOG'},
+            {value: '20ft OT IG', text: '20ft OT IG'},
+            {value: '20ft OT OOG', text: '20ft OT OOG'},
+            {value: '40ft GP', text: '40ft GP'},
+            {value: '40ft HQ', text: '40ft HQ'},
+            {value: '40ft FR IG', text: '40ft FR IG'},
+            {value: '40ft FR OOG', text: '40ft FR OOG'},
+            {value: '40ft OT IG', text: '40ft OT IG'},
+            {value: '40ft OT OOG', text: '40ft OT OOG'},
+        ],
     }),
     beforeCreate() {
     },
@@ -177,6 +183,7 @@ export default {
     },
     methods: {
         ...mapActions(["createContainer", "requestContainer"]),
+        
         
         openContainerModal() {
             this.$bvModal.show('containerAddModal')
@@ -198,6 +205,7 @@ export default {
             this.requestContainer()
             .then((response) => {
                 this.availableContainers = response.data
+                console.log("CONTAINER", response.data)
             })
             .catch((err) => {
                 this.$router.push({path: '/'})
@@ -206,29 +214,21 @@ export default {
                 console.log('ERROR', err)
             })
         },
-        toggleContainers(event) {
-            switch (event){
-                case '20ft GP':
-                    this.containerData.gp20ft = true
-                    this.containerData.frig20ft = false
-                    this.containerData.froog20ft = false
-                    this.containerData.toig20ft = false
-                    this.containerData.otooog20ft = false
-                    console.log('EVENT', event)
-                    console.log('GP20ft', this.containerData.gp20ft)
-                    console.log('FRIG20ft', this.containerData.frig20ft)
-                    break
-                case '20ft FR IG':
-                    this.containerData.gp20ft = false
-                    this.containerData.frig20ft = true
-                    console.log('EVENT', event)
-                    console.log('GP20ft', this.containerData.gp20ft)
-                    console.log('FRIG20ft', this.containerData.frig20ft)
-                    break
-            }
+        openContainerContentModal(item) {
+            this.$store.commit('setSelectedContainer', item)
+            this.$bvModal.show('containerContentModal')
+            console.log("SELECTED CONTAINER", item)
         },
+        hideContainerContentModal() {
+            this.$bvModal.hide('containerContentModal')
+        },
+        containerUpdate() {},
     },
-    computed: {},
+    computed: {
+        ...mapState([
+            "selectedContainer"
+        ]),
+    },
 }
 </script>
 
@@ -240,13 +240,36 @@ export default {
     height: 10rem;
     cursor: pointer;
     position: relative;
+    z-index: 100;
 }
 
-.containerItem p {
+.containerItem div {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
+    width: 100%;
+    
+}
+
+.containerItem div > label {
+    color: white;
+}
+
+.contentCount {
+    position: relative;
+    height: 10rem;
+    width: 10rem;
+    cursor: pointer;
+    
+}
+
+.contentCount .content {
+    position: absolute;
+    top: 2rem;
+    left: 4rem;
+    text-align: right;
+    cursor: pointer;
 }
 </style>
