@@ -14,6 +14,7 @@ export default new Vuex.Store({
         selectedSupplier: null,
         selectedCargo: null,
         selectedPackage: null,
+        selectedContainer: null,
         
         
         //request objects
