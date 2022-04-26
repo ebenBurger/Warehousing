@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WarehouseReport.Api.Models;
 
 namespace WarehouseReport.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220426112325_updated package and container relationship")]
+    partial class updatedpackageandcontainerrelationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -252,9 +254,6 @@ namespace WarehouseReport.Api.Migrations
                     b.Property<string>("DeliveryArea")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<double>("DollarRate")
                         .HasColumnType("float");
 
@@ -431,13 +430,13 @@ namespace WarehouseReport.Api.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CargoId")
+                    b.Property<int>("CargoId")
                         .HasColumnType("int");
 
                     b.Property<double>("ChargeableWeight")
                         .HasColumnType("float");
 
-                    b.Property<int?>("ContainerId")
+                    b.Property<int>("ContainerId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DateCreated")
@@ -546,11 +545,15 @@ namespace WarehouseReport.Api.Migrations
                 {
                     b.HasOne("WarehouseReport.Api.Models.CargoModel", "Cargo")
                         .WithMany("PackageModels")
-                        .HasForeignKey("CargoId");
+                        .HasForeignKey("CargoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("WarehouseReport.Api.Models.ContainerModel", "Container")
                         .WithMany("Package")
-                        .HasForeignKey("ContainerId");
+                        .HasForeignKey("ContainerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Cargo");
 
