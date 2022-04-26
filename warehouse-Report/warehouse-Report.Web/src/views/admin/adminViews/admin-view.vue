@@ -206,8 +206,8 @@
                                 </b-col>
                             </b-row>
                             <b-row>
-                                <label v-if="packageAdd.length <=1"> You hav {{packageAdd.length}} item on the packing list.</label>
-                                <label v-if="packageAdd.length >=2"> You hav {{packageAdd.length}} items on the packing list.</label>
+                                <label v-if="packageAdd.length <=1"> You have {{packageAdd.length}} item on the packing list.</label>
+                                <label v-if="packageAdd.length >=2"> You have {{packageAdd.length}} items on the packing list.</label>
                             </b-row>
                             <b-row>
                                 <b-col>
@@ -325,7 +325,7 @@
                                         </b-col>
                                         <b-col>
                                             <label><span class="font-weight-bold">Number of storage days</span></label>
-                                            <label>{{selectedCargo.numberOfStorageDays}}</label>
+                                            <label>{{this.storageDays}}</label>
                                         </b-col>
                                         <b-col>
                                             <label><span class="font-weight-bold">Storage cost</span> </label>
@@ -467,21 +467,9 @@
                                                         <label class="text-center font-weight-bold">Chargable Weight:</label>
                                                         <h3 class="text-center">{{item.chargeableWeight ? item.chargeableWeight.toFixed(3) : ''}}</h3>
                                                     </b-col>
-                                                    <b-col>
-                                                        <label class="text-center font-weight-bold">Storage Days:</label>
-                                                        <h3 class="text-center">{{item.numberOfStorageDays}}</h3>
-                                                    </b-col>
-
                                                 </b-row>
                                                 <b-row class="m-0 colStyle">
-                                                    <b-col>
-                                                        <label class="text-center font-weight-bold">Storage Cost:</label>
-                                                        <h3 class="text-center">{{item.storageCost}}</h3>
-                                                    </b-col>
-                                                    <b-col>
-                                                        <label class="text-center font-weight-bold">Volume Metric</label>
-                                                        <h3 class="text-center">{{item.volumeMetric ? item.volumeMetric.toFixed(3) : ''}}</h3>
-                                                    </b-col>
+                                                    
                                                 </b-row>
                                             </div>
                                         </div>
@@ -541,8 +529,8 @@
                                             </b-col>
                                         </b-row>
                                         <b-row>
-                                            <label v-if="packageAdd.length <=1"> You hav {{packageAdd.length}} item on the packing list.</label>
-                                            <label v-if="packageAdd.length >=2"> You hav {{packageAdd.length}} items on the packing list.</label>
+                                            <label v-if="packageAdd.length <=1"> You have {{packageAdd.length}} item on the packing list.</label>
+                                            <label v-if="packageAdd.length >=2"> You have {{packageAdd.length}} items on the packing list.</label>
                                         </b-row>
                                         <b-row>
                                             <b-col>
@@ -705,7 +693,7 @@
                                 </b-form>
                             </b-tab>
                             <b-tab title="Container" class="tabItem">
-                                <b-form class="w-100">
+                                <b-form class="w-100" v-if="containerList.length >= 1">
                                     <b-row>
                                         <b-col>
                                             <div class="d-flex justify-content-between align-items-center">
@@ -732,6 +720,9 @@
                                         </b-col>
                                     </b-row>
                                 </b-form>
+                                <div v-if="containerList.length === 0" class="text-center my-5">
+                                    <h3>There are no containers available to select from</h3>
+                                </div>
                             </b-tab>
                         </b-tabs>
                     </b-col>
@@ -888,7 +879,7 @@ export default {
                 },
                 {
                     label: 'Storage Days',
-                    key: 'numberOfStorageDays',
+                    key: 'this.storageDays',
                     sortable: true,
                     tdClass:'',
                 },
@@ -922,6 +913,8 @@ export default {
         editSelected: false,
         itemSelectedForEdit: [],
         packageKey: 0,
+        storageDays: null,
+        
     }),
     beforeCreate() {
     },
@@ -955,6 +948,7 @@ export default {
             this.$bvModal.show('cargoEdit')
             this.$store.commit('setSelectedCargo', rowItem)
             console.log("SELECTED CARGO", rowItem)
+            this.calculateStorageDays()
         },
         hideCargoEditModal() {
             this.$bvModal.hide('cargoEdit')
@@ -1060,7 +1054,7 @@ export default {
             })
            
         },
-        saveExtraPackageToDb(rowItem) {
+        saveExtraPackageToDb() {
             //TODO- loop through the array and add to the db
             this.packageAdd.forEach((item) => {
                 const packItem = {}
@@ -1078,7 +1072,9 @@ export default {
                 this.createPackage()
                     .then(() => {
                         this.hideCargoEditModal()
-                        this.openCargoEntry(rowItem)
+                        this.addSelected = !this.addSelected
+                        this.getCargoList()
+                        this.$store.commit('setSelectedCargo', this.selectedCargo)
                     })
             })
 
@@ -1177,6 +1173,13 @@ export default {
         },
         togglePackageAdd() {
             this.packageList = !this.packageList
+        },
+        calculateStorageDays() {
+            const todayDate = new Date()
+            const dbDate = new Date(this.selectedCargo.endDateOfFreeStorage)
+            const differanceInTime = todayDate.getTime() - dbDate.getTime()
+            this.storageDays = (differanceInTime / (1000 * 3600 * 24) - 1).toFixed(0)
+            console.log('STORAGE DAYS', this.storageDays)
         },
     },
     computed: {
