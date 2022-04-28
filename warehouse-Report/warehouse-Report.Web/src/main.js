@@ -54,7 +54,7 @@ Vue.filter('dateTimeFilter', function (value) {
 Vue.filter('dateFilter', function (value) {
     if (!value) return ''
     let localeValue = new Date(value)
-    let response = localeValue.toLocaleDateString()
+    let response = localeValue.toLocaleDateString("en-GB")
     return response
 })
 
