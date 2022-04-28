@@ -14,6 +14,10 @@
                                     <font-awesome-icon icon="fa-plus" class="mr-1" />
                                     Add Entry
                                 </b-button>
+                                <b-button variant="outline-primary" size="sm" squared @click="openCargoModal">
+                                    <font-awesome-icon icon="fa-plus" class="mr-1" />
+                                    Completed Cagro
+                                </b-button>
                             </b-col>
                         </b-col>
                     </b-row>
@@ -21,7 +25,6 @@
                         <b-col>
                             <b-table
                                 sort-icon-left
-                                sticky-header
                                 striped hover
                                 :items="cargoTable.dataSource"
                                 :fields="cargoTable.tableColumns"
@@ -36,39 +39,57 @@
                                     </div>
                                 </template>
 
-                                <template #cell(dateCollected)="row">
+                                <template #cell(dateCollected)="data">
                                     <b-row align-v="center">
-                                        <span class="mr-auto">{{row.item.dateCollected | dateFilter}}</span>
+                                        <span class="mr-auto">{{data.item.dateCollected | dateFilter}}</span>
                                     </b-row>
                                 </template>
 
-                                <template #cell(endDateOfFreeStorage)="row">
+                                <template #cell(endDateOfFreeStorage)="data">
                                     <b-row align-v="center">
-                                        <span class="mr-auto">{{row.item.endDateOfFreeStorage | dateFilter}}</span>
-                                    </b-row>
-                                </template>
-                                
-                                <template #cell(storageDays)="row">
-                                    <b-row align-v="center">
-                                        <span class="mr-auto">{{row.this.storageDays}}</span>
+                                        <span class="mr-auto">{{data.item.endDateOfFreeStorage | dateFilter}}</span>
                                     </b-row>
                                 </template>
 
-<!--                                <template #cell(volume)="row">-->
-<!--                                    <b-row align-v="center">-->
-<!--                                        <span class="mr-auto">{{row.item.volumeCbm.toFixed(3)}}</span>-->
-<!--                                    </b-row>-->
-<!--                                </template>-->
-
-<!--                                <template #cell(chargeableWeight)="row">-->
-<!--                                    <b-row align-v="center">-->
-<!--                                        <span class="mr-auto">{{row.item.chargeableWeight.toFixed(3)}}</span>-->
-<!--                                    </b-row>-->
-<!--                                </template>-->
-
-                                <template #cell(storageCost)="row">
+                                <template #cell(quantitySum)="data">
                                     <b-row align-v="center">
-                                        <span class="mr-auto">{{row.item.storageCost.toFixed(2)}}</span>
+                                        <span class="mr-auto">{{data.item.packageModels.reduce((acc, qty) => acc + qty.quantity, 0)}}</span>
+                                    </b-row>
+                                </template>
+
+                                <template #cell(weightSum)="data">
+                                    <b-row align-v="center">
+                                        <span class="mr-auto">{{data.item.packageModels.reduce((acc, weight) => acc + weight.weight, 0)}}</span>
+                                    </b-row>
+                                </template>
+
+                                <template #cell(kgCBMConversionSum)="data">
+                                    <b-row align-v="center" >
+                                        <span class="mr-auto">{{data.item.packageModels.reduce((acc, kg) => acc + kg.kgCBMConversion, 0)}}</span>
+                                    </b-row>
+                                </template>
+
+                                <template #cell(volumeSum)="data">
+                                    <b-row align-v="center">
+                                        <span class="mr-auto">{{(data.item.packageModels.reduce((acc, vol) => acc + vol.volumeMetric, 0)).toFixed(3)}}</span>
+                                    </b-row>
+                                </template>
+
+                                <template #cell(chargeableWeightSum)="data">
+                                    <b-row align-v="center">
+                                        <span class="mr-auto">{{(data.item.packageModels.reduce((acc, chargeWeight) => acc + chargeWeight.chargeableWeight, 0)).toFixed(3)}}</span>
+                                    </b-row>
+                                </template>
+
+                                <template #cell(storageDaysCalc)="data">
+                                    <b-row align-v="center">
+                                        <span class="mr-auto">{{((new Date() - new Date(data.item.endDateOfFreeStorage)) / ((1000 * 3600 * 24) - 1)).toFixed()}}</span>
+                                    </b-row>
+                                </template>
+
+                                <template #cell(storageCostsCalc)="data">
+                                    <b-row align-v="center">
+                                        <span class="mr-auto">ZAR {{(((data.item.dollarRate * data.item.packageModels.reduce((acc, weight) => acc + weight.chargeableWeight, 0))) * ((new Date() - new Date(data.item.endDateOfFreeStorage)) / ((1000 * 3600 * 24) - 1))).toFixed(3)}}</span>
                                     </b-row>
                                 </template>
 
@@ -331,9 +352,25 @@
                                         </b-col>
                                         <b-col>
                                             <label><span class="font-weight-bold">Storage cost</span> </label>
-                                            <label>{{selectedCargo.storageCost}}</label>
+                                            <label>{{this.storageCost}}</label>
                                         </b-col>
                                     </b-row>
+                                    <hr class="mx-3">
+                                    <b-row>
+                                        <b-col>
+                                            <label class="font-weight-bold">Total Charged Weight</label>
+                                            <label>{{this.chargeWeight}}</label>
+                                        </b-col>
+                                        <b-col>
+                                            <label class="font-weight-bold">Total Quantity</label>
+                                            <label>{{this.totalQty}}</label>
+                                        </b-col>
+                                        <b-col>
+                                            <label class="font-weight-bold">Total Weight</label>
+                                            <label>{{this.totalWeight}}</label>
+                                        </b-col>
+                                    </b-row>
+                                    <hr class="mx-3">
                                     <b-row>
                                         <b-col cols="4">
                                             <label>Supplier Invoice Number</label>
@@ -825,12 +862,12 @@ export default {
                     sortable: true,
                     tdClass:'',
                 },
-                {
-                    label: 'Cargo Ready Place',
-                    key: 'cargoReadyPlace',
-                    sortable: false,
-                    tdClass:'',
-                },
+                // {
+                //     label: 'Cargo Ready Place',
+                //     key: 'cargoReadyPlace',
+                //     sortable: false,
+                //     tdClass:'',
+                // },
                 {
                     label: 'Order Number',
                     key: 'orderNumber',
@@ -851,49 +888,46 @@ export default {
                 },
                 {
                     label: 'Quantity',
-                    key: 'packageModels.quantity',
+                    key: 'quantitySum',
                     sortable: false,
                     tdClass:'',
                 },
                 {
                     label: 'Weight (KG)',
-                    key: 'weight',
+                    key: 'weightSum',
                     sortable: false,
                     tdClass:'',
                 },
                 {
                     label: 'KG - CBM Conv.',
-                    key: 'kgCBMConversion',
+                    key: 'kgCBMConversionSum',
                     sortable: false,
                     tdClass:'',
                 },
                 {
                     label: 'Volume',
-                    key: 'volume',
+                    key: 'volumeSum',
                     sortable: false,
                     tdClass:'',
                 },
                 {
                     label: 'Chargeable Weight',
-                    key: 'chargeableWeight',
+                    key: 'chargeableWeightSum',
                     sortable: false,
                     tdClass:'',
                 },
                 {
                     label: 'Storage Days',
-                    key: 'this.storageDays',
+                    key: 'storageDaysCalc',
                     sortable: false,
                     tdClass:'',
-                    // formatter: (value, key, item) => {
-                    //     return 
-                    // }
                 },
-                // {
-                //     label: 'Storage Cost',
-                //     key: 'storageCost',
-                //     sortable: false,
-                //     tdClass:'',
-                // },
+                {
+                    label: 'Storage Cost',
+                    key: 'storageCostsCalc',
+                    sortable: false,
+                    tdClass:'',
+                },
                 {
                     label: '',
                     key: 'actions',
@@ -919,6 +953,10 @@ export default {
         itemSelectedForEdit: [],
         packageKey: 0,
         storageDays: null,
+        storageCost: null,
+        chargeWeight: null,
+        totalQty: null,
+        totalWeight: null,
         
     }),
     beforeCreate() {
@@ -954,6 +992,9 @@ export default {
             this.$store.commit('setSelectedCargo', rowItem)
             console.log("SELECTED CARGO", rowItem)
             this.calculateStorageDays()
+            this.calculateStorageCost()
+            this.calculateTotalQty()
+            this.calculateTotalWeight()
         },
         hideCargoEditModal() {
             this.$bvModal.hide('cargoEdit')
@@ -1180,16 +1221,18 @@ export default {
             this.packageList = !this.packageList
         },
         calculateStorageDays() {
-            const todayDate = new Date()
-            const dbDate = new Date(this.selectedCargo.endDateOfFreeStorage)
-            const differanceInTime = todayDate.getTime() - dbDate.getTime()
-            const calcDays = (differanceInTime / (1000 * 3600 * 24) - 1).toFixed(0)
-            
-            if (calcDays !== 0) {
-                this.storageDays = calcDays
-            }
-            this.storageDays = 0
-            console.log('STORAGE DAYS', this.storageDays)
+            ((new Date() - new Date(this.selectedCargo.endDateOfFreeStorage)) / ((1000 * 3600 * 24) - 1)).toFixed(0) >= 0 ? this.storageDays = ((new Date() - new Date(this.selectedCargo.endDateOfFreeStorage)) / ((1000 * 3600 * 24) - 1)).toFixed(0) : this.storageDays = 0
+        },
+        calculateStorageCost() {
+            this.chargeWeight = (this.selectedCargo.packageModels.reduce((acc, weight) => acc + weight.chargeableWeight, 0)).toFixed(3)
+            this.storageCost = ((this.selectedCargo.dollarRate * (this.selectedCargo.packageModels.reduce((acc, weight) => acc + weight.chargeableWeight, 0))) * ((new Date() - new Date(this.selectedCargo.endDateOfFreeStorage)) / ((1000 * 3600 * 24) - 1))).toFixed(3)
+            console.log("StorageCost", this.storageCost)
+        },
+        calculateTotalQty() {
+            this.totalQty = this.selectedCargo.packageModels.reduce((acc, qty) => acc + qty.quantity, 0)
+        },
+        calculateTotalWeight() {
+            this.totalWeight = (this.selectedCargo.packageModels.reduce((acc, weight) => acc + weight.weight, 0)).toFixed(3)
         },
     },
     computed: {
