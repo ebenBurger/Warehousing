@@ -25,8 +25,10 @@ export default new Vuex.Store({
         
         createCargoRequest: null,
         cargoRequest: null,
+        cargoCompleteRequest: null,
         
         containerRequest: null,
+        containerCompleterRequest: null,
         createContainerRequest: null,
         
         createPackageRequest: null,
@@ -45,10 +47,12 @@ export default new Vuex.Store({
 
         setCreateCargoRequest: (state, payload) => {state.createCargoRequest = payload},
         setCargoRequest: (state, payload) => {state.cargoRequest = payload},
+        setCargoCompleteRequest: (state, payload) => {state.cargoCompleteRequest = payload},
         setSelectedCargo: (state, payload) => {state.selectedCargo = payload},
 
         setCreateContainerRequest: (state, payload) => {state.createContainerRequest = payload},
         setContainerRequest: (state, payload) => {state.containerRequest = payload},
+        setContainerCompleteRequest: (state, payload) => {state.containerCompleterRequest = payload},
         setSelectedContainer: (state, payload) => {state.selectedContainer = payload},
         
         setCreatePackageRequest: (state, payload) => {state.createPackageRequest = payload},
@@ -180,7 +184,7 @@ export default new Vuex.Store({
             return new Promise((resolve, reject) => {
                 const callConfig = {
                     method: 'get',
-                    url: state.baseUrl + '/Cargo/GetAllCargo',
+                    url: state.baseUrl + '/Cargo/GetAllAvailCargo',
                     headers: {
                         'Authorization': 'Bearer '+ localStorage.getItem('jwt'),
                         'Content-Type': 'application/json'
@@ -188,9 +192,31 @@ export default new Vuex.Store({
                 }
                 axios(callConfig)
                     .then(response => {
-                        state.supplierRequest = response.data
+                        state.cargoRequest = response.data
                         resolve(response)
                         console.log("CARGO LIST", response.data)
+                    })
+                    .catch(err => {
+                        reject(err)
+                        console.log("CLIENT REQUEST ERROR", err)
+                    })
+            })
+        },
+        requestCompleteCargo: ({state}) => {
+            return new Promise((resolve, reject) => {
+                const callConfig = {
+                    method: 'get',
+                    url: state.baseUrl + '/Cargo/GetAllCompleteCargo',
+                    headers: {
+                        'Authorization': 'Bearer '+ localStorage.getItem('jwt'),
+                        'Content-Type': 'application/json'
+                    },
+                }
+                axios(callConfig)
+                    .then(response => {
+                        state.cargoCompleteRequest = response.data
+                        resolve(response)
+                        console.log("COMPLETE CARGO LIST", response.data)
                     })
                     .catch(err => {
                         reject(err)
@@ -306,7 +332,7 @@ export default new Vuex.Store({
             return new Promise((resolve, reject) => {
                 const callConfig = {
                     method: 'get',
-                    url: state.baseUrl + '/Container/GetAllContainer',
+                    url: state.baseUrl + '/Container/GetAllAvailContainers',
                     headers: {
                         'Authorization': 'Bearer '+ localStorage.getItem('jwt'),
                         'Content-Type': 'application/json'
@@ -320,6 +346,28 @@ export default new Vuex.Store({
                     .catch(err => {
                         reject(err)
                         console.log("CONTAINER REQUEST ERROR", err)
+                    })
+            })
+        },
+        requestCompleteContainer: ({state}) => {
+            return new Promise((resolve, reject) => {
+                const callConfig = {
+                    method: 'get',
+                    url: state.baseUrl + '/Container/GetAllCompleteContainers',
+                    headers: {
+                        'Authorization': 'Bearer '+ localStorage.getItem('jwt'),
+                        'Content-Type': 'application/json'
+                    },
+                }
+                axios(callConfig)
+                    .then(response => {
+                        state.containerCompleterRequest = response.data
+                        resolve(response)
+                        console.log("CONTAINER Complete REQUEST ERROR", response.data)
+                    })
+                    .catch(err => {
+                        reject(err)
+                        console.log("CONTAINER Complete REQUEST ERROR", err)
                     })
             })
         },

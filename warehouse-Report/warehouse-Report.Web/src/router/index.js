@@ -12,6 +12,8 @@ import viewClient from "@/views/admin/clientViews/viewClient";
 import addUser from "@/views/admin/user/addUser";
 import addAdminUser from "@/views/admin/user/addAdminUser";
 import viewContainer from "@/views/admin/containers/viewContainer";
+import completeCargo from "@/views/admin/adminViews/completeCargo";
+import completedContainers from "@/views/admin/containers/completedContainers";
 
 Vue.use(VueRouter)
 
@@ -65,6 +67,16 @@ const routes = [
                 },
             },
             {
+                path: '/completeCargo',
+                name: 'CompleteCargo',
+                component: completeCargo,
+                meta: {
+                    requiresAuth: true,
+                    adminAuth: true,
+                    userAuth: false,
+                },
+            },
+            {
                 path: '/clientAdd',
                 name: 'createClient',
                 component: createClient,
@@ -108,6 +120,16 @@ const routes = [
                 path: '/viewContainer',
                 name: 'viewContainer',
                 component: viewContainer,
+                meta: {
+                    requiresAuth: true,
+                    adminAuth: true,
+                    userAuth: false,
+                },
+            },
+            {
+                path: '/completedContainers',
+                name: 'completedContainers',
+                component: completedContainers,
                 meta: {
                     requiresAuth: true,
                     adminAuth: true,
