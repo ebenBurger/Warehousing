@@ -44,8 +44,10 @@
     <Content Include="src\style.scss" />
     <Content Include="src\user\userViews\user-view.vue" />
     <Content Include="src\views\admin\adminViews\admin-view.vue" />
+    <Content Include="src\views\admin\adminViews\completeCargo.vue" />
     <Content Include="src\views\admin\clientViews\createClient.vue" />
     <Content Include="src\views\admin\clientViews\viewClient.vue" />
+    <Content Include="src\views\admin\containers\completedContainers.vue" />
     <Content Include="src\views\admin\containers\viewContainer.vue" />
     <Content Include="src\views\admin\user\addAdminUser.vue" />
     <Content Include="src\views\admin\user\addUser.vue" />
