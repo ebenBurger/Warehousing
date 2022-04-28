@@ -18,11 +18,23 @@ namespace WarehouseReport.Api.Managers
         }
 
 
-        public List<ContainerModel> GetAllContainers()
+        public List<ContainerModel> GetAllAvailContainers()
         {
             var data = _context.Container
                 .Where(a => a.IsActive == true)
                 .Where(c => c.IsComplete == false)
+                .Include(b => b.Cargo)
+                .Include(d => d.Package)
+                .ToList();
+
+            return data;
+        }
+
+        public List<ContainerModel> GetAllCompleteContainers()
+        {
+            var data = _context.Container
+                .Where(a => a.IsActive == true)
+                .Where(c => c.IsComplete == true)
                 .Include(b => b.Cargo)
                 .Include(d => d.Package)
                 .ToList();

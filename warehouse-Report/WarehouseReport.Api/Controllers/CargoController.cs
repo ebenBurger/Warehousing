@@ -18,12 +18,31 @@ namespace WarehouseReport.Api.Controllers
             _cargoManager = cargoManager;
         }
 
-        [HttpGet("GetAllCargo")]
-        public IActionResult GetAllCargo()
+        [HttpGet("GetAllAvailCargo")]
+        public IActionResult GetAllAvailCargo()
         {
             try
             {
-                var data = _cargoManager.GetAllCargo();
+                var data = _cargoManager.GetAllAvailCargo();
+                if (data == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(data);
+            }
+            catch (Exception e)
+            {
+                return Problem(e.Message);
+            }
+        }
+        
+        [HttpGet("GetAllCompleteCargo")]
+        public IActionResult GetAllCompleteCargo()
+        {
+            try
+            {
+                var data = _cargoManager.GetAllCompleteCargo();
                 if (data == null)
                 {
                     return NotFound();

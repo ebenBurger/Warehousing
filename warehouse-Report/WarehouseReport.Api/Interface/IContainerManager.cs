@@ -6,7 +6,8 @@ namespace WarehouseReport.Api.Interface
 {
     public interface IContainerManager
     {
-        List<ContainerModel> GetAllContainers();
+        List<ContainerModel> GetAllAvailContainers();
+        List<ContainerModel> GetAllCompleteContainers();
         Task<int> SaveContainer(ContainerModel containerModel);
         Task<ContainerModel> UpdateContainer(ContainerModel containerModel);
     }

@@ -19,12 +19,32 @@ namespace WarehouseReport.Api.Controllers
             _containerManager = containerManager;
         }
 
-        [HttpGet("GetAllContainer")]
-        public IActionResult GetAllContainer()
+        [HttpGet("GetAllAvailContainers")]
+        public IActionResult GetAllAvailContainers()
         {
             try
             {
-                var data = _containerManager.GetAllContainers();
+                var data = _containerManager.GetAllAvailContainers();
+
+                if (data == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(data);
+            }
+            catch (Exception e)
+            {
+                return Problem(e.Message);
+            }
+        }
+        
+        [HttpGet("GetAllCompleteContainers")]
+        public IActionResult GetAllCompleteContainers()
+        {
+            try
+            {
+                var data = _containerManager.GetAllCompleteContainers();
 
                 if (data == null)
                 {

@@ -18,13 +18,25 @@ namespace WarehouseReport.Api.Managers
         _context = context;
     }
 
-    public List<CargoModel> GetAllCargo()
+    public List<CargoModel> GetAllAvailCargo()
     {
         var data = _context.Cargo
             .Include(b => b.PackageModels)
             .Include(c => c.Container)
             .Where(a => a.IsActive == true)
             .Where(d => d.IsComplete == false)
+            .ToList();
+
+        return data;
+    }
+
+    public List<CargoModel> GetAllCompleteCargo()
+    {
+        var data = _context.Cargo
+            .Include(b => b.PackageModels)
+            .Include(c => c.Container)
+            .Where(a => a.IsActive == true)
+            .Where(d => d.IsComplete == true)
             .ToList();
 
         return data;
