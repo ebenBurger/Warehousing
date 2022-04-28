@@ -13,6 +13,10 @@
                                     <font-awesome-icon icon="fa-plus" class="mr-1" />
                                     Add Container
                                 </b-button>
+                                <b-button class="ml-3" variant="outline-primary" size="sm" squared @click="openCompleteContainers">
+                                    <font-awesome-icon icon="fa-truck-loading" class="mr-1" />
+                                    Completed Containers
+                                </b-button>
                             </b-col>
                         </b-col>
                     </b-row>
@@ -24,20 +28,14 @@
                     <b-row>
                         <b-col class="d-flex cursor-pointer">
                             <b-card class="containerItem cursor-pointer" v-for="(container) in availableContainers" :key="container.containerId" @click="openContainerContentModal(container)">
-                                    <div class="contentCount">
-                                        <div class="content">
-                                            <label>Cargo Items:</label>
-                                            <label>{{container.cargo.length}}</label>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label class="w-100">
-                                            {{container.containerName}}
-                                        </label>
-                                        <label class="w-100">
-                                            ({{container.containerType}})
-                                        </label>
-                                    </div>
+                                <div>
+                                    <label class="w-100">
+                                        {{container.containerName}}
+                                    </label>
+                                    <label class="w-100">
+                                        ({{container.containerType}})
+                                    </label>
+                                </div>
                             </b-card>
                         </b-col>
                     </b-row>
@@ -118,7 +116,9 @@
                             </h4>
                         </div>
                         <div v-show="selectedContainer.cargo !== 0">
-                            <p v-for="(item, index) in selectedContainer.cargo" :key="index">{{item.description}}</p>
+                            <div v-for="(item, index) in selectedContainer.cargo" :key="index">
+                                <p v-if="item.isActive">{{item.description}}</p>
+                            </div>
                         </div>
 <!--                    </div>-->
                     
@@ -183,7 +183,10 @@ export default {
     },
     methods: {
         ...mapActions(["createContainer", "requestContainer"]),
-        
+
+        openCompleteContainers() {
+            this.$router.push({path: '/completedContainers'})
+        },
         
         openContainerModal() {
             this.$bvModal.show('containerAddModal')
