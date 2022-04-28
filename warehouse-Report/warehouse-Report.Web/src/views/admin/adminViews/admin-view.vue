@@ -14,8 +14,8 @@
                                     <font-awesome-icon icon="fa-plus" class="mr-1" />
                                     Add Entry
                                 </b-button>
-                                <b-button variant="outline-primary" size="sm" squared @click="openCargoModal">
-                                    <font-awesome-icon icon="fa-plus" class="mr-1" />
+                                <b-button class="ml-3" variant="outline-primary" size="sm" squared @click="openCompleteCargo">
+                                    <font-awesome-icon icon="fa-truck-loading" class="mr-1" />
                                     Completed Cagro
                                 </b-button>
                             </b-col>
@@ -30,7 +30,7 @@
                                 :fields="cargoTable.tableColumns"
                                 :busy="cargoTable.isLoading"
                                 @row-clicked="openCargoEntry"
-                                id="vehicleTable"
+                                :tbody-tr-class="rowClass"
                                 :current-page="cargoTable.currentPage"
                             >
                                 <template #table-busy>
@@ -53,31 +53,48 @@
 
                                 <template #cell(quantitySum)="data">
                                     <b-row align-v="center">
-                                        <span class="mr-auto">{{data.item.packageModels.reduce((acc, qty) => acc + qty.quantity, 0)}}</span>
+                                        <span class="mr-auto">{{data.item.packageModels.filter(active => active.isActive === true).reduce((acc, qty) => acc + qty.quantity, 0)}}</span>
+                                    </b-row>
+                                </template>
+
+                                <template #cell(icons)="data">
+                                    <b-row align-v="center">
+                                        <span v-if="data.item.hazardous" class="mr-1">
+                                            <font-awesome-icon class="text-danger" icon="fa-biohazard" />
+                                        </span>
+                                        <span v-if="data.item.packingListReceived" class="mr-1">
+                                            <font-awesome-icon icon="fa-box" />
+                                        </span>
+                                        <span v-if="data.item.commercialInvoiceReceived" class="mr-1">
+                                            <font-awesome-icon icon="fa-file-invoice-dollar" />
+                                        </span>
+                                        <span v-if="data.item.billedToJkn" class="mr-1">
+                                            <font-awesome-icon icon="fa-dollar-sign" />
+                                        </span>
                                     </b-row>
                                 </template>
 
                                 <template #cell(weightSum)="data">
                                     <b-row align-v="center">
-                                        <span class="mr-auto">{{data.item.packageModels.reduce((acc, weight) => acc + weight.weight, 0)}}</span>
+                                        <span class="mr-auto">{{data.item.packageModels.filter(active => active.isActive === true).reduce((acc, weight) => acc + weight.weight, 0)}} Kg</span>
                                     </b-row>
                                 </template>
 
                                 <template #cell(kgCBMConversionSum)="data">
                                     <b-row align-v="center" >
-                                        <span class="mr-auto">{{data.item.packageModels.reduce((acc, kg) => acc + kg.kgCBMConversion, 0)}}</span>
+                                        <span class="mr-auto">{{(data.item.packageModels.filter(active => active.isActive === true).reduce((acc, kg) => acc + kg.kgCBMConversion, 0)) ? (data.item.packageModels.filter(active => active.isActive === true).reduce((acc, kg) => acc + kg.kgCBMConversion, 0)).toFixed(3) : ''}}</span>
                                     </b-row>
                                 </template>
 
                                 <template #cell(volumeSum)="data">
                                     <b-row align-v="center">
-                                        <span class="mr-auto">{{(data.item.packageModels.reduce((acc, vol) => acc + vol.volumeMetric, 0)).toFixed(3)}}</span>
+                                        <span class="mr-auto">{{(data.item.packageModels.filter(active => active.isActive === true).reduce((acc, vol) => acc + vol.volumeMetric, 0)).toFixed(3)}}</span>
                                     </b-row>
                                 </template>
 
                                 <template #cell(chargeableWeightSum)="data">
                                     <b-row align-v="center">
-                                        <span class="mr-auto">{{(data.item.packageModels.reduce((acc, chargeWeight) => acc + chargeWeight.chargeableWeight, 0)).toFixed(3)}}</span>
+                                        <span class="mr-auto">{{(data.item.packageModels.filter(active => active.isActive === true).reduce((acc, chargeWeight) => acc + chargeWeight.chargeableWeight, 0)).toFixed(3)}}</span>
                                     </b-row>
                                 </template>
 
@@ -89,13 +106,13 @@
 
                                 <template #cell(storageCostsCalc)="data">
                                     <b-row align-v="center">
-                                        <span class="mr-auto">ZAR {{(((data.item.dollarRate * data.item.packageModels.reduce((acc, weight) => acc + weight.chargeableWeight, 0))) * ((new Date() - new Date(data.item.endDateOfFreeStorage)) / ((1000 * 3600 * 24) - 1))).toFixed(3)}}</span>
+                                        <span class="mr-auto">ZAR {{(((data.item.dollarRate * data.item.packageModels.filter(active => active.isActive === true).reduce((acc, weight) => acc + weight.chargeableWeight, 0))) * ((new Date() - new Date(data.item.endDateOfFreeStorage)) / ((1000 * 3600 * 24) - 1))).toFixed(3)}}</span>
                                     </b-row>
                                 </template>
 
-                                <template #cell(actions)="row">
+                                <template #cell(actions)="data">
                                     <b-row align-v="center" align-h="end">
-                                        <b-button @click="openCargoEntry(row.item)" size="sm" class="btn-icon">
+                                        <b-button @click="openCargoEntry(data.item, data.index)" size="sm" class="btn-icon">
                                             <b-icon-chevron-right></b-icon-chevron-right>
                                         </b-button>
                                     </b-row>
@@ -329,6 +346,12 @@
                                     </b-row>
                                     <b-row>
                                         <b-col>
+                                            <label><span class="font-weight-bold">Description:</span> </label>
+                                            <label>{{selectedCargo.description}}</label>
+                                        </b-col>
+                                    </b-row>
+                                    <b-row>
+                                        <b-col>
                                             <label><span class="font-weight-bold">Supplier:</span> </label>
                                             <label>{{selectedCargo.supplier ? selectedCargo.supplier : "Supplier not selected"}}</label>
                                         </b-col>
@@ -352,7 +375,7 @@
                                         </b-col>
                                         <b-col>
                                             <label><span class="font-weight-bold">Storage cost</span> </label>
-                                            <label>{{this.storageCost}}</label>
+                                            <label>ZAR {{this.storageCost}}</label>
                                         </b-col>
                                     </b-row>
                                     <hr class="mx-3">
@@ -367,43 +390,30 @@
                                         </b-col>
                                         <b-col>
                                             <label class="font-weight-bold">Total Weight</label>
-                                            <label>{{this.totalWeight}}</label>
+                                            <label>{{this.totalWeight}} Kg</label>
                                         </b-col>
                                     </b-row>
                                     <hr class="mx-3">
-                                    <b-row>
-                                        <b-col cols="4">
-                                            <label>Supplier Invoice Number</label>
-                                            <b-form-input v-model="selectedCargo.supplierInvoiceNumber" />
-                                        </b-col>
-                                        <b-col cols="5">
-                                            <label>Supplier Invoice Date</label>
-                                            <b-form-datepicker v-model="selectedCargo.supplierInvoiceDate"></b-form-datepicker>
-                                        </b-col>
-                                    </b-row>
-                                    <b-row>
-                                        <b-col>
-                                            <label><span class="font-weight-bold">Description:</span> </label>
-                                            <label>{{selectedCargo.description}}</label>
-                                        </b-col>
-                                    </b-row>
+                                    
+                                    
                                     <b-row>
                                         <b-col class="text-center">
-                                            <label>Hazard</label>
+                                            <label>Hazard <span>( <font-awesome-icon class="text-danger" icon="fa-biohazard" /> )</span></label>
                                             <toggle-button :value="false"
                                                            v-model="selectedCargo.hazardous"
                                                            class="d-flex justify-content-center"
                                                            :labels="{checked: 'Yes'}"/>
                                         </b-col>
                                         <b-col class="text-center">
-                                            <label>Commercial Invoice Received</label>
+                                            <label>Commercial Invoice Received </label>
+                                            <span>( <font-awesome-icon icon="fa-file-invoice-dollar" /> )</span>
                                             <toggle-button :value="false"
                                                            v-model="selectedCargo.commercialInvoiceReceived"
                                                            class="d-flex justify-content-center"
                                                            :labels="{checked: 'Yes'}"/>
                                         </b-col>
                                         <b-col class="text-center">
-                                            <label>Packing List Received</label>
+                                            <label>Packing List Received <span>( <font-awesome-icon icon="fa-box" /> )</span></label>
                                             <toggle-button :value="false"
                                                            class="justify-content-center d-flex"
                                                            v-model="selectedCargo.packingListReceived"
@@ -413,7 +423,8 @@
                                     </b-row>
                                     <b-row>
                                         <b-col class="text-center">
-                                            <label>Billed To JKN</label>
+                                            <label>Billed To JKN <span>( <font-awesome-icon icon="fa-dollar-sign" /> )</span></label>
+                                            
                                             <toggle-button :value="false"
                                                            class="justify-content-center d-flex"
                                                            v-model="selectedCargo.billedToJkn"
@@ -426,9 +437,17 @@
                                                            v-model="selectedCargo.isComplete"
                                                            :labels="{checked: 'Yes'}"/>
                                         </b-col>
-
-
-
+                                    </b-row>
+                                    <hr class="mx-3">
+                                    <b-row class="justify-content-around">
+                                        <b-col cols="4">
+                                            <label>Supplier Invoice Number</label>
+                                            <b-form-input v-model="selectedCargo.supplierInvoiceNumber" />
+                                        </b-col>
+                                        <b-col cols="4">
+                                            <label>Supplier Invoice Date</label>
+                                            <b-form-datepicker v-model="selectedCargo.supplierInvoiceDate"></b-form-datepicker>
+                                        </b-col>
                                     </b-row>
                                     <hr class="mx-3">
                                     <b-row>
@@ -602,7 +621,23 @@
                                         </b-row>
                                         <hr class="mx-3">
                                         <b-row>
-                                            <b-table striped hover :items="packageAdd"></b-table>
+                                            <b-table
+                                                striped hover
+                                                @row-clicked="removePackage"
+                                                :items="packageAdd.dataSource"
+                                                :fields="packageAdd.tableColumns"
+                                                :busy="packageAdd.isLoading"
+                                                :current-page="cargoTable.currentPage"
+                                            >
+                                                <template #cell(actions)="row">
+                                                    <b-row align-v="center" align-h="end">
+                                                        <b-button @click="removePackage(row)" size="sm" class="btn-icon">
+                                                            <font-awesome-icon icon="fa-trash" /> 
+                                                        </b-button>
+                                                    </b-row>
+                                                </template>
+                                                
+                                            </b-table>
                                         </b-row>
                                         <hr class="mx-3">
                                         <b-row>
@@ -893,6 +928,12 @@ export default {
                     tdClass:'',
                 },
                 {
+                    label: '',
+                    key: 'icons',
+                    sortable: false,
+                    tdClass:'',
+                },
+                {
                     label: 'Weight (KG)',
                     key: 'weightSum',
                     sortable: false,
@@ -944,7 +985,56 @@ export default {
         selectedContainer: [],
         isCargoCreated: false,
         cargoCreatedData: 0,
-        packageAdd: [], // update table cols
+        packageAdd: {
+            resultsPerPage: 10,
+            currentPage: 1,
+            dataSource: [],
+            isLoading: true,
+            tableColumns: [
+                {
+                    label: 'Description',
+                    key: 'description',
+                    sortable: true,
+                    tdClass:'',
+                },
+                {
+                    label: 'Quantity',
+                    key: 'quantity',
+                    sortable: true,
+                    tdClass:'',
+                },
+                {
+                    label: 'Weight',
+                    key: 'weight',
+                    sortable: true,
+                    tdClass:'',
+                },
+                {
+                    label: 'Length',
+                    key: 'length',
+                    sortable: true,
+                    tdClass:'',
+                },
+                {
+                    label: 'Width',
+                    key: 'width',
+                    sortable: true,
+                    tdClass:'',
+                },
+                {
+                    label: 'Height',
+                    key: 'height',
+                    sortable: true,
+                    tdClass:'',
+                },
+                {
+                    label: '',
+                    key: 'actions',
+                    sortable: false,
+                    tdClass: ''
+                },
+            ]
+        },
         packageList: false,
         itemSelectedForDelete: {},
         deleteSelected: false,
@@ -1078,8 +1168,7 @@ export default {
                 })
         },
         savePackageToDb() {
-            //TODO- loop through the array and add to the db
-            this.packageAdd.forEach((item) => {
+            this.packageAdd.dataSource.forEach((item) => {
                 const packItem = {}
                 packItem.cargoId = this.cargoCreatedId
                 packItem.description = item.description
@@ -1102,7 +1191,7 @@ export default {
         },
         saveExtraPackageToDb() {
             //TODO- loop through the array and add to the db
-            this.packageAdd.forEach((item) => {
+            this.packageAdd.dataSource.forEach((item) => {
                 const packItem = {}
                 packItem.cargoId = this.selectedCargo.cargoId
                 packItem.description = item.description
@@ -1135,7 +1224,7 @@ export default {
             parcel.height = this.packageData.height
             parcel.cargoId = this.cargoCreatedId
             parcel.isActive = true
-            this.packageAdd.push(parcel)
+            this.packageAdd.dataSource.push(parcel)
             
             this.packageData.description = null
             this.packageData.quantity = null
@@ -1144,6 +1233,11 @@ export default {
             this.packageData.width = null
             this.packageData.height = null
             this.packageData.cargoId = null
+        },
+        removePackage(item) {
+            this.packageAdd.dataSource.splice(item.index, 1)
+            console.log("REMOVE ITEM", item)
+            
         },
         confirmPackageList() {
             this.packageList = true
@@ -1224,16 +1318,33 @@ export default {
             ((new Date() - new Date(this.selectedCargo.endDateOfFreeStorage)) / ((1000 * 3600 * 24) - 1)).toFixed(0) >= 0 ? this.storageDays = ((new Date() - new Date(this.selectedCargo.endDateOfFreeStorage)) / ((1000 * 3600 * 24) - 1)).toFixed(0) : this.storageDays = 0
         },
         calculateStorageCost() {
-            this.chargeWeight = (this.selectedCargo.packageModels.reduce((acc, weight) => acc + weight.chargeableWeight, 0)).toFixed(3)
-            this.storageCost = ((this.selectedCargo.dollarRate * (this.selectedCargo.packageModels.reduce((acc, weight) => acc + weight.chargeableWeight, 0))) * ((new Date() - new Date(this.selectedCargo.endDateOfFreeStorage)) / ((1000 * 3600 * 24) - 1))).toFixed(3)
+            this.chargeWeight = (this.selectedCargo.packageModels
+                .filter(active => active.isActive === true)
+                .reduce((acc, weight) => acc + weight.chargeableWeight, 0)).toFixed(3)
+            this.storageCost = ((this.selectedCargo.dollarRate * (this.selectedCargo.packageModels
+                .filter(active => active.isActive === true)
+                .reduce((acc, weight) => acc + weight.chargeableWeight, 0))) * ((new Date() - new Date(this.selectedCargo.endDateOfFreeStorage)) / ((1000 * 3600 * 24) - 1))).toFixed(3)
             console.log("StorageCost", this.storageCost)
         },
         calculateTotalQty() {
-            this.totalQty = this.selectedCargo.packageModels.reduce((acc, qty) => acc + qty.quantity, 0)
+            this.totalQty = this.selectedCargo.packageModels
+                .filter(active => active.isActive === true)
+                .reduce((acc, qty) => acc + qty.quantity, 0)
+            
         },
         calculateTotalWeight() {
-            this.totalWeight = (this.selectedCargo.packageModels.reduce((acc, weight) => acc + weight.weight, 0)).toFixed(3)
+            this.totalWeight = (this.selectedCargo.packageModels
+                .filter(active => active.isActive === true)
+                .reduce((acc, weight) => acc + weight.weight, 0)).toFixed(3)
+            console.log('TOTAL WEIGHT', this.totalWeight)
         },
+        openCompleteCargo() {
+            this.$router.push({path: '/completeCargo'})
+        },
+        rowClass(item, type) {
+            if (!item || type !== 'row') return
+            if (item.hazardous === true) return 'table-danger'
+        }
     },
     computed: {
         ...mapState([
