@@ -394,8 +394,6 @@
                                         </b-col>
                                     </b-row>
                                     <hr class="mx-3">
-                                    
-                                    
                                     <b-row>
                                         <b-col class="text-center">
                                             <label>Hazard <span>( <font-awesome-icon class="text-danger" icon="fa-biohazard" /> )</span></label>
@@ -444,7 +442,7 @@
                                             <label>Supplier Invoice Number</label>
                                             <b-form-input v-model="selectedCargo.supplierInvoiceNumber" />
                                         </b-col>
-                                        <b-col cols="4">
+                                        <b-col cols="5">
                                             <label>Supplier Invoice Date</label>
                                             <b-form-datepicker v-model="selectedCargo.supplierInvoiceDate"></b-form-datepicker>
                                         </b-col>
