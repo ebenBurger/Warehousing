@@ -345,9 +345,13 @@
                                         </b-col>
                                     </b-row>
                                     <b-row>
-                                        <b-col>
+                                        <b-col cols="4">
                                             <label><span class="font-weight-bold">Description:</span> </label>
-                                            <label>{{selectedCargo.description}}</label>
+                                            <label>{{selectedCargo.description}} </label>
+                                        </b-col>
+                                        <b-col>
+                                            <label><span class="font-weight-bold">Special Requirements:</span> </label>
+                                            <label>{{selectedCargo.specialRequirements}}</label>
                                         </b-col>
                                     </b-row>
                                     <b-row>
