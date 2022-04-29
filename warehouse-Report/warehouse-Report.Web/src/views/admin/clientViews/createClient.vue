@@ -11,39 +11,6 @@
                     <b-form>
                         <b-row>
                             <b-col>
-                                <label class="text-primary font-weight-bold mb-4">Personal Details</label>
-                            </b-col>
-                        </b-row>
-                        <b-row>
-                            <b-col>
-                                <label>Name</label>
-                                <b-form-input v-model="supplierDetails.name"></b-form-input>
-                            </b-col>
-                            <b-col>
-                                <label>Surname</label>
-                                <b-form-input v-model="supplierDetails.surname"></b-form-input>
-                            </b-col>
-                        </b-row>
-                        <b-row>
-                            <b-col>
-                                <label>Mobile Number</label>
-                                <b-form-input v-model="supplierDetails.mobile"></b-form-input>
-                            </b-col>
-                            <b-col>
-                                <label>Landline</label>
-                                <b-form-input v-model="supplierDetails.landline"></b-form-input>
-                            </b-col>
-                            <b-col>
-                                <label>Email</label>
-                                <b-form-input v-model="supplierDetails.email"></b-form-input>
-                            </b-col>
-                        </b-row>
-                        <b-row>
-                            
-                        </b-row>
-                        <hr class="mx-3">
-                        <b-row>
-                            <b-col>
                                 <label class="text-primary font-weight-bold mb-4">Company Details</label>
                             </b-col>
                         </b-row>
@@ -85,6 +52,36 @@
                             <b-col class="col-2">
                                 <label>Post Code</label>
                                 <b-form-input v-model="supplierDetails.postalCode"></b-form-input>
+                            </b-col>
+                        </b-row>
+                        <hr class="mx-3">
+                        <b-row>
+                            <b-col>
+                                <label class="text-primary font-weight-bold mb-4">Contact Person Details</label>
+                            </b-col>
+                        </b-row>
+                        <b-row>
+                            <b-col>
+                                <label>Name</label>
+                                <b-form-input v-model="supplierDetails.name"></b-form-input>
+                            </b-col>
+                            <b-col>
+                                <label>Surname</label>
+                                <b-form-input v-model="supplierDetails.surname"></b-form-input>
+                            </b-col>
+                        </b-row>
+                        <b-row>
+                            <b-col>
+                                <label>Mobile Number</label>
+                                <b-form-input v-model="supplierDetails.mobile"></b-form-input>
+                            </b-col>
+                            <b-col>
+                                <label>Landline</label>
+                                <b-form-input v-model="supplierDetails.landline"></b-form-input>
+                            </b-col>
+                            <b-col>
+                                <label>Email</label>
+                                <b-form-input v-model="supplierDetails.email"></b-form-input>
                             </b-col>
                         </b-row>
                         <hr class="mx-3">

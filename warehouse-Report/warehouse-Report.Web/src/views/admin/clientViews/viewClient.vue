@@ -16,8 +16,10 @@
                                 :fields="supplierTable.tableColumns"
                                 :busy="supplierTable.isLoading"
                                 @row-clicked="openContact"
-                                id="vehicleTable"
+                                id="supplierTable"
                                 :current-page="supplierTable.currentPage"
+                                :per-page="supplierTable.resultsPerPage"
+                                :total-rows="rows"
                             >
                                 <template #table-busy>
                                     <div class="text-center my-2">
@@ -33,6 +35,11 @@
                                     </b-row>
                                 </template>
 
+                                <template #cell(fullName)="data">
+                                    <b class="text-info">{{ data.item.name.toUpperCase()}}</b>, <b>{{ data.item.surname }}</b>
+<!--                                    <b class="text-info">{{ data.value}}</b>, <b>{{ data.value.first }}</b>-->
+                                </template>
+
                             </b-table>
 
                             <b-row align-h="center" >
@@ -40,7 +47,7 @@
                                     v-model="supplierTable.currentPage"
                                     :total-rows="rows"
                                     :per-page="supplierTable.resultsPerPage"
-                                    aria-controls="contactTable"
+                                    aria-controls="supplierTable"
                                 ></b-pagination>
                             </b-row>
 
@@ -59,9 +66,56 @@
                                 <B-form class="w-100">
                                     <b-row>
                                         <b-col>
+                                            <label class="text-primary font-weight-bold mb-4">Company Details</label>
+                                        </b-col>
+                                    </b-row>
+                                    <b-row>
+                                        <b-col cols="6">
+                                            <label>Company Name</label>
+                                            <b-form-input v-model="selectedSupplier.companyName"></b-form-input>
+                                        </b-col>
+                                    </b-row>
+                                    <b-row>
+                                        <b-col>
+                                            <label>Building</label>
+                                            <b-form-input v-model="selectedSupplier.building"></b-form-input>
+                                        </b-col>
+                                        <b-col>
+                                            <label>Office Park</label>
+                                            <b-form-input v-model="selectedSupplier.officePark"></b-form-input>
+                                        </b-col>
+                                        <b-col>
+                                            <label>Address</label>
+                                            <b-form-input v-model="selectedSupplier.addressLine1"></b-form-input>
+                                        </b-col>
+                                    </b-row>
+                                    <b-row>
+                                        <b-col>
+                                            <label>Address</label>
+                                            <b-form-input v-model="selectedSupplier.addressLine2"></b-form-input>
+                                        </b-col>
+                                        <b-col>
+                                            <label>City</label>
+                                            <b-form-input v-model="selectedSupplier.city"></b-form-input>
+                                        </b-col>
+                                        <b-col>
+                                            <!--                                        TODO update typo-->
+                                            <label>Province</label>
+                                            <b-form-input v-model="selectedSupplier.provence"></b-form-input>
+                                        </b-col>
+                                    </b-row>
+                                    <b-row>
+                                        <b-col class="col-2">
+                                            <label>Postal Code</label>
+                                            <b-form-input v-model="selectedSupplier.postalCode"></b-form-input>
+                                        </b-col>
+                                    </b-row>
+                                    <hr class="mx-3">
+                                    <b-row>
+                                        <b-col>
 
                                             <div class="d-flex justify-content-between align-items-center">
-                                                <label class="text-primary font-weight-bold mb-4">Personal Details</label>
+                                                <label class="text-primary font-weight-bold mb-4">Contact Person Details</label>
                                                 <b-button variant="outline-red" squared @click="toggleDelete" size="sm">Delete</b-button>
                                             </div>
                                         </b-col>
@@ -89,57 +143,6 @@
                                         <b-col cols="4">
                                             <label>Landline</label>
                                             <b-form-input v-model="selectedSupplier.landline"></b-form-input>
-                                        </b-col>
-                                    </b-row>
-                                    <b-row>
-
-                                    </b-row>
-                                    <hr class="mx-3">
-                                    <b-row>
-                                        <b-col>
-                                            <label class="text-primary font-weight-bold mb-4">Company Details</label>
-                                        </b-col>
-                                    </b-row>
-                                    <b-row>
-                                        <b-col cols="6">
-                                            <label>Company Name</label>
-                                            <b-form-input v-model="selectedSupplier.companyName"></b-form-input>
-                                        </b-col>
-                                    </b-row>
-                                    <b-row>
-                                        <b-col>
-                                            <label>Building</label>
-                                            <b-form-input v-model="selectedSupplier.building"></b-form-input>
-                                        </b-col>
-                                        <b-col>
-                                            <label>Office Park</label>
-                                            <b-form-input v-model="selectedSupplier.officePark"></b-form-input>
-                                        </b-col>
-                                        <b-col>
-                                            <label>Address</label>
-                                            <b-form-input v-model="selectedSupplier.addressLine1"></b-form-input>
-                                        </b-col>
-                                    </b-row>
-
-                                    <b-row>
-                                        <b-col>
-                                            <label>Address</label>
-                                            <b-form-input v-model="selectedSupplier.addressLine2"></b-form-input>
-                                        </b-col>
-                                        <b-col>
-                                            <label>City</label>
-                                            <b-form-input v-model="selectedSupplier.city"></b-form-input>
-                                        </b-col>
-                                        <b-col>
-                                            <!--                                        TODO update typo-->
-                                            <label>Province</label>
-                                            <b-form-input v-model="selectedSupplier.provence"></b-form-input>
-                                        </b-col>
-                                    </b-row>
-                                    <b-row>
-                                        <b-col class="col-2">
-                                            <label>Postal Code</label>
-                                            <b-form-input v-model="selectedSupplier.postalCode"></b-form-input>
                                         </b-col>
                                     </b-row>
                                     <hr class="mx-3">
@@ -224,20 +227,32 @@ export default {
             isLoading: false,
             tableColumns: [
                 {
-                    label: 'Name',
-                    key: 'name',
-                    sortable: true,
-                    tdClass:'',
-                },
-                {
-                    label: 'Surname',
-                    key: 'surname',
-                    sortable: true,
-                    tdClass:'',
-                },
-                {
                     label: 'Company Name',
                     key: 'companyName',
+                    sortable: true,
+                    tdClass:'',
+                },
+                {
+                    label: 'Full Name',
+                    key: 'fullName',
+                    sortable: true,
+                    tdClass:'',
+                },
+                {
+                    label: 'Email',
+                    key: 'email',
+                    sortable: true,
+                    tdClass:'',
+                },
+                {
+                    label: 'Mobile',
+                    key: 'mobile',
+                    sortable: true,
+                    tdClass:'',
+                },
+                {
+                    label: 'Landline',
+                    key: 'landline',
                     sortable: true,
                     tdClass:'',
                 },
@@ -314,7 +329,6 @@ export default {
         },
     },
     computed: {
-        //TODO- fix the -- (Computed property "selectedCargo" was assigned to but it has no setter.)
         ...mapState([
             "selectedSupplier"
         ]),
