@@ -15,10 +15,10 @@
                             </b-col>
                         </b-col>
                     </b-row>
-                    <b-row class="text-center justify-content-around">
+                    <b-row >
                         <div v-if="cargoComplete.length >= 1">
                             <b-col v-for="(item, index) in cargoComplete" :key="index">
-                                <b-card>
+                                <b-card class="justify-content-around">
                                     <div class="cargoItem">
                                         <b-card-text>
                                             <label>Supplier: {{item.supplier}}</label>
