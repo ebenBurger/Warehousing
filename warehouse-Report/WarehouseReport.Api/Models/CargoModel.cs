@@ -11,7 +11,7 @@ namespace WarehouseReport.Api.Models
         public string Supplier { get; set; }
         public string Description { get; set; }
         public DateTime DateCollected { get; set; }
-        public string OrderNumber { get; set; }
+        public string BpoNumber { get; set; }
         public double Quantity { get; set; }
         
         public string CargoReadyPlace { get; set; }
@@ -35,6 +35,7 @@ namespace WarehouseReport.Api.Models
         
         public double NumberOfStorageDays { get; set; }
         public double StorageCost { get; set; }
+        public double TotalChargeableWeight { get; set; }
         
         public string DeleteReason { get; set; }
         
