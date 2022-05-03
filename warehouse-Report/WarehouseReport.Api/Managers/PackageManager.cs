@@ -33,14 +33,15 @@ namespace WarehouseReport.Api.Managers
             try
             {
                 
-                var volume = (packageModel.Length * packageModel.Width * packageModel.Height);
                 packageModel.DateCreated = Convert.ToDateTime(DateTime.Now.ToLocalTime()
                 .ToString(System.Globalization.CultureInfo.InvariantCulture));
-                packageModel.KgCBMConversion = packageModel.Weight / 1000;
-                packageModel.VolumeCbm = (volume / 1000000) *
-                packageModel.Quantity;
+                
+                var volume = (packageModel.Length * packageModel.Width * packageModel.Height) * packageModel.Quantity;
+                
+                packageModel.KgCBMConversion = (packageModel.Weight / 1000) * packageModel.Quantity;
+                packageModel.VolumeCbm = (volume / 1000000) * packageModel.Quantity;
                 packageModel.ChargeableWeight = Math.Max(packageModel.VolumeCbm, packageModel.KgCBMConversion);
-                packageModel.VolumeMetric = volume / 6000;
+                packageModel.VolumeMetric = (volume / 6000) * packageModel.Quantity;
 
                 _context.Add(packageModel);
             }
