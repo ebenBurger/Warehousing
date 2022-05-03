@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WarehouseReport.Api.Models;
 
 namespace WarehouseReport.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220503103949_updatecargo entity")]
+    partial class updatecargoentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -482,6 +484,9 @@ namespace WarehouseReport.Api.Migrations
                     b.Property<double>("Quantity")
                         .HasColumnType("float");
 
+                    b.Property<int?>("TransporterId")
+                        .HasColumnType("int");
+
                     b.Property<double>("VolumeCbm")
                         .HasColumnType("float");
 
@@ -499,6 +504,10 @@ namespace WarehouseReport.Api.Migrations
                     b.HasIndex("CargoId");
 
                     b.HasIndex("ContainerId");
+
+                    b.HasIndex("TransporterId")
+                        .IsUnique()
+                        .HasFilter("[TransporterId] IS NOT NULL");
 
                     b.ToTable("Package");
                 });
@@ -615,9 +624,15 @@ namespace WarehouseReport.Api.Migrations
                         .WithMany("Package")
                         .HasForeignKey("ContainerId");
 
+                    b.HasOne("WarehouseReport.Api.Models.TransporterModel", "Transporter")
+                        .WithOne("Package")
+                        .HasForeignKey("WarehouseReport.Api.Models.PackageModel", "TransporterId");
+
                     b.Navigation("Cargo");
 
                     b.Navigation("Container");
+
+                    b.Navigation("Transporter");
                 });
 
             modelBuilder.Entity("WarehouseReport.Api.Models.CargoModel", b =>
@@ -629,6 +644,11 @@ namespace WarehouseReport.Api.Migrations
                 {
                     b.Navigation("Cargo");
 
+                    b.Navigation("Package");
+                });
+
+            modelBuilder.Entity("WarehouseReport.Api.Models.TransporterModel", b =>
+                {
                     b.Navigation("Package");
                 });
 #pragma warning restore 612, 618
