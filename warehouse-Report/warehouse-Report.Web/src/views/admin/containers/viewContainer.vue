@@ -222,6 +222,14 @@ export default {
             .then(() => {
                 this.hideContainerModal()
                 this.getContainers()
+                this.containerData.containerNumber = null
+                this.containerData.containerType = null
+                this.containerData.billOfLading = null
+                this.containerData.fileReference = null
+                this.containerData.vesel = null
+                this.containerData.voyage = null
+                this.containerData.port = null
+                this.containerData.isActive = null
             })
             
         },
