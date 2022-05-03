@@ -16,24 +16,33 @@
                         </b-col>
                     </b-row>
                     <b-row >
-                        <div v-if="cargoComplete.length >= 1">
-                            <b-col v-for="(item, index) in cargoComplete" :key="index">
-                                <b-card class="justify-content-around">
-                                    <div class="cargoItem">
-                                        <b-card-text>
-                                            <label>Supplier: {{item.supplier}}</label>
-                                            <label>Description: {{item.description}}</label>
-                                            <label>Date Captured: {{item.dateCreated | dateFilter}}</label>
-                                            <label>Order Number: {{item.orderNumber}}</label>
-                                            <label>Date Complete: {{item.dateComplete}}</label>
-                                        </b-card-text>
-                                    </div>
-                                </b-card>
-                            </b-col>
-                        </div>
-                        <b-col v-if="cargoComplete.length === 0" class="text-center">
-                            <h3>Nothing to see here</h3>
+                        <b-col>
+                            <b-table
+                                sort-icon-left
+                                striped hover
+                                :items="cargoCompleteTable.dataSource"
+                                :fields="cargoCompleteTable.tableColumns"
+                                :busy="cargoCompleteTable.isLoading"
+                                :per-page="cargoCompleteTable.resultsPerPage"
+                                :total-rows="cargoRows"
+                                :tbody-tr-class="rowClass"
+                                :current-page="cargoCompleteTable.currentPage"
+                                id="cargoTable"
+                            ></b-table>
+
+                            <b-row align-h="center" >
+                                <b-pagination
+                                    v-model="cargoCompleteTable.currentPage"
+                                    :total-rows="cargoRows"
+                                    :per-page="cargoCompleteTable.resultsPerPage"
+                                    aria-controls="cargoTable"
+                                ></b-pagination>
+                            </b-row>
+
                         </b-col>
+<!--                        <b-col v-if="cargoCompleteTable.dataSource.length === 0" class="text-center">-->
+<!--                            <h3>Nothing to see here</h3>-->
+<!--                        </b-col>-->
                     </b-row>
                 </b-card>
             </b-col>
@@ -46,7 +55,110 @@ import {mapActions} from "vuex";
 
 export default {
     data: () => ({
-        cargoComplete : []
+        cargoCompleteTable : {
+            resultsPerPage: 10,
+            currentPage: 1,
+            dataSource: [],
+            isLoading: true,
+            tableColumns: [
+                {
+                    label: 'Supplier',
+                    key: 'supplier',
+                    sortable: true,
+                    tdClass:'',
+                },
+                {
+                    label: 'Date Of Collection',
+                    key: 'dateCollected',
+                    sortable: true,
+                    tdClass:'',
+                },
+                {
+                    label: 'Date Charge Start',
+                    key: 'endDateOfFreeStorage',
+                    sortable: true,
+                    tdClass:'',
+                },
+                // {
+                //     label: 'Cargo Ready Place',
+                //     key: 'cargoReadyPlace',
+                //     sortable: false,
+                //     tdClass:'',
+                // },
+                {
+                    label: 'BPO Number',
+                    key: 'bpoNumber',
+                    sortable: true,
+                    tdClass:'',
+                },
+                {
+                    label: 'Container',
+                    key: 'container.containerNumber',
+                    sortable: true,
+                    tdClass:'',
+                },
+                {
+                    label: 'Invoice Number',
+                    key: 'atraxInvoiceNumber',
+                    sortable: false,
+                    tdClass:'',
+                },
+                {
+                    label: 'Quantity',
+                    key: 'quantitySum',
+                    sortable: false,
+                    tdClass:'',
+                },
+                {
+                    label: '',
+                    key: 'icons',
+                    sortable: false,
+                    tdClass:'',
+                },
+                {
+                    label: 'Weight (KG)',
+                    key: 'weightSum',
+                    sortable: false,
+                    tdClass:'',
+                },
+                {
+                    label: 'KG - CBM Conv.',
+                    key: 'kgCBMConversionSum',
+                    sortable: false,
+                    tdClass:'',
+                },
+                {
+                    label: 'Volume',
+                    key: 'volumeSum',
+                    sortable: false,
+                    tdClass:'',
+                },
+                {
+                    label: 'Chargeable Weight',
+                    key: 'chargeableWeightSum',
+                    sortable: false,
+                    tdClass:'',
+                },
+                {
+                    label: 'Storage Days',
+                    key: 'storageDaysCalc',
+                    sortable: false,
+                    tdClass:'',
+                },
+                {
+                    label: 'Storage Cost',
+                    key: 'storageCostsCalc',
+                    sortable: false,
+                    tdClass:'',
+                },
+                {
+                    label: '',
+                    key: 'actions',
+                    sortable: false,
+                    tdClass: ''
+                },
+            ]
+        }
     }),
     beforeCreate() {
     },
@@ -71,20 +183,23 @@ export default {
         completeCargo () {
             this.requestCompleteCargo()
                 .then((response) => {
-                    this.cargoComplete = response.data
+                    this.cargoCompleteTable.dataSource = response.data
                     console.log('COMPLETE', response.data)
+                    console.log('COMPLETE 2', this.cargoCompleteTable.dataSource)
                 })
         },
+        rowClass(item, type) {
+            if (!item || type !== 'row') return
+            if (item.hazardous === true) return 'table-danger'
+        }
     },
-    computed: {},
+    computed: {
+        cargoRows() {
+            return this.cargoCompleteTable.dataSource.length
+        },
+    },
 }
 </script>
 
 <style scoped>
-.cargoItem {
-    border: 2px solid black;
-    border-radius: 12px;
-    padding: 2rem 0;
-    width: 220px;
-}
 </style>
