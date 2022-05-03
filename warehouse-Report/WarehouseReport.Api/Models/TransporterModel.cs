@@ -18,7 +18,5 @@ namespace WarehouseReport.Api.Models
         
         public bool IsComplete { get; set; }
         public bool IsActive { get; set; }
-
-        public PackageModel Package { get; set; }
     }
 }

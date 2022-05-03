@@ -27,8 +27,5 @@ namespace WarehouseReport.Api.Models
 
         public int? ContainerId { get; set; }
         public ContainerModel Container { get; set; }
-
-        public int? TransporterId { get; set; }
-        public TransporterModel Transporter { get; set; }
     }
 }
