@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WarehouseReport.Api.Models;
 
 namespace WarehouseReport.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220503133107_updated supplier prop to artax for invoice and dat in cargo entity")]
+    partial class updatedsupplierproptoartaxforinvoiceanddatincargoentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -395,9 +397,6 @@ namespace WarehouseReport.Api.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("BillOfLading")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ContainerNumber")
                         .HasColumnType("nvarchar(max)");
 
@@ -418,6 +417,9 @@ namespace WarehouseReport.Api.Migrations
 
                     b.Property<bool>("IsComplete")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Lading")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("PackingDate")
                         .HasColumnType("datetime2");
