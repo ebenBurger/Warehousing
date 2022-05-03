@@ -82,12 +82,13 @@ namespace WarehouseReport.Api.Managers
             {
                 
                 //TODO- calculate the set days only
-                DateTime thisDay = DateTime.Today;
-                cargoModel.NumberOfStorageDays = (thisDay - cargoModel.EndDateOfFreeStorage).Days;
-                cargoModel.DateComplete = Convert.ToDateTime(DateTime.Now.ToLocalTime()
-                    .ToString(System.Globalization.CultureInfo.InvariantCulture));
-                cargoModel.StorageCost = (cargoModel.DollarRate * cargoModel.TotalChargeableWeight) * cargoModel.NumberOfStorageDays;
+                // DateTime thisDay = DateTime.Today;
+                // cargoModel.NumberOfStorageDays = (thisDay - cargoModel.EndDateOfFreeStorage).Days;
+                // cargoModel.DateComplete = Convert.ToDateTime(DateTime.Now.ToLocalTime()
+                    // .ToString(System.Globalization.CultureInfo.InvariantCulture));
+                // cargoModel.StorageCost = (cargoModel.DollarRate * cargoModel.TotalChargeableWeight) * cargoModel.NumberOfStorageDays;
             }
+            
 
             _context.Cargo.Update(cargoModel);
             await _context.SaveChangesAsync();
