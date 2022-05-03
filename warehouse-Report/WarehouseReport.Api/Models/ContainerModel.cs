@@ -17,7 +17,7 @@ namespace WarehouseReport.Api.Models
         public DateTime? PackingDate { get; set; }
         public string PackingLocation { get; set; }
         public string FileReference { get; set; }
-        public string Lading { get; set; }
+        public string BillOfLading { get; set; }
         public string Vesel { get; set; }
         public string Voyage { get; set; }
         public string Port { get; set; }
