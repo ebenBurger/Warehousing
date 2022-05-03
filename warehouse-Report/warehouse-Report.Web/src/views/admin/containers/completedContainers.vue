@@ -14,7 +14,7 @@
         </b-row>
         <b-row class="text-center">
             <b-col>
-                <h1>Comming Soon</h1>
+                <h1>Coming Soon</h1>
             </b-col>
         </b-row>
     </div>
