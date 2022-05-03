@@ -298,7 +298,7 @@ export default new Vuex.Store({
                 axios(callConfig)
                     .then(response => {
                         resolve(response)
-                        Vue.$toast.success("Package Updated");
+                        // Vue.$toast.success("Package Updated");
                     })
                     .catch(err => {
                         reject(err)
