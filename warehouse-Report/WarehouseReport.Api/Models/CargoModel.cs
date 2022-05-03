@@ -22,16 +22,8 @@ namespace WarehouseReport.Api.Models
         public DateTime DateCreated { get; set; }
         public DateTime? StorageInvoiceDate { get; set; }
         public DateTime? CurrentDate { get; set; }
+        // public double Weight { get; set; }
         public double DollarRate { get; set; }
-        
-        public string? DeliveryArea { get; set; }
-        public DateTime? DateOfCollection { get; set; }
-        public string? Transporter { get; set; }
-        public double? TransporterCost { get; set; }
-        public string? TransporterInvoiceNumber { get; set; }
-        public DateTime? TransporterInvoiceDate { get; set; }
-        public string? SpecialRequirements { get; set; }
-        public DateTime? DateComplete { get; set; }
         
         public double NumberOfStorageDays { get; set; }
         public double StorageCost { get; set; }
