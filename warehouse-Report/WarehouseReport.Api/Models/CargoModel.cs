@@ -16,8 +16,8 @@ namespace WarehouseReport.Api.Models
         
         public string CargoReadyPlace { get; set; }
         public DateTime EndDateOfFreeStorage { get; set; }
-        public string SupplierInvoiceNumber { get; set; }
-        public DateTime? SupplierInvoiceDate { get; set; }
+        public string AtraxInvoiceNumber { get; set; }
+        public DateTime? AtraxInvoiceDate { get; set; }
         
         public DateTime DateCreated { get; set; }
         public DateTime? StorageInvoiceDate { get; set; }
