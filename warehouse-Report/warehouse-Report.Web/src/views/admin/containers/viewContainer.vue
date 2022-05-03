@@ -30,7 +30,10 @@
                             <b-card class="containerItem cursor-pointer" v-for="(container) in availableContainers" :key="container.containerId" @click="openContainerContentModal(container)">
                                 <div>
                                     <label class="w-100">
-                                        {{container.containerName}}
+                                        {{container.fileReference}}
+                                    </label>
+                                    <label class="w-100">
+                                        {{container.containerNumber}}
                                     </label>
                                     <label class="w-100">
                                         ({{container.containerType}})
@@ -44,15 +47,31 @@
         </b-row>
         <b-modal id="containerAddModal" hide-footer hide-header-close class="text-center" title="Create Container" size="xl">
             <b-row>
-                <b-col cols="3">
-                    <label>Container Name</label>
-                    <b-form-input v-model="containerData.containerName" />
+                <b-col>
+                    <label>File Reference</label>
+                    <b-form-input v-model="containerData.fileReference" />
+                </b-col>
+                <b-col>
+                    <label>Container Number</label>
+                    <b-form-input v-model="containerData.containerNumber" />
+                </b-col>
+                <b-col>
+                    <label>Container Type</label>
+                    <b-form-select v-model="containerData.containerType" :options="options"></b-form-select>
                 </b-col>
             </b-row>
             <b-row>
-                <b-col cols="3">
-                    <label>Container Type</label>
-                    <b-form-select v-model="containerData.containerType" :options="options"></b-form-select>
+                <b-col>
+                    <label>Vessel</label>
+                    <b-form-input v-model="containerData.vesel" />
+                </b-col>
+                <b-col>
+                    <label>Voyage</label>
+                    <b-form-input v-model="containerData.voyage" />
+                </b-col>
+                <b-col>
+                    <label>Port</label>
+                    <b-form-input v-model="containerData.port" />
                 </b-col>
             </b-row>
             <hr class="mx-3">
@@ -109,7 +128,6 @@
                     </b-form>
                 </b-tab>
                 <b-tab title="View Cargo">
-<!--                    <div v-if="selectedContainer">-->
                         <div v-show="selectedContainer.cargo === 0">
                             <h4 class="my-5 text-center">
                                 This container is empty
@@ -120,8 +138,6 @@
                                 <p v-if="item.isActive">{{item.description}}</p>
                             </div>
                         </div>
-<!--                    </div>-->
-                    
                 </b-tab>
             </b-tabs>
             <hr class="mx-3">
@@ -148,8 +164,13 @@ import {mapActions, mapState} from "vuex";
 export default {
     data: () => ({
         containerData: {
-            containerName: null,
+            containerNumber: null,
             containerType: null,
+            billOfLading: null,
+            fileReference: null,
+            vesel: null,
+            voyage: null,
+            port: null,
             isActive: null,
         },
         availableContainers: [],
