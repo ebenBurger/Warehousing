@@ -14,6 +14,7 @@ export default new Vuex.Store({
         selectedSupplier: null,
         selectedCargo: null,
         selectedPackage: null,
+        selectedTransporter: null,
         selectedContainer: null,
         
         
@@ -32,6 +33,8 @@ export default new Vuex.Store({
         createContainerRequest: null,
         
         createPackageRequest: null,
+        
+        createTransporterRequest: null,
     },
     mutations: {
         setApiUrl: (state, payload) => {
@@ -57,6 +60,8 @@ export default new Vuex.Store({
         
         setCreatePackageRequest: (state, payload) => {state.createPackageRequest = payload},
         setSelectedPackage: (state, payload) => {state.selectedPackage = payload},
+
+        setCreateTransporterRequest: (state, payload) => {state.createTransporterRequest = payload},
     },
     actions: {
         login: ({state}) => {
@@ -299,6 +304,33 @@ export default new Vuex.Store({
                         reject(err)
                         Vue.$toast.error("There was an error");
                     })
+            })
+        },
+        
+        //Transporter
+        createTransport: ({state}) => {
+            const payload = state.createTransporterRequest
+
+            return new Promise((resolve, reject) => {
+                const callConfig = {
+                    method: 'post',
+                    url: state.baseUrl + '/Transporter/CreateTransporter',
+                    headers: {
+                        'Authorization': 'Bearer '+ localStorage.getItem('jwt'),
+                        'Content-Type': 'application/json'
+                    },
+                    data: payload,
+                }
+
+                axios(callConfig)
+                  .then((response) => {
+                      resolve(response)
+                      Vue.$toast.success("Transport Captured");
+                  })
+                  .catch(err => {
+                      reject(err)
+                      Vue.$toast.error("There was an error");
+                  })
             })
         },
         
