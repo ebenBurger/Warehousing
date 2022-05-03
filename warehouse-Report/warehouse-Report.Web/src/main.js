@@ -35,7 +35,7 @@ const toastOptions = {
     draggable: true,
     pauseOnFocusLoss: true,
     pauseOnHover: false,
-    timeout: 4000,
+    timeout: 3000,
     newestOnTop: true
 }
 
