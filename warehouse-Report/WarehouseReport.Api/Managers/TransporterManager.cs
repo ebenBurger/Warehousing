@@ -21,7 +21,6 @@ namespace WarehouseReport.Api.Managers
         {
             var data = _context.Transporter
                 .Where(a => a.IsActive == true)
-                .Include(b => b.Package)
                 .ToList();
 
             return data;
