@@ -463,13 +463,13 @@
                                                            v-model="selectedCargo.billedToJkn"
                                                            :labels="{checked: 'Yes'}"/>
                                         </b-col>
-<!--                                        <b-col class="text-center">-->
-<!--                                            <label>Completed? </label>-->
-<!--                                            <toggle-button :value="false"-->
-<!--                                                           class="justify-content-center d-flex"-->
-<!--                                                           v-model="selectedCargo.isComplete"-->
-<!--                                                           :labels="{checked: 'Yes'}"/>-->
-<!--                                        </b-col>-->
+                                        <b-col class="text-center">
+                                            <label>Completed? </label>
+                                            <toggle-button :value="false"
+                                                           class="justify-content-center d-flex"
+                                                           v-model="selectedCargo.isComplete"
+                                                           :labels="{checked: 'Yes'}"/>
+                                        </b-col>
                                     </b-row>
                                     <hr class="mx-3">
                                     <b-row class="justify-content-around">
@@ -1102,6 +1102,9 @@ export default {
     beforeUpdate() {
     },
     updated() {
+        setTimeout(() => {
+            this.isEnterPage = false
+        }, 2500)
     },
     methods: {
         ...mapActions([
@@ -1232,6 +1235,9 @@ export default {
                         this.packageAdd.dataSource.splice(0, this.packageAdd.dataSource.length)
                         this.isEnterPage = false
                     })
+                // setTimeout(() => {
+                //     this.isEnterPage = false
+                // }, 2500)
                     location.reload()
             })
            
@@ -1294,7 +1300,27 @@ export default {
             this.packageList = true
         },
         cargoUpdate() {
-            if (this.selectedCargo.containerId !== null) {
+            const updatedCargo = {}
+            updatedCargo.supplier = this.selectedCargo.supplier
+            updatedCargo.dateCollected = this.selectedCargo.dateCollected
+            updatedCargo.bpoNumber = this.selectedCargo.bpoNumber
+            updatedCargo.atraxInvoiceNumber = this.selectedCargo.atraxInvoiceNumber
+            updatedCargo.deliveryArea = this.selectedCargo.deliveryArea
+            updatedCargo.transporter = this.selectedCargo.transporter
+            updatedCargo.transporterCost = this.selectedCargo.transporterCost
+            updatedCargo.transportedInvoiceNumber = this.selectedCargo.transportedInvoiceNumber
+            updatedCargo.specialRequirements = this.selectedCargo.specialRequirements
+            updatedCargo.deleteReason = this.selectedCargo.deleteReason
+            updatedCargo.billedToJkn = this.selectedCargo.billedToJkn
+            updatedCargo.commercialInvoiceReceived = this.selectedCargo.commercialInvoiceReceived
+            updatedCargo.packingListReceived = this.selectedCargo.packingListReceived
+            updatedCargo.hazardous = this.selectedCargo.hazardous
+            updatedCargo.isComplete = this.selectedCargo.isComplete
+            updatedCargo.isActive = this.selectedCargo.isActive
+            updatedCargo.containerId = this.selectedCargo.containerId
+            updatedCargo.cargoId = this.selectedCargo.cargoId
+            
+            if (this.selectedCargo.isComplete) {
                 // this.selectedCargo.totalChargeableWeight = this.chargeWeight
                 // this.selectedCargo.storageCost = this.storageCost
                 // this.selectedCargo.numberOfStorageDays = this.storageDays
@@ -1303,7 +1329,9 @@ export default {
                 console.log('TOTAL STORAGE COST', this.storageCost)
                 console.log('TOTAL STORAGE DAYS', this.storageDays)
             }
-            this.$store.commit('setSelectedCargo', this.selectedCargo)
+            this.selectedCargo.container.containerId = this.selectedCargo.containerId
+            console.log('CONTAINER ID', this.selectedCargo.containerId) 
+            this.$store.commit('setSelectedCargo', updatedCargo)
             this.updateCargo()
             .then(() => {
                 this.hideCargoEditModal()
