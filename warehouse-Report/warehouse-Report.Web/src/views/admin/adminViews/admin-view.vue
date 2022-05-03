@@ -83,21 +83,21 @@
                                     </b-row>
                                 </template>
 
-                                <template #cell(kgCBMConversionSum)="data">
+                                <template #cell(kgCBMConversionSum)>
                                     <b-row align-v="center" >
-                                        <span class="mr-auto">{{(data.item.packageModels.filter(active => active.isActive === true).reduce((acc, kg) => acc + kg.kgCBMConversion, 0)) ? (data.item.packageModels.filter(active => active.isActive === true).reduce((acc, kg) => acc + kg.kgCBMConversion, 0)).toFixed(3) : ''}}</span>
+<!--                                        <span class="mr-auto">{{(data.item.packageModels.filter(active => active.isActive === true).reduce((acc, kg) => acc + kg.kgCBMConversion, 0)) ? (data.item.packageModels.filter(active => active.isActive === true).reduce((acc, kg) => acc + kg.kgCBMConversion, 0)).toFixed(3) : ''}}</span>-->
                                     </b-row>
                                 </template>
 
-                                <template #cell(volumeSum)="data">
+                                <template #cell(volumeSum)>
                                     <b-row align-v="center">
-                                        <span class="mr-auto">{{(data.item.packageModels.filter(active => active.isActive === true).reduce((acc, vol) => acc + vol.volumeMetric, 0)).toFixed(3)}}</span>
+<!--                                        <span class="mr-auto">{{(data.item.packageModels.filter(active => active.isActive === true).reduce((acc, vol) => acc + vol.volumeMetric, 0)).toFixed(3)}}</span>-->
                                     </b-row>
                                 </template>
 
-                                <template #cell(chargeableWeightSum)="data">
+                                <template #cell(chargeableWeightSum)>
                                     <b-row align-v="center">
-                                        <span class="mr-auto">{{(data.item.packageModels.filter(active => active.isActive === true).reduce((acc, chargeWeight) => acc + chargeWeight.chargeableWeight, 0)).toFixed(3)}}</span>
+<!--                                        <span class="mr-auto">{{(data.item.packageModels.filter(active => active.isActive === true).reduce((acc, chargeWeight) => acc + chargeWeight.chargeableWeight, 0)).toFixed(3)}}</span>-->
                                     </b-row>
                                 </template>
 
@@ -107,9 +107,9 @@
                                     </b-row>
                                 </template>
 
-                                <template #cell(storageCostsCalc)="data">
+                                <template #cell(storageCostsCalc)>
                                     <b-row align-v="center">
-                                        <span class="mr-auto">ZAR {{(((data.item.dollarRate * data.item.packageModels.filter(active => active.isActive === true).reduce((acc, weight) => acc + weight.chargeableWeight, 0))) * ((new Date() - new Date(data.item.endDateOfFreeStorage)) / ((1000 * 3600 * 24) - 1))).toFixed(3)}}</span>
+<!--                                        <span class="mr-auto">ZAR {{(((data.item.dollarRate * data.item.packageModels.filter(active => active.isActive === true).reduce((acc, weight) => acc + weight.chargeableWeight, 0))) * ((new Date() - new Date(data.item.endDateOfFreeStorage)) / ((1000 * 3600 * 24) - 1))).toFixed(3)}}</span>-->
                                     </b-row>
                                 </template>
 
@@ -239,23 +239,23 @@
                     <b-col class="d-flex justify-content-center">
                         <b-form class="w-100">
                             <b-row>
-                                <label v-if="packageAdd.length <=1"> You have {{packageAdd.length}} item on the packing list.</label>
-                                <label v-if="packageAdd.length >=2"> You have {{packageAdd.length}} items on the packing list.</label>
-                            </b-row>
-                            <b-row>
                                 <b-col>
-                                    <label class="text-primary font-weight-bold mb-4">Package Weight</label>
+                                    <label class="text-primary font-weight-bold mb-4">Shipment Weight</label>
                                 </b-col>
                             </b-row>
                             <b-row>
                                 <b-col cols="3">
-                                    <label>Total Shipment Weight (kg)</label>
-                                    <b-form-input type="number" v-model="packageData.weight"></b-form-input>
+                                    <label class="font-weight-bold">Total Shipment Weight (kg)</label>
+                                    <label class="font-weight-bold text-danger">{{this.packageAdd.dataSource.reduce((acc, item) => acc + parseInt(item.weight), 0)}} Kg</label>
+                                </b-col>
+                                <b-col cols="3">
+                                    <label class="font-weight-bold">Total Shipment Quantity</label>
+                                    <label class="font-weight-bold text-danger">{{this.packageAdd.dataSource.reduce((acc, item) => acc + parseInt(item.quantity), 0)}} (Pcs)</label>
                                 </b-col>
                             </b-row>
                             <b-row>
                                 <b-col>
-                                    <label class="text-primary font-weight-bold mb-4">Package Details</label>
+                                    <label class="text-primary font-weight-bold mb-4">Shipment Details</label>
                                 </b-col>
                             </b-row>
                             <b-row>
@@ -269,23 +269,26 @@
                                 </b-col>
                                 
                                 <b-col>
-                                    <label>Length</label>
+                                    <label>Length (cm)</label>
                                     <b-form-input type="number" v-model="packageData.length"></b-form-input>
                                 </b-col>
                                 <b-col>
-                                    <label>Width</label>
+                                    <label>Width (cm)</label>
                                     <b-form-input type="number" v-model="packageData.width"></b-form-input>
                                 </b-col>
                                 <b-col>
-                                    <label>Height</label>
+                                    <label>Height (cm)</label>
                                     <b-form-input type="number" v-model="packageData.height"></b-form-input>
                                 </b-col>
                                 <b-col>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <b-button variant="primary" squared @click="addPackage">
-                                            <font-awesome-icon icon="fa-plus" />
-                                        </b-button>
-                                    </div>
+                                    <label>Weight (kg)</label>
+                                    <b-form-input type="number" v-model="packageData.weight"></b-form-input>
+                                </b-col>
+                                <b-col>
+                                    <label></label>
+                                    <b-button variant="primary" squared @click="addPackage">
+                                        <font-awesome-icon icon="fa-plus" />
+                                    </b-button>
                                 </b-col>
                             </b-row>
                             <hr class="mx-3">
@@ -328,13 +331,15 @@
                 <div class="w-100" v-if="packageList">
                    <b-row>
                        <b-col>
-                           <p>Have you added all the packages to this cargo?</p>
+                           <p>You are about to add the following to: </p>
                        </b-col>
-                       <b-col v-if="packageAdd.length <= 1">
-                           You single Item on the packing list 
+                       <b-col>
+                           <label class="font-weight-bold">Total Shipment Weight (kg)</label>
+                           <label class="font-weight-bold text-danger">{{this.packageAdd.dataSource.reduce((acc, item) => acc + parseInt(item.weight), 0)}} Kg</label>
                        </b-col>
-                       <b-col v-if="packageAdd.length >= 2">
-                           You have a total of {{packageAdd.length}} Items
+                       <b-col>
+                           <label class="font-weight-bold">Total Shipment Quantity</label>
+                           <label class="font-weight-bold text-danger">{{this.packageAdd.dataSource.reduce((acc, item) => acc + parseInt(item.quantity), 0)}} (Pcs)</label>
                        </b-col>
                    </b-row>
                    <hr class="mx-3">
@@ -385,7 +390,7 @@
                                             <label>{{selectedCargo.supplier ? selectedCargo.supplier : "Supplier not selected"}}</label>
                                         </b-col>
                                         <b-col>
-                                            <label><span class="font-weight-bold">Date Collected:</span> </label>
+                                            <label><span class="font-weight-bold">Date Received:</span> </label>
                                             <label>{{selectedCargo.dateCollected | dateFilter}}</label>
                                         </b-col>
                                         <b-col>
@@ -439,6 +444,10 @@
                                                            class="d-flex justify-content-center"
                                                            :labels="{checked: 'Yes'}"/>
                                         </b-col>
+                                        
+
+                                    </b-row>
+                                    <b-row>
                                         <b-col class="text-center">
                                             <label>Packing List Received? <span>( <font-awesome-icon icon="fa-box" /> )</span></label>
                                             <toggle-button :value="false"
@@ -446,9 +455,6 @@
                                                            v-model="selectedCargo.packingListReceived"
                                                            :labels="{checked: 'Yes'}"/>
                                         </b-col>
-
-                                    </b-row>
-                                    <b-row>
                                         <b-col class="text-center">
                                             <label>Billed To JKN? <span>( <font-awesome-icon icon="fa-dollar-sign" /> )</span></label>
                                             
@@ -457,23 +463,23 @@
                                                            v-model="selectedCargo.billedToJkn"
                                                            :labels="{checked: 'Yes'}"/>
                                         </b-col>
-                                        <b-col class="text-center">
-                                            <label>Completed? </label>
-                                            <toggle-button :value="false"
-                                                           class="justify-content-center d-flex"
-                                                           v-model="selectedCargo.isComplete"
-                                                           :labels="{checked: 'Yes'}"/>
-                                        </b-col>
+<!--                                        <b-col class="text-center">-->
+<!--                                            <label>Completed? </label>-->
+<!--                                            <toggle-button :value="false"-->
+<!--                                                           class="justify-content-center d-flex"-->
+<!--                                                           v-model="selectedCargo.isComplete"-->
+<!--                                                           :labels="{checked: 'Yes'}"/>-->
+<!--                                        </b-col>-->
                                     </b-row>
                                     <hr class="mx-3">
                                     <b-row class="justify-content-around">
                                         <b-col cols="4">
-                                            <label>Supplier Invoice Number</label>
-                                            <b-form-input v-model="selectedCargo.supplierInvoiceNumber" />
+                                            <label>Atrax Invoice Number</label>
+                                            <b-form-input v-model="selectedCargo.atraxInvoiceNumber" />
                                         </b-col>
                                         <b-col cols="5">
-                                            <label>Supplier Invoice Date</label>
-                                            <b-form-datepicker v-model="selectedCargo.supplierInvoiceDate"></b-form-datepicker>
+                                            <label>Atrax Invoice Date</label>
+                                            <b-form-datepicker v-model="selectedCargo.atraxInvoiceDate"></b-form-datepicker>
                                         </b-col>
                                     </b-row>
                                     <hr class="mx-3">
@@ -527,6 +533,17 @@
                                                         <h3 class="text-center">{{item.weight}}</h3>
                                                     </b-col>
                                                     <b-col>
+                                                        <label class="text-center font-weight-bold">Volume:</label>
+                                                        <h3 class="text-center">{{item.volumeCbm ? item.volumeCbm.toFixed(3) : ''}}</h3>
+                                                    </b-col>
+                                                    <b-col>
+                                                        <label class="text-center font-weight-bold">Chargable Weight:</label>
+                                                        <h3 class="text-center">{{item.chargeableWeight ? item.chargeableWeight.toFixed(3) : ''}}</h3>
+                                                    </b-col>
+                                                    
+                                                </b-row>
+                                                <b-row class="m-0 colStyle">
+                                                    <b-col>
                                                         <label class="text-center font-weight-bold">Length:</label>
                                                         <h3 class="text-center">{{item.length}}</h3>
                                                     </b-col>
@@ -534,8 +551,6 @@
                                                         <label class="text-center font-weight-bold">Width:</label>
                                                         <h3 class="text-center">{{item.width}}</h3>
                                                     </b-col>
-                                                </b-row>
-                                                <b-row class="m-0 colStyle">
                                                     <b-col>
                                                         <label class="text-center font-weight-bold">Height:</label>
                                                         <h3 class="text-center">{{item.height}}</h3>
@@ -544,14 +559,8 @@
                                                         <label class="text-center font-weight-bold">CBM Conv.:</label>
                                                         <h3 class="text-center">{{item.kgCBMConversion ? item.kgCBMConversion.toFixed(3) : ''}}</h3>
                                                     </b-col>
-                                                    <b-col>
-                                                        <label class="text-center font-weight-bold">Volume:</label>
-                                                        <h3 class="text-center">{{item.volumeCbm ? item.volumeCbm.toFixed(3) : ''}}</h3>
-                                                    </b-col>
-                                                    <b-col>
-                                                        <label class="text-center font-weight-bold">Chargable Weight:</label>
-                                                        <h3 class="text-center">{{item.chargeableWeight ? item.chargeableWeight.toFixed(3) : ''}}</h3>
-                                                    </b-col>
+                                                    
+                                                    
                                                 </b-row>
                                                 <b-row class="m-0 colStyle">
                                                     
@@ -560,7 +569,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                
                                 <hr v-if="!deleteSelected && !addSelected && !editSelected" class="mx-3">
                                 <b-row v-if="!deleteSelected && !addSelected && !editSelected">
                                     <b-col>
@@ -747,35 +755,36 @@
                                     </b-row>
                                     <b-row>
                                         <b-col>
+                                            <label>Transporter Invoice Number</label>
+                                            <b-form-input v-model="selectedCargo.transporterInvoiceNumber"/>
+                                        </b-col>
+                                        <b-col>
+                                            <label>Transporter Invoice Date</label>
+                                            <b-form-datepicker v-model="selectedCargo.transporterInvoiceDate"/>
+                                        </b-col>
+                                        
+                                    </b-row>
+                                    <b-row>
+                                        <b-col cols="6">
+                                            <label>Transporter Cost</label>
+                                            <b-form-input v-model="selectedCargo.transporterCost"/>
+                                        </b-col>
+                                    </b-row>
+                                    <b-row>
+                                        <b-col>
                                             <label>Transporter Name</label>
                                             <b-form-input v-model="selectedCargo.transporter"/>
                                         </b-col>
                                         <b-col>
-                                            <label>Area</label>
+                                            <label>Area Colleted</label>
                                             <b-form-input v-model="selectedCargo.deliveryArea"/>
                                         </b-col>
-
+                                        
                                     </b-row>
                                     <b-row>
                                         <b-col cols="6">
-                                            <label>Date to Collect</label>
+                                            <label>Date Collect</label>
                                             <b-form-datepicker v-model="selectedCargo.dateOfCollection"/>
-                                        </b-col>
-                                    </b-row>
-                                    <b-row>
-                                        <b-col>
-                                            <label>Transporter Cost</label>
-                                            <b-form-input v-model="selectedCargo.transporterCost"/>
-                                        </b-col>
-                                        <b-col>
-                                            <label>Transporter Invoice Number</label>
-                                            <b-form-input v-model="selectedCargo.transporterInvoiceNumber"/>
-                                        </b-col>
-                                    </b-row>
-                                    <b-row>
-                                        <b-col cols="6">
-                                            <label>Transporter Invoice Date</label>
-                                            <b-form-datepicker v-model="selectedCargo.transporterInvoiceDate"/>
                                         </b-col>
                                     </b-row>
                                     <hr class="mx-3">
@@ -804,7 +813,7 @@
                                     </b-row>
                                     <b-row>
                                         <b-form-select v-model="selectedCargo.containerId">
-                                            <b-form-select-option v-for="(item, index) in containerList" :key="index" :value="item.containerId">{{item.containerName}}</b-form-select-option>
+                                            <b-form-select-option v-for="(item, index) in containerList" :key="index" :value="item.containerId">{{item.containerNumber}} | {{item.containerType}}</b-form-select-option>
                                         </b-form-select>
                                     </b-row>
                                     <hr class="mx-3">
@@ -872,7 +881,7 @@ export default {
             supplier: null,
             dateCollected: null,
             bpoNumber: null,
-            supplierInvoiceNumber: null,
+            atraxInvoiceNumber: null,
             //TODO
             //number of storage days --- this needs to be calculated in UI 
             //storage cost --- this needs to be calculated in UI
@@ -938,13 +947,13 @@ export default {
                 },
                 {
                     label: 'Container',
-                    key: 'container.containerName',
+                    key: 'container.containerNumber',
                     sortable: true,
                     tdClass:'',
                 },
                 {
                     label: 'Invoice Number',
-                    key: 'supplierInvoiceNumber',
+                    key: 'atraxInvoiceNumber',
                     sortable: false,
                     tdClass:'',
                 },
@@ -1049,6 +1058,12 @@ export default {
                     tdClass:'',
                 },
                 {
+                    label: 'Weight',
+                    key: 'weight',
+                    sortable: true,
+                    tdClass:'',
+                },
+                {
                     label: '',
                     key: 'actions',
                     sortable: false,
@@ -1082,7 +1097,7 @@ export default {
     mounted() {
         setTimeout(() => {
             this.isEnterPage = false
-        }, 0)
+        }, 2500)
     },
     beforeUpdate() {
     },
@@ -1111,6 +1126,7 @@ export default {
             this.$bvModal.hide('cargoEdit')
             //TODO clear the pervasive memory on changes not saved.
             this.cargoTable.isLoading = false
+            this.editSelected = false
         },
         openCargoModal() {
             this.$bvModal.show('cargoAddModal')
@@ -1157,6 +1173,10 @@ export default {
                 isComplete: false,
                 isActive: true,
             }
+            this.packageList = false
+            this.isCargoCreated = false
+            this.getCargoList()
+            
         },
         
         getSupplierList() {
@@ -1171,6 +1191,7 @@ export default {
             .then(response => {
                 this.cargoTable.dataSource = response.data
                 this.cargoTable.isLoading = false
+                
             })
             .catch(() => {
                 this.$router.push({path: '/'})
@@ -1189,6 +1210,7 @@ export default {
                 })
         },
         savePackageToDb() {
+            this.isEnterPage = true
             this.packageAdd.dataSource.forEach((item) => {
                 const packItem = {}
                 packItem.cargoId = this.cargoCreatedId
@@ -1205,12 +1227,17 @@ export default {
                 this.createPackage()
                     .then(() => {
                         this.hideCargoModal()
-                        this.getCargoList()
+                        this.packageList = false
+                        this.isCargoCreated = false
+                        this.packageAdd.dataSource.splice(0, this.packageAdd.dataSource.length)
+                        this.isEnterPage = false
                     })
+                    location.reload()
             })
            
         },
         saveExtraPackageToDb() {
+            this.isEnterPage = true
             //TODO- loop through the array and add to the db
             this.packageAdd.dataSource.forEach((item) => {
                 const packItem = {}
@@ -1231,7 +1258,10 @@ export default {
                         this.addSelected = !this.addSelected
                         this.getCargoList()
                         this.$store.commit('setSelectedCargo', this.selectedCargo)
+                        this.packageAdd.dataSource.splice(0, this.packageAdd.dataSource.length)
+                        this.isEnterPage = false
                     })
+                location.reload()
             })
 
         },
@@ -1264,12 +1294,14 @@ export default {
             this.packageList = true
         },
         cargoUpdate() {
-            if (this.selectedCargo.isComplete) {
-                this.selectedCargo.totalChargeableWeight = this.chargeWeight
-                this.selectedCargo.storageCost = this.storageCost
-                this.selectedCargo.numberOfStorageDays = this.storageDays
+            if (this.selectedCargo.containerId !== null) {
+                // this.selectedCargo.totalChargeableWeight = this.chargeWeight
+                // this.selectedCargo.storageCost = this.storageCost
+                // this.selectedCargo.numberOfStorageDays = this.storageDays
+                this.selectedCargo.isComplete = true
                 console.log('TOTAL WEIGHT CHARGE', this.chargeWeight)
                 console.log('TOTAL STORAGE COST', this.storageCost)
+                console.log('TOTAL STORAGE DAYS', this.storageDays)
             }
             this.$store.commit('setSelectedCargo', this.selectedCargo)
             this.updateCargo()
@@ -1343,9 +1375,11 @@ export default {
         togglePackageAdd() {
             this.packageList = !this.packageList
         },
+        //TODO - fix calculation
         calculateStorageDays() {
             ((new Date() - new Date(this.selectedCargo.endDateOfFreeStorage)) / ((1000 * 3600 * 24) - 1)).toFixed(0) >= 0 ? this.storageDays = ((new Date() - new Date(this.selectedCargo.endDateOfFreeStorage)) / ((1000 * 3600 * 24) - 1)).toFixed(0) : this.storageDays = 0
         },
+        //TODO - fix calculation
         calculateStorageCost() {
             this.chargeWeight = (this.selectedCargo.packageModels
                 .filter(active => active.isActive === true)
@@ -1355,12 +1389,14 @@ export default {
                 .reduce((acc, weight) => acc + weight.chargeableWeight, 0))) * ((new Date() - new Date(this.selectedCargo.endDateOfFreeStorage)) / ((1000 * 3600 * 24) - 1))).toFixed(3)
             console.log("StorageCost", this.storageCost)
         },
+        //TODO - fix calculation
         calculateTotalQty() {
             this.quantity = this.selectedCargo.packageModels
                 .filter(active => active.isActive === true)
                 .reduce((acc, qty) => acc + qty.quantity, 0)
             
         },
+        //TODO - fix calculation
         calculateTotalWeight() {
             this.totalWeight = (this.selectedCargo.packageModels
                 .filter(active => active.isActive === true)
