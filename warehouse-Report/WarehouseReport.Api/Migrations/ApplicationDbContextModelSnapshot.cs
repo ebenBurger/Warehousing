@@ -371,7 +371,7 @@ namespace WarehouseReport.Api.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ContainerName")
+                    b.Property<string>("ContainerNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ContainerType")
@@ -383,11 +383,17 @@ namespace WarehouseReport.Api.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("FileReference")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsComplete")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Lading")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("PackingDate")
                         .HasColumnType("datetime2");
@@ -395,10 +401,19 @@ namespace WarehouseReport.Api.Migrations
                     b.Property<string>("PackingLocation")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Port")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SealOne")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SealTwo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Vesel")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Voyage")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ContainerId");
@@ -443,7 +458,7 @@ namespace WarehouseReport.Api.Migrations
                     b.Property<double>("Quantity")
                         .HasColumnType("float");
 
-                    b.Property<int>("TransporterId")
+                    b.Property<int?>("TransporterId")
                         .HasColumnType("int");
 
                     b.Property<double>("VolumeCbm")
@@ -465,7 +480,8 @@ namespace WarehouseReport.Api.Migrations
                     b.HasIndex("ContainerId");
 
                     b.HasIndex("TransporterId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[TransporterId] IS NOT NULL");
 
                     b.ToTable("Package");
                 });
@@ -584,9 +600,7 @@ namespace WarehouseReport.Api.Migrations
 
                     b.HasOne("WarehouseReport.Api.Models.TransporterModel", "Transporter")
                         .WithOne("Package")
-                        .HasForeignKey("WarehouseReport.Api.Models.PackageModel", "TransporterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("WarehouseReport.Api.Models.PackageModel", "TransporterId");
 
                     b.Navigation("Cargo");
 
