@@ -83,33 +83,38 @@
                                     </b-row>
                                 </template>
 
-                                <template #cell(kgCBMConversionSum)>
+                                <template #cell(kgCBMConversionSum)="data">
                                     <b-row align-v="center" >
-<!--                                        <span class="mr-auto">{{(data.item.packageModels.filter(active => active.isActive === true).reduce((acc, kg) => acc + kg.kgCBMConversion, 0)) ? (data.item.packageModels.filter(active => active.isActive === true).reduce((acc, kg) => acc + kg.kgCBMConversion, 0)).toFixed(3) : ''}}</span>-->
+                                        <span class="mr-auto">{{(data.item.packageModels.filter(active => active.isActive === true).reduce((acc, cbm) => acc + cbm.kgCBMConversion, 0)).toFixed(3)}}</span>
                                     </b-row>
                                 </template>
 
-                                <template #cell(volumeSum)>
+                                <template #cell(volumeSum)="data">
                                     <b-row align-v="center">
-<!--                                        <span class="mr-auto">{{(data.item.packageModels.filter(active => active.isActive === true).reduce((acc, vol) => acc + vol.volumeMetric, 0)).toFixed(3)}}</span>-->
+                                        <span class="mr-auto">{{ (data.item.packageModels.filter(active => active.isActive === true).reduce((acc, vol) => acc + vol.volumeMetric, 0)).toFixed(3)}}</span>
                                     </b-row>
                                 </template>
 
-                                <template #cell(chargeableWeightSum)>
+                                <template #cell(chargeableWeightSum)="data">
                                     <b-row align-v="center">
-<!--                                        <span class="mr-auto">{{(data.item.packageModels.filter(active => active.isActive === true).reduce((acc, chargeWeight) => acc + chargeWeight.chargeableWeight, 0)).toFixed(3)}}</span>-->
+                                        <span class="mr-auto">{{(data.item.packageModels.filter(active => active.isActive === true).reduce((acc, Charge) => acc + Charge.chargeableWeight, 0)).toFixed(3)}}</span>
                                     </b-row>
                                 </template>
 
                                 <template #cell(storageDaysCalc)="data">
                                     <b-row align-v="center">
-                                        <span class="mr-auto">{{((new Date() - new Date(data.item.endDateOfFreeStorage)) / ((1000 * 3600 * 24) - 1)).toFixed()}}</span>
+                                        <span class="mr-auto">{{((new Date() - new Date(data.item.endDateOfFreeStorage)) / ((1000 * 3600 * 24) - 1)).toFixed(0)}}</span>
                                     </b-row>
                                 </template>
 
-                                <template #cell(storageCostsCalc)>
+                                <template #cell(storageCostsCalc)="data">
                                     <b-row align-v="center">
-<!--                                        <span class="mr-auto">ZAR {{(((data.item.dollarRate * data.item.packageModels.filter(active => active.isActive === true).reduce((acc, weight) => acc + weight.chargeableWeight, 0))) * ((new Date() - new Date(data.item.endDateOfFreeStorage)) / ((1000 * 3600 * 24) - 1))).toFixed(3)}}</span>-->
+                                        <span v-show="((new Date() - new Date(data.item.endDateOfFreeStorage)) / ((1000 * 3600 * 24) - 1)).toFixed(0) >= 0" 
+                                              class="mr-auto">
+                                            USD {{((data.item.dollarRate * data.item.packageModels
+                                            .filter(active => active.isActive === true)
+                                            .reduce((acc, Charge) => acc + Charge.chargeableWeight, 0)) * ((new Date() - new Date(data.item.endDateOfFreeStorage)) / ((1000 * 3600 * 24) - 1))).toFixed(3)}}
+                                        </span>
                                     </b-row>
                                 </template>
 
@@ -293,24 +298,31 @@
                             </b-row>
                             <hr class="mx-3">
                             <b-row>
-                                <b-table striped hover
-                                         @row-clicked="removePackage"
-                                         :items="packageAdd.dataSource"
-                                         :fields="packageAdd.tableColumns"
-                                         :busy="packageAdd.isLoading"
-                                         :current-page="packageAdd.currentPage"
-                                         :per-page="packageAdd.resultsPerPage"
-                                         :total-rows="packageAddRows"
-                                         id="packageAddTable"
-                                ></b-table>
-                                <b-row align-h="center" >
-                                    <b-pagination
-                                        v-model="packageAdd.currentPage"
-                                        :total-rows="packageAddRows"
-                                        :per-page="packageAdd.resultsPerPage"
-                                        aria-controls="packageAddTable"
-                                    ></b-pagination>
-                                </b-row>
+                                <b-table
+                                    striped hover
+                                    @row-clicked="removePackage"
+                                    :items="packageAdd.dataSource"
+                                    :fields="packageAdd.tableColumns"
+                                    :busy="packageAdd.isLoading"
+                                    :current-page="cargoTable.currentPage"
+                                >
+                                    <template #cell(actions)="row">
+                                        <b-row align-v="center" align-h="end">
+                                            <b-button @click="removePackage(row)" size="sm" class="btn-icon">
+                                                <font-awesome-icon icon="fa-trash" />
+                                            </b-button>
+                                        </b-row>
+                                    </template>
+
+                                </b-table>
+<!--                                <b-row align-h="center" >-->
+<!--                                    <b-pagination-->
+<!--                                        v-model="packageAdd.currentPage"-->
+<!--                                        :total-rows="packageAddRows"-->
+<!--                                        :per-page="packageAdd.resultsPerPage"-->
+<!--                                        aria-controls="packageAddTable"-->
+<!--                                    ></b-pagination>-->
+<!--                                </b-row>-->
                             </b-row>
                             <hr class="mx-3">
                             <b-row>
@@ -409,7 +421,7 @@
                                         </b-col>
                                         <b-col>
                                             <label><span class="font-weight-bold">Storage cost</span> </label>
-                                            <label>ZAR {{this.storageCost}}</label>
+                                            <label>USD {{this.storageCost}}</label>
                                         </b-col>
                                     </b-row>
                                     <hr class="mx-3">
@@ -562,9 +574,6 @@
                                                     
                                                     
                                                 </b-row>
-                                                <b-row class="m-0 colStyle">
-                                                    
-                                                </b-row>
                                             </div>
                                         </div>
                                     </div>
@@ -593,7 +602,7 @@
                                         </b-row>
                                         <b-row>
                                             <b-col>
-                                                <label>Are you sure you want to delete the {{itemSelectedForDelete.description}}</label>
+                                                <label>Are you sure you want to delete the <span class="font-weight-bold">{{itemSelectedForDelete.description}}</span> Cargo</label>
                                             </b-col>
                                         </b-row>
                                         <hr class="mx-3">
@@ -620,10 +629,6 @@
                                                     </b-button>
                                                 </div>
                                             </b-col>
-                                        </b-row>
-                                        <b-row>
-                                            <label v-if="packageAdd.length <=1"> You have {{packageAdd.length}} item on the packing list.</label>
-                                            <label v-if="packageAdd.length >=2"> You have {{packageAdd.length}} items on the packing list.</label>
                                         </b-row>
                                         <b-row>
                                             <b-col>
@@ -1072,7 +1077,7 @@ export default {
             ]
         },
         packageList: false,
-        itemSelectedForDelete: {},
+        itemSelectedForDelete: [],
         deleteSelected: false,
         addSelected: false,
         editSelected: false,
@@ -1102,9 +1107,6 @@ export default {
     beforeUpdate() {
     },
     updated() {
-        setTimeout(() => {
-            this.isEnterPage = false
-        }, 2500)
     },
     methods: {
         ...mapActions([
@@ -1235,11 +1237,8 @@ export default {
                         this.packageAdd.dataSource.splice(0, this.packageAdd.dataSource.length)
                         this.isEnterPage = false
                     })
-                // setTimeout(() => {
-                //     this.isEnterPage = false
-                // }, 2500)
-                    location.reload()
             })
+            location.reload()
            
         },
         saveExtraPackageToDb() {
@@ -1308,7 +1307,9 @@ export default {
             updatedCargo.deliveryArea = this.selectedCargo.deliveryArea
             updatedCargo.transporter = this.selectedCargo.transporter
             updatedCargo.transporterCost = this.selectedCargo.transporterCost
-            updatedCargo.transportedInvoiceNumber = this.selectedCargo.transportedInvoiceNumber
+            updatedCargo.transporterInvoiceNumber = this.selectedCargo.transporterInvoiceNumber
+            updatedCargo.transporterInvoiceDate = this.selectedCargo.transporterInvoiceDate
+            updatedCargo.dateOfCollection = this.selectedCargo.dateOfCollection
             updatedCargo.specialRequirements = this.selectedCargo.specialRequirements
             updatedCargo.deleteReason = this.selectedCargo.deleteReason
             updatedCargo.billedToJkn = this.selectedCargo.billedToJkn
@@ -1319,6 +1320,13 @@ export default {
             updatedCargo.isActive = this.selectedCargo.isActive
             updatedCargo.containerId = this.selectedCargo.containerId
             updatedCargo.cargoId = this.selectedCargo.cargoId
+            updatedCargo.description = this.selectedCargo.description
+            updatedCargo.dollarRate = this.selectedCargo.dollarRate
+            updatedCargo.cargoReadyPlace = this.selectedCargo.cargoReadyPlace
+            updatedCargo.endDateOfFreeStorage = this.selectedCargo.endDateOfFreeStorage
+            updatedCargo.dateCreated = this.selectedCargo.dateCreated
+            updatedCargo.atraxInvoiceNumber = this.selectedCargo.atraxInvoiceNumber
+            updatedCargo.atraxInvoiceDate = this.selectedCargo.atraxInvoiceDate
             
             if (this.selectedCargo.isComplete) {
                 // this.selectedCargo.totalChargeableWeight = this.chargeWeight
@@ -1329,7 +1337,7 @@ export default {
                 console.log('TOTAL STORAGE COST', this.storageCost)
                 console.log('TOTAL STORAGE DAYS', this.storageDays)
             }
-            this.selectedCargo.container.containerId = this.selectedCargo.containerId
+            // this.selectedCargo.container.containerId = this.selectedCargo.containerId
             console.log('CONTAINER ID', this.selectedCargo.containerId) 
             this.$store.commit('setSelectedCargo', updatedCargo)
             this.updateCargo()
@@ -1362,7 +1370,9 @@ export default {
             this.$store.commit('setSelectedPackage', this.itemSelectedForDelete)
             this.updatePackage()
                 .then(() => {
-                    this.deleteSelected = !this.deleteSelected
+                    this.deleteSelected = false
+                    this.hideCargoEditModal()
+                    console.log('ITEM SELECTED', this.itemSelectedForDelete)
                 })
         },
         updatedEditPackage() {
