@@ -75,17 +75,20 @@ namespace WarehouseReport.Api.Managers
                 throw new Exception("Invalid Cargo Id");
             }
 
-            if (cargoModel.ContainerId != 0)
-            {
-                
-                //TODO- calculate the set days only
-                DateTime thisDay = DateTime.Today;
-                cargoModel.NumberOfStorageDays = (thisDay - cargoModel.EndDateOfFreeStorage).Days;
-                cargoModel.DateComplete = Convert.ToDateTime(DateTime.Now.ToLocalTime()
-                    .ToString(System.Globalization.CultureInfo.InvariantCulture));
-                cargoModel.StorageCost = (cargoModel.DollarRate * cargoModel.TotalChargeableWeight) * cargoModel.NumberOfStorageDays;
-            }
-            
+            // if (cargoModel.ContainerId != 0)
+            // {
+            //     
+            //     DateTime thisDay = DateTime.Today.Date;
+            //     
+            //     cargoModel.NumberOfStorageDays = (thisDay - cargoModel.EndDateOfFreeStorage.Date).Days;
+            //
+            //     cargoModel.StorageCost = (cargoModel.TotalChargeableWeight * cargoModel.DollarRate) *
+            //                              cargoModel.NumberOfStorageDays;
+            //     
+            //     cargoModel.DateComplete = Convert.ToDateTime(DateTime.Now.ToLocalTime()
+            //         .ToString(System.Globalization.CultureInfo.InvariantCulture));
+            // }
+            //
 
             _context.Cargo.Update(cargoModel);
             await _context.SaveChangesAsync();
