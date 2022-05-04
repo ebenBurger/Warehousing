@@ -112,17 +112,21 @@
 
                                 <template #cell(storageDaysCalc)="data">
                                     <b-row align-v="center">
-                                        <span class="mr-auto">{{((new Date() - new Date(data.item.endDateOfFreeStorage)) / ((1000 * 3600 * 24) - 1)).toFixed(0)}}</span>
+                                        <span v-if=" Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24)) + 1 >= 0" class="mr-auto">
+                                            {{
+                                                Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24)) + 1
+                                            }}
+                                        </span>
+                                        <span v-if=" Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24)) + 1 < 0" class="mr-auto">
+                                            0
+                                        </span>
                                     </b-row>
                                 </template>
 
-                                <template #cell(storageCostsCalc)="data">
+                                <template #cell(storageCostsCalc)>
                                     <b-row align-v="center">
-                                        <span v-show="((new Date() - new Date(data.item.endDateOfFreeStorage)) / ((1000 * 3600 * 24) - 1)).toFixed(0) >= 0" 
-                                              class="mr-auto">
-                                            USD {{((data.item.dollarRate * data.item.packageModels
-                                            .filter(active => active.isActive === true)
-                                            .reduce((acc, Charge) => acc + Charge.chargeableWeight, 0)) * ((new Date() - new Date(data.item.endDateOfFreeStorage)) / ((1000 * 3600 * 24) - 1))).toFixed(3)}}
+                                        <span class="mr-auto">
+                                            
                                         </span>
                                     </b-row>
                                 </template>
@@ -172,8 +176,8 @@
                                 <b-form-datepicker v-model="cargo.dateCollected"></b-form-datepicker>
                             </b-col>
                             <b-col cols="4">
-                                <label>BPO Number</label>
-                                <b-form-input v-model="cargo.bpoNumber"></b-form-input>
+                                <label>Date Received</label>
+                                <b-form-datepicker v-model="cargo.dateReceived"></b-form-datepicker>
                             </b-col>
                         </b-row>
                         <b-row>
@@ -186,6 +190,8 @@
                                 <b-form-input type="number" v-model="cargo.dollarRate" placeholder="Normal rate is at 0.55"></b-form-input>
                             </b-col>
                             <b-col cols="4">
+                                <label>BPO Number</label>
+                                <b-form-input v-model="cargo.bpoNumber"></b-form-input>
                             </b-col>
                         </b-row>
                         <b-row>
@@ -408,10 +414,10 @@
                                     <b-row>
                                         <b-col>
                                             <label><span class="font-weight-bold">Supplier:</span> </label>
-                                            <label>{{selectedCargo.supplier ? selectedCargo.supplier : "Supplier not selected"}}</label>
+                                            <label>{{selectedCargo.supplier}}</label>
                                         </b-col>
                                         <b-col>
-                                            <label><span class="font-weight-bold">Date Received:</span> </label>
+                                            <label><span class="font-weight-bold">Date Collected:</span> </label>
                                             <label>{{selectedCargo.dateCollected | dateFilter}}</label>
                                         </b-col>
                                         <b-col>
@@ -421,16 +427,20 @@
                                     </b-row>
                                     <b-row>
                                         <b-col>
-                                            <label><span class="font-weight-bold">End date of free storge</span></label>
+                                            <label><span class="font-weight-bold">Date of charge</span></label>
                                             <label>{{selectedCargo.endDateOfFreeStorage | dateFilter}}</label>
                                         </b-col>
                                         <b-col>
                                             <label><span class="font-weight-bold">Number of storage days</span></label>
-                                            <label>{{this.storageDays}}</label>
+                                            <label v-if="selectedCargo.numberOfStorageDays === 0">{{this.storageDays >= 0 ? this.storageDays : "No storage days"}}</label>
+                                            <label v-if="selectedCargo.numberOfStorageDays > 0">{{selectedCargo.storageDays}} These will not increase as it in a container.</label>
                                         </b-col>
                                         <b-col>
                                             <label><span class="font-weight-bold">Storage cost</span> </label>
-                                            <label>USD {{this.storageCost}}</label>
+                                            <label>
+                                                <span v-if="storageCost >= 0"> USD</span>
+                                                {{this.storageCost >= 0 ? this.storageCost : "No Cost"}}
+                                            </label>
                                         </b-col>
                                     </b-row>
                                     <hr class="mx-3">
@@ -1154,6 +1164,7 @@ export default {
             this.cargo = {
                 supplier: null,
                 dateCollected: null,
+                dateReceived: null,
                 bpoNumber: null,
                 description: null,
                 quantity: null,
@@ -1341,14 +1352,19 @@ export default {
             updatedCargo.atraxInvoiceDate = this.selectedCargo.atraxInvoiceDate
             
             if (this.selectedCargo.isComplete) {
-                // this.selectedCargo.totalChargeableWeight = this.chargeWeight
-                // this.selectedCargo.storageCost = this.storageCost
-                // this.selectedCargo.numberOfStorageDays = this.storageDays
                 this.selectedCargo.isComplete = true
+                
+            }
+            
+            if (this.selectedCargo.containerId !== 0) {
+                this.selectedCargo.totalChargeableWeight = this.chargeWeight
+                this.selectedCargo.storageCost = this.storageCost
+                this.selectedCargo.numberOfStorageDays = this.storageDays
                 console.log('TOTAL WEIGHT CHARGE', this.chargeWeight)
                 console.log('TOTAL STORAGE COST', this.storageCost)
                 console.log('TOTAL STORAGE DAYS', this.storageDays)
             }
+            
             // this.selectedCargo.container.containerId = this.selectedCargo.containerId
             console.log('CONTAINER ID', this.selectedCargo.containerId) 
             this.$store.commit('setSelectedCargo', updatedCargo)
@@ -1427,16 +1443,35 @@ export default {
         },
         //TODO - fix calculation
         calculateStorageDays() {
-            ((new Date() - new Date(this.selectedCargo.endDateOfFreeStorage)) / ((1000 * 3600 * 24) - 1)).toFixed(0) >= 0 ? this.storageDays = ((new Date() - new Date(this.selectedCargo.endDateOfFreeStorage)) / ((1000 * 3600 * 24) - 1)).toFixed(0) : this.storageDays = 0
+            const startDate = new Date(this.selectedCargo.endDateOfFreeStorage)
+            const endDate = new Date(Date.now())
+            
+            const oneDay = 1000 * 60 *60 * 24
+            
+            const diffInTime = endDate.getTime() - startDate.getTime()
+            this.storageDays = Math.round(diffInTime / oneDay) + 1
+            
         },
         //TODO - fix calculation
         calculateStorageCost() {
+            const startDate = new Date(this.selectedCargo.endDateOfFreeStorage)
+            const endDate = new Date(Date.now())
+
+            const oneDay = 1000 * 60 *60 * 24
+
+            const diffInTime = endDate.getTime() - startDate.getTime()
+            const days = Math.round(diffInTime / oneDay) + 1
+            
+            console.log("DAYS", days)
+            
             this.chargeWeight = (this.selectedCargo.packageModels
                 .filter(active => active.isActive === true)
                 .reduce((acc, weight) => acc + weight.chargeableWeight, 0))
-            this.storageCost = ((this.selectedCargo.dollarRate * (this.selectedCargo.packageModels
-                .filter(active => active.isActive === true)
-                .reduce((acc, weight) => acc + weight.chargeableWeight, 0))) * ((new Date() - new Date(this.selectedCargo.endDateOfFreeStorage)) / ((1000 * 3600 * 24) - 1))).toFixed(3)
+            console.log("CHARGE WEIGHT", this.chargeWeight)
+            
+            this.storageCost = ((this.selectedCargo.dollarRate * this.chargeWeight) * days).toFixed(2)
+            
+                
             console.log("StorageCost", this.storageCost)
         },
         //TODO - fix calculation
@@ -1460,6 +1495,8 @@ export default {
             if (!item || type !== 'row') return
             if (item.hazardous === true) return 'table-danger'
         },
+        
+        //TODO filter
         filterSearch() {
             if (this.search != null){
                 console.log("SEARCH", this.search.length)
