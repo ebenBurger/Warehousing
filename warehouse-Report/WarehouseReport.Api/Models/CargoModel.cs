@@ -25,6 +25,7 @@ namespace WarehouseReport.Api.Models
         public string? DeliveryArea { get; set; }
         
         public DateTime? DateOfCollection { get; set; }
+        public DateTime? DateReceived { get; set; }
         public string? Transporter { get; set; }
         public double? TransporterCost { get; set; }
         public string? TransporterInvoiceNumber { get; set; }
