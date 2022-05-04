@@ -403,6 +403,31 @@ export default new Vuex.Store({
                     })
             })
         },
+        updateContainer: ({state}) => {
+            const payload = state.selectedContainer
+
+            return new Promise((resolve, reject) => {
+                const callConfig = {
+                    method: 'post',
+                    url: state.baseUrl + '/Container/UpdateContainer',
+                    headers: {
+                        'Authorization': 'Bearer '+ localStorage.getItem('jwt'),
+                        'Content-Type': 'application/json'
+                    },
+                    data: payload,
+                }
+
+                axios(callConfig)
+                  .then(response => {
+                      resolve(response)
+                      Vue.$toast.success("Container Updated");
+                  })
+                  .catch(err => {
+                      reject(err)
+                      Vue.$toast.error("There was an error");
+                  })
+            })
+        },
     },
     modules: {},
 })
