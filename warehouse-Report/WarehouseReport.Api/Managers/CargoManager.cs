@@ -54,9 +54,6 @@ namespace WarehouseReport.Api.Managers
             {
                 cargoModel.DollarRate = 0.55;
             }
-            // DateTime thisDay = DateTime.Today;
-            // cargoModel.NumberOfStorageDays = (thisDay - cargoModel.EndDateOfFreeStorage).Days;
-            // cargoModel.StorageCost = (2.7 * cargoModel.ChargeableWeight) * cargoModel.NumberOfStorageDays;
             _context.Add(cargoModel);
         }
         catch (Exception e)
@@ -78,15 +75,15 @@ namespace WarehouseReport.Api.Managers
                 throw new Exception("Invalid Cargo Id");
             }
 
-            if (cargoModel.IsComplete)
+            if (cargoModel.ContainerId != 0)
             {
                 
                 //TODO- calculate the set days only
-                // DateTime thisDay = DateTime.Today;
-                // cargoModel.NumberOfStorageDays = (thisDay - cargoModel.EndDateOfFreeStorage).Days;
-                // cargoModel.DateComplete = Convert.ToDateTime(DateTime.Now.ToLocalTime()
-                    // .ToString(System.Globalization.CultureInfo.InvariantCulture));
-                // cargoModel.StorageCost = (cargoModel.DollarRate * cargoModel.TotalChargeableWeight) * cargoModel.NumberOfStorageDays;
+                DateTime thisDay = DateTime.Today;
+                cargoModel.NumberOfStorageDays = (thisDay - cargoModel.EndDateOfFreeStorage).Days;
+                cargoModel.DateComplete = Convert.ToDateTime(DateTime.Now.ToLocalTime()
+                    .ToString(System.Globalization.CultureInfo.InvariantCulture));
+                cargoModel.StorageCost = (cargoModel.DollarRate * cargoModel.TotalChargeableWeight) * cargoModel.NumberOfStorageDays;
             }
             
 
