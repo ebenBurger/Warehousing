@@ -13,7 +13,7 @@ import {
     faCogs, faDollar, faEdit, faFileInvoiceDollar,
     faHouseUser,
     faPlus,
-    faPowerOff, faShippingFast, faTrash, faTruckLoading, faUserCircle,
+    faPowerOff, faShippingFast, faTrash, faTruckLoading, faUser, faUserCircle,
     faUserCog,
     faUserEdit,
     faUserPlus, faUserTie, faWindowClose
@@ -63,7 +63,7 @@ Vue.filter('dateFilter', function (value) {
 library.add( 
     faUserPlus, faPowerOff, faPlus, faCogs, faUserEdit, faHouseUser, faUserCog, 
     faUserTie, faUserCircle, faShippingFast, faTrash, faWindowClose, faEdit, faTruckLoading,
-    faBiohazard, faBox, faFileInvoiceDollar, faDollar, faTrash
+    faBiohazard, faBox, faFileInvoiceDollar, faDollar, faTrash, faUser
 )
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
