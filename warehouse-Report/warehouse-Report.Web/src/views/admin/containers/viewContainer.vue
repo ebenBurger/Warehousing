@@ -20,42 +20,43 @@
                             </b-col>
                         </b-col>
                     </b-row>
-                    <b-row>
-                        <b-col>
-                            <h4 class="m-0">Containers Packing</h4>
-                        </b-col>
-                    </b-row>
-                    <b-row>
-                        <b-col>
-                            
-                        </b-col>
-                    </b-row>
-                    <b-row>
-                        <b-col>
-                            <h4 class="m-0">Available Containers</h4>
-                        </b-col>
-                    </b-row>
-                    <b-row>
-                        <b-col class="d-flex cursor-pointer">
-<!--                            <div v-if="availableContainers.cargo.length === 0">-->
-<!--                                -->
-<!--                            </div>-->
-                            <b-card class="containerItem cursor-pointer" v-for="(container) in availableContainers" :key="container.containerId" @click="openContainerContentModal(container)">
-                                <div>
-<!--                                    <label>{{container.cargo.filter(a => a.isActive === true)}}</label>-->
-                                    <label class="w-100">
-                                        {{container.fileReference}}
-                                    </label>
-                                    <label class="w-100">
-                                        {{container.containerNumber}}
-                                    </label>
-                                    <label class="w-100">
-                                        ({{container.containerType}})
-                                    </label>
-                                </div>
-                            </b-card>
-                        </b-col>
-                    </b-row>
+                    <div v-if="this.availableContainers.length >= 0">
+                        <b-row>
+                            <b-col>
+                                <h4 class="m-0">Containers Packing</h4>
+                            </b-col>
+                        </b-row>
+                        <b-row>
+                            <b-col>
+
+                            </b-col>
+                        </b-row>
+                        <b-row>
+                            <b-col>
+                                <h4 class="m-0">Available Containers</h4>
+                            </b-col>
+                        </b-row>
+                        <b-row>
+                            <b-col class="d-flex cursor-pointer">
+                                <b-card class="containerItem cursor-pointer" v-for="(container) in availableContainers" :key="container.containerId" @click="openContainerContentModal(container)">
+                                    <div>
+                                        <label class="w-100">
+                                            {{container.fileReference}}
+                                        </label>
+                                        <label class="w-100">
+                                            {{container.containerNumber}}
+                                        </label>
+                                        <label class="w-100">
+                                            ({{container.containerType}})
+                                        </label>
+                                    </div>
+                                </b-card>
+                            </b-col>
+                        </b-row>
+                    </div>
+                    <div v-if="availableContainers.length === 0">
+                        <h1 class="d-flex justify-content-center">Nothing To See Here</h1>
+                    </div>
                 </b-card>
             </b-col>
         </b-row>
@@ -115,21 +116,23 @@
                         <b-row>
                             <b-col>
                                 <label>Seal One</label>
-                                <b-form-input />
+                                <b-form-input v-model="selectedContainer.sealOne"/>
                             </b-col>
                             <b-col>
                                 <label>Seal Two</label>
-                                <b-form-input />
+                                <b-form-input v-model="selectedContainer.sealTwo"/>
                             </b-col>
                         </b-row>
                         <b-row>
-                            <b-col>
-                                <label>Packing Date</label>
-                                <b-form-datepicker />
-                            </b-col>
-                            <b-col>
+                            <b-col cols="6">
                                 <label>Packing Loacation</label>
-                                <b-form-input />
+                                <b-form-input v-model="selectedContainer.packingLocation"/>
+                            </b-col>
+                        </b-row>
+                        <b-row>
+                            <b-col cols="7">
+                                <label>Packing Date</label>
+                                <b-form-datepicker v-model="selectedContainer.packingDate"/>
                             </b-col>
                         </b-row>
                         <b-row>
@@ -226,7 +229,7 @@ export default {
     updated() {
     },
     methods: {
-        ...mapActions(["createContainer", "requestContainer"]),
+        ...mapActions(["createContainer", "requestContainer", "updateContainer"]),
 
         openCompleteContainers() {
             this.$router.push({path: '/completedContainers'})
@@ -277,7 +280,15 @@ export default {
         hideContainerContentModal() {
             this.$bvModal.hide('containerContentModal')
         },
-        containerUpdate() {},
+        containerUpdate() {
+            this.$store.commit('setSelectedContainer', this.selectedContainer)
+            this.updateContainer()
+                .then(() => {
+                    this.hideContainerContentModal()
+                    console.log("UPDATED CONTAINER", this.selectedContainer)
+                    this.getContainers()
+                })
+        },
     },
     computed: {
         ...mapState([
