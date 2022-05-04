@@ -6,19 +6,28 @@
                 <b-card>
                     <b-row>
                         <b-col>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <h4 class="m-0">Warehouse Report</h4>
-                            </div>
-                            <b-col class="text-right">
-                                <b-button variant="outline-primary" size="sm" squared @click="openCargoModal">
-                                    <font-awesome-icon icon="fa-plus" class="mr-1" />
-                                    Add Entry
-                                </b-button>
-                                <b-button class="ml-3" variant="outline-primary" size="sm" squared @click="openCompleteCargo">
-                                    <font-awesome-icon icon="fa-truck-loading" class="mr-1" />
-                                    Completed Cagro
-                                </b-button>
-                            </b-col>
+                            <b-row>
+                                <b-col>
+                                    <h4 class="m-0">Warehouse Report</h4>
+                                </b-col>
+                                <b-col>
+                                    <b-form-input v-model="search" placeholder="Search suppliers" @keyup="filterSearch"/>
+                                </b-col>
+                                <b-col>
+                                    <b-col class="text-right">
+                                        <b-button variant="outline-primary" size="sm" squared @click="openCargoModal">
+                                            <font-awesome-icon icon="fa-plus" class="mr-1" />
+                                            Add Entry
+                                        </b-button>
+                                        <b-button class="ml-3" variant="outline-primary" size="sm" squared @click="openCompleteCargo">
+                                            <font-awesome-icon icon="fa-truck-loading" class="mr-1" />
+                                            Completed Cagro
+                                        </b-button>
+                                    </b-col>
+                                </b-col>
+                            </b-row>
+                            
+                            
                         </b-col>
                     </b-row>
                     <b-row class="mt-3">
@@ -1088,6 +1097,8 @@ export default {
         chargeWeight: null, 
         quantity: null,
         totalWeight: null,
+        search: null,
+        filteredItems:[]
         
     }),
     beforeCreate() {
@@ -1103,6 +1114,7 @@ export default {
         setTimeout(() => {
             this.isEnterPage = false
         }, 2500)
+        this.filteredItems = this.search
     },
     beforeUpdate() {
     },
@@ -1447,7 +1459,14 @@ export default {
         rowClass(item, type) {
             if (!item || type !== 'row') return
             if (item.hazardous === true) return 'table-danger'
-        }
+        },
+        filterSearch() {
+            if (this.search != null){
+                console.log("SEARCH", this.search.length)
+                console.log("TABLE SEARCH", this.cargoTable.dataSource.filter(supp => supp.supplier === this.search))
+                this.cargoTable.dataSource.filter(supp => supp.supplier === this.search)
+            }
+        },
     },
     computed: {
         ...mapState([
@@ -1456,9 +1475,6 @@ export default {
         ]),
         cargoRows() {
             return this.cargoTable.dataSource.length
-        },
-        packageAddRows() {
-            return this.packageAdd.dataSource.length
         },
     },
 }

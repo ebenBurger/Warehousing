@@ -42,7 +42,7 @@
 <!--                            </div>-->
                             <b-card class="containerItem cursor-pointer" v-for="(container) in availableContainers" :key="container.containerId" @click="openContainerContentModal(container)">
                                 <div>
-                                    <label>{{container.cargo.length}}</label>
+<!--                                    <label>{{container.cargo.filter(a => a.isActive === true)}}</label>-->
                                     <label class="w-100">
                                         {{container.fileReference}}
                                     </label>
