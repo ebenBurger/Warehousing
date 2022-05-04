@@ -22,13 +22,27 @@
                     </b-row>
                     <b-row>
                         <b-col>
+                            <h4 class="m-0">Containers Packing</h4>
+                        </b-col>
+                    </b-row>
+                    <b-row>
+                        <b-col>
+                            
+                        </b-col>
+                    </b-row>
+                    <b-row>
+                        <b-col>
                             <h4 class="m-0">Available Containers</h4>
                         </b-col>
                     </b-row>
                     <b-row>
                         <b-col class="d-flex cursor-pointer">
+<!--                            <div v-if="availableContainers.cargo.length === 0">-->
+<!--                                -->
+<!--                            </div>-->
                             <b-card class="containerItem cursor-pointer" v-for="(container) in availableContainers" :key="container.containerId" @click="openContainerContentModal(container)">
                                 <div>
+                                    <label>{{container.cargo.length}}</label>
                                     <label class="w-100">
                                         {{container.fileReference}}
                                     </label>
@@ -92,7 +106,7 @@
         <b-modal v-if="selectedContainer" id="containerContentModal" hide-footer hide-header-close class="text-center" title="Update/ View Container">
             <b-row>
                 <b-col>
-                    {{selectedContainer.containerName}}
+                    {{selectedContainer.containerNumber}}
                 </b-col>
             </b-row>
             <b-tabs fill>
@@ -135,7 +149,16 @@
                         </div>
                         <div v-show="selectedContainer.cargo !== 0">
                             <div v-for="(item, index) in selectedContainer.cargo" :key="index">
-                                <p v-if="item.isActive">{{item.description}}</p>
+                                <p v-if="item.isActive">
+                                    <span>
+                                        <font-awesome-icon icon="fa-user" />
+                                    </span>
+                                    {{item.supplier}} |
+                                    <span>
+                                        <font-awesome-icon icon="fa-box" />
+                                    </span>
+                                    {{item.description}}
+                                </p>
                             </div>
                         </div>
                 </b-tab>
