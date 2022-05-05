@@ -48,8 +48,9 @@ namespace WarehouseReport.Api.Managers
         {
             cargoModel.DateCreated = Convert.ToDateTime(DateTime.Now.ToLocalTime()
             .ToString(System.Globalization.CultureInfo.InvariantCulture));
-            cargoModel.EndDateOfFreeStorage = cargoModel.DateCollected.AddDays(7);
+            cargoModel.EndDateOfFreeStorage = cargoModel.DateReceived.AddDays(6);
             cargoModel.CargoReadyPlace = "Atrax";
+            
             if (cargoModel.DollarRate == 0)
             {
                 cargoModel.DollarRate = 0.55;
@@ -75,20 +76,13 @@ namespace WarehouseReport.Api.Managers
                 throw new Exception("Invalid Cargo Id");
             }
 
-            // if (cargoModel.ContainerId != 0)
-            // {
-            //     
-            //     DateTime thisDay = DateTime.Today.Date;
-            //     
-            //     cargoModel.NumberOfStorageDays = (thisDay - cargoModel.EndDateOfFreeStorage.Date).Days;
-            //
-            //     cargoModel.StorageCost = (cargoModel.TotalChargeableWeight * cargoModel.DollarRate) *
-            //                              cargoModel.NumberOfStorageDays;
-            //     
-            //     cargoModel.DateComplete = Convert.ToDateTime(DateTime.Now.ToLocalTime()
-            //         .ToString(System.Globalization.CultureInfo.InvariantCulture));
-            // }
-            //
+            if (cargoModel.ContainerId != null)
+            {
+                cargoModel.PackDate = Convert.ToDateTime(DateTime.Now.ToLocalTime()
+                    .ToString(System.Globalization.CultureInfo.InvariantCulture));
+                cargoModel.NumberOfStorageDays = (cargoModel.PackDate.Date - cargoModel.EndDateOfFreeStorage.Date).Days;
+                cargoModel.StorageCost = (cargoModel.DollarRate * cargoModel.TotalChargeableWeight) * cargoModel.NumberOfStorageDays;
+            }
 
             _context.Cargo.Update(cargoModel);
             await _context.SaveChangesAsync();
