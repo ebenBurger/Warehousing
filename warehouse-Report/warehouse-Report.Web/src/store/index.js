@@ -248,7 +248,6 @@ export default new Vuex.Store({
                 axios(callConfig)
                     .then(response => {
                         resolve(response)
-                        Vue.$toast.success("Cargo Updated");
                     })
                     .catch(err => {
                         reject(err)
@@ -273,7 +272,6 @@ export default new Vuex.Store({
                 axios(callConfig)
                   .then(response => {
                       resolve(response)
-                      Vue.$toast.success("Cargo restored");
                   })
                   .catch(err => {
                       reject(err)
