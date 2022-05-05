@@ -89,6 +89,12 @@
                     <b-form-input v-model="containerData.port" />
                 </b-col>
             </b-row>
+            <b-row>
+                <b-col cols="4">
+                    <label>Bill of Lading</label>
+                    <b-form-input v-model="containerData.billOfLading" />
+                </b-col>
+            </b-row>
             <hr class="mx-3">
             <b-row>
                 <b-col>
@@ -107,7 +113,7 @@
         <b-modal v-if="selectedContainer" id="containerContentModal" hide-footer hide-header-close class="text-center" title="Update/ View Container">
             <b-row>
                 <b-col>
-                    {{selectedContainer.containerNumber}}
+                    {{selectedContainer.containerNumber}} || {{selectedContainer.vesel}} || {{selectedContainer.voyage}}
                 </b-col>
             </b-row>
             <b-tabs fill>
