@@ -859,7 +859,7 @@
                                     </b-row>
                                     <b-row>
                                         <b-form-select v-model="selectedCargo.containerId">
-                                            <b-form-select-option v-for="(item, index) in containerList" :key="index" :value="item.containerId">{{item.containerNumber}} | {{item.containerType}}</b-form-select-option>
+                                            <b-form-select-option v-for="(item, index) in containerList" :key="index" :value="item.containerId">{{item.containerNumber}} | {{item.containerType}} || {{item.status}}</b-form-select-option>
                                         </b-form-select>
                                     </b-row>
                                     <hr class="mx-3">
@@ -998,7 +998,7 @@ export default {
                     tdClass:'',
                 },
                 {
-                    label: 'Invoice Number',
+                    label: 'Atrax Invoice',
                     key: 'atraxInvoiceNumber',
                     sortable: false,
                     tdClass:'',
@@ -1028,7 +1028,7 @@ export default {
                     tdClass:'',
                 },
                 {
-                    label: 'Volume',
+                    label: 'Volume (CBM)',
                     key: 'volumeSum',
                     sortable: false,
                     tdClass:'',
@@ -1527,7 +1527,6 @@ export default {
         togglePackageAdd() {
             this.packageList = !this.packageList
         },
-        //TODO - fix calculation
         calculateStorageDays() {
             const startDate = new Date(this.selectedCargo.endDateOfFreeStorage)
             const endDate = new Date(Date.now())
@@ -1538,7 +1537,6 @@ export default {
             this.storageDays = Math.round(diffInTime / oneDay)
             
         },
-        //TODO - fix calculation
         calculateStorageCost() {
             const startDate = new Date(this.selectedCargo.endDateOfFreeStorage)
             const endDate = new Date(Date.now())
@@ -1566,7 +1564,6 @@ export default {
                 .reduce((acc, qty) => acc + qty.quantity, 0)
             
         },
-        //TODO - fix calculation
         calculateTotalWeight() {
             this.totalWeight = (this.selectedCargo.packageModels
                 .filter(active => active.isActive === true)

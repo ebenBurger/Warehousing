@@ -17,6 +17,7 @@ export default new Vuex.Store({
         selectedPackage: null,
         selectedTransporter: null,
         selectedContainer: null,
+        selectedCompleteContainer: null,
         
         
         //request objects
@@ -57,7 +58,7 @@ export default new Vuex.Store({
 
         setCreateContainerRequest: (state, payload) => {state.createContainerRequest = payload},
         setContainerRequest: (state, payload) => {state.containerRequest = payload},
-        setContainerCompleteRequest: (state, payload) => {state.containerCompleterRequest = payload},
+        setContainerCompleteRequest: (state, payload) => {state.selectedCompleteContainer = payload},
         setSelectedContainer: (state, payload) => {state.selectedContainer = payload},
         
         setCreatePackageRequest: (state, payload) => {state.createPackageRequest = payload},

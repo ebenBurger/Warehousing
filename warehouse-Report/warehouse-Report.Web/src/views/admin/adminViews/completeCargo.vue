@@ -269,7 +269,7 @@
                 <div v-if="isRestore">
                     <b-row>
                         <b-col>
-                            <h1>Are you sure you want to reactivate this shipment</h1>
+                            <h4>Are you sure you want to reactivate this shipment</h4>
                         </b-col>
                     </b-row>
                     <hr class="mx-3">
