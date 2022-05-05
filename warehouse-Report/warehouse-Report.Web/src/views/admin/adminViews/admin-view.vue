@@ -412,34 +412,54 @@
                                         </b-col>
                                     </b-row>
                                     <b-row>
-                                        <b-col>
+                                        <b-col cols="4">
                                             <label><span class="font-weight-bold">Supplier:</span> </label>
                                             <label>{{selectedCargo.supplier}}</label>
                                         </b-col>
-                                        <b-col>
-                                            <label><span class="font-weight-bold">Date Collected:</span> </label>
-                                            <label>{{selectedCargo.dateCollected | dateFilter}}</label>
-                                        </b-col>
-                                        <b-col>
+                                        
+                                        <b-col cols="4">
                                             <label><span class="font-weight-bold">BPO Number:</span> </label>
                                             <label>{{selectedCargo.bpoNumber}}</label>
                                         </b-col>
                                     </b-row>
                                     <b-row>
                                         <b-col>
+                                            <label><span class="font-weight-bold">Date Collected:</span> </label>
+                                            <label>{{selectedCargo.dateCollected | dateFilter}}</label>
+                                        </b-col>
+                                        <b-col>
+                                            <label><span class="font-weight-bold">Date Received:</span> </label>
+                                            <label>{{selectedCargo.dateReceived | dateFilter}}</label>
+                                        </b-col>
+                                        <b-col>
                                             <label><span class="font-weight-bold">Date of charge</span></label>
                                             <label>{{selectedCargo.endDateOfFreeStorage | dateFilter}}</label>
                                         </b-col>
-                                        <b-col>
+                                    </b-row>
+                                    <b-row>
+                                        
+                                        <b-col cols="4">
                                             <label><span class="font-weight-bold">Number of storage days</span></label>
-                                            <label v-if="selectedCargo.numberOfStorageDays === 0">{{this.storageDays >= 0 ? this.storageDays : "No storage days"}}</label>
-                                            <label v-if="selectedCargo.numberOfStorageDays > 0">{{selectedCargo.storageDays}} These will not increase as it in a container.</label>
+                                            <label v-if="selectedCargo.numberOfStorageDays === 0">
+                                                {{this.storageDays >= 0 ? this.storageDays : "No storage days"}}
+                                                <font-awesome-icon icon="fa-tower-broadcast"  class="ml-2 blob"/>
+                                            </label>
+                                            <label v-if="selectedCargo.numberOfStorageDays > 0">
+                                                {{selectedCargo.numberOfStorageDays}}
+                                                <font-awesome-icon icon="fa-lock" class="ml-2" />
+                                            </label>
                                         </b-col>
-                                        <b-col>
+                                        <b-col cols="4">
                                             <label><span class="font-weight-bold">Storage cost</span> </label>
-                                            <label>
+                                            <label v-if="selectedCargo.storageCost === 0">
+                                                <span v-if="storageCost > 0"> USD</span>
+                                                {{this.storageCost > 0 ? this.storageCost : "No Cost"}}
+                                                <font-awesome-icon icon="fa-tower-broadcast"  class="ml-2 blob"/>
+                                            </label>
+                                            <label v-if="selectedCargo.storageCost > 0">
                                                 <span v-if="storageCost >= 0"> USD</span>
-                                                {{this.storageCost >= 0 ? this.storageCost : "No Cost"}}
+                                                {{selectedCargo.storageCost}}
+                                                <font-awesome-icon icon="fa-lock" class="ml-2" />
                                             </label>
                                         </b-col>
                                     </b-row>
@@ -447,7 +467,7 @@
                                     <b-row>
                                         <b-col>
                                             <label class="font-weight-bold">Total Charged Weight</label>
-                                            <label>{{this.chargeWeight}}</label>
+                                            <label>{{this.chargeWeight.toFixed(3)}}</label>
                                         </b-col>
                                         <b-col>
                                             <label class="font-weight-bold">Total Quantity</label>
@@ -1123,7 +1143,7 @@ export default {
     mounted() {
         setTimeout(() => {
             this.isEnterPage = false
-        }, 2500)
+        }, 0)
         this.filteredItems = this.search
     },
     beforeUpdate() {
@@ -1266,7 +1286,6 @@ export default {
         },
         saveExtraPackageToDb() {
             this.isEnterPage = true
-            //TODO- loop through the array and add to the db
             this.packageAdd.dataSource.forEach((item) => {
                 const packItem = {}
                 packItem.cargoId = this.selectedCargo.cargoId
@@ -1322,57 +1341,125 @@ export default {
             this.packageList = true
         },
         cargoUpdate() {
-            const updatedCargo = {}
-            updatedCargo.supplier = this.selectedCargo.supplier
-            updatedCargo.dateCollected = this.selectedCargo.dateCollected
-            updatedCargo.bpoNumber = this.selectedCargo.bpoNumber
-            updatedCargo.atraxInvoiceNumber = this.selectedCargo.atraxInvoiceNumber
-            updatedCargo.deliveryArea = this.selectedCargo.deliveryArea
-            updatedCargo.transporter = this.selectedCargo.transporter
-            updatedCargo.transporterCost = this.selectedCargo.transporterCost
-            updatedCargo.transporterInvoiceNumber = this.selectedCargo.transporterInvoiceNumber
-            updatedCargo.transporterInvoiceDate = this.selectedCargo.transporterInvoiceDate
-            updatedCargo.dateOfCollection = this.selectedCargo.dateOfCollection
-            updatedCargo.specialRequirements = this.selectedCargo.specialRequirements
-            updatedCargo.deleteReason = this.selectedCargo.deleteReason
-            updatedCargo.billedToJkn = this.selectedCargo.billedToJkn
-            updatedCargo.commercialInvoiceReceived = this.selectedCargo.commercialInvoiceReceived
-            updatedCargo.packingListReceived = this.selectedCargo.packingListReceived
-            updatedCargo.hazardous = this.selectedCargo.hazardous
-            updatedCargo.isComplete = this.selectedCargo.isComplete
-            updatedCargo.isActive = this.selectedCargo.isActive
-            updatedCargo.containerId = this.selectedCargo.containerId
-            updatedCargo.cargoId = this.selectedCargo.cargoId
-            updatedCargo.description = this.selectedCargo.description
-            updatedCargo.dollarRate = this.selectedCargo.dollarRate
-            updatedCargo.cargoReadyPlace = this.selectedCargo.cargoReadyPlace
-            updatedCargo.endDateOfFreeStorage = this.selectedCargo.endDateOfFreeStorage
-            updatedCargo.dateCreated = this.selectedCargo.dateCreated
-            updatedCargo.atraxInvoiceNumber = this.selectedCargo.atraxInvoiceNumber
-            updatedCargo.atraxInvoiceDate = this.selectedCargo.atraxInvoiceDate
+            // if (this.selectedCargo.containerId === 0) {
+                const updatedCargo = {}
+                updatedCargo.supplier = this.selectedCargo.supplier
+                updatedCargo.dateCollected = this.selectedCargo.dateCollected
+                updatedCargo.dateReceived = this.selectedCargo.dateReceived
+                updatedCargo.bpoNumber = this.selectedCargo.bpoNumber
+                updatedCargo.atraxInvoiceNumber = this.selectedCargo.atraxInvoiceNumber
+                updatedCargo.deliveryArea = this.selectedCargo.deliveryArea
+                updatedCargo.transporter = this.selectedCargo.transporter
+                updatedCargo.transporterCost = this.selectedCargo.transporterCost
+                updatedCargo.transporterInvoiceNumber = this.selectedCargo.transporterInvoiceNumber
+                updatedCargo.transporterInvoiceDate = this.selectedCargo.transporterInvoiceDate
+                updatedCargo.dateOfCollection = this.selectedCargo.dateOfCollection
+                updatedCargo.specialRequirements = this.selectedCargo.specialRequirements
+                updatedCargo.deleteReason = this.selectedCargo.deleteReason
+                updatedCargo.billedToJkn = this.selectedCargo.billedToJkn
+                updatedCargo.commercialInvoiceReceived = this.selectedCargo.commercialInvoiceReceived
+                updatedCargo.packingListReceived = this.selectedCargo.packingListReceived
+                updatedCargo.hazardous = this.selectedCargo.hazardous
+                updatedCargo.isComplete = this.selectedCargo.isComplete
+                updatedCargo.isActive = this.selectedCargo.isActive
+                updatedCargo.containerId = this.selectedCargo.containerId
+                updatedCargo.cargoId = this.selectedCargo.cargoId
+                updatedCargo.description = this.selectedCargo.description
+                updatedCargo.dollarRate = this.selectedCargo.dollarRate
+                updatedCargo.cargoReadyPlace = this.selectedCargo.cargoReadyPlace
+                updatedCargo.endDateOfFreeStorage = this.selectedCargo.endDateOfFreeStorage
+                updatedCargo.dateCreated = this.selectedCargo.dateCreated
+                updatedCargo.atraxInvoiceNumber = this.selectedCargo.atraxInvoiceNumber
+                updatedCargo.atraxInvoiceDate = this.selectedCargo.atraxInvoiceDate
+
+                console.log('CONTAINER ID', this.selectedCargo.containerId)
+                this.$store.commit('setSelectedCargo', updatedCargo)
+                this.updateCargo()
+                    .then(() => {
+                        this.hideCargoEditModal()
+                        this.getCargoList()
+
+                    })
+            // }
             
             if (this.selectedCargo.isComplete) {
                 this.selectedCargo.isComplete = true
-                
+
+                console.log('CONTAINER ID', this.selectedCargo.containerId)
+                this.$store.commit('setSelectedCargo', this.selectedCargo)
+                this.updateCargo()
+                    .then(() => {
+                        this.hideCargoEditModal()
+                        this.getCargoList()
+
+                    })
             }
             
-            if (this.selectedCargo.containerId !== 0) {
-                this.selectedCargo.totalChargeableWeight = this.chargeWeight
-                this.selectedCargo.storageCost = this.storageCost
-                this.selectedCargo.numberOfStorageDays = this.storageDays
-                console.log('TOTAL WEIGHT CHARGE', this.chargeWeight)
-                console.log('TOTAL STORAGE COST', this.storageCost)
-                console.log('TOTAL STORAGE DAYS', this.storageDays)
-            }
+            // if (this.selectedCargo.containerId !== 0) {
+            //     const updatedCargo = {}
+            //     updatedCargo.supplier = this.selectedCargo.supplier
+            //     updatedCargo.dateCollected = this.selectedCargo.dateCollected
+            //     updatedCargo.bpoNumber = this.selectedCargo.bpoNumber
+            //     updatedCargo.atraxInvoiceNumber = this.selectedCargo.atraxInvoiceNumber
+            //     updatedCargo.deliveryArea = this.selectedCargo.deliveryArea
+            //     updatedCargo.transporter = this.selectedCargo.transporter
+            //     updatedCargo.transporterCost = this.selectedCargo.transporterCost
+            //     updatedCargo.transporterInvoiceNumber = this.selectedCargo.transporterInvoiceNumber
+            //     updatedCargo.transporterInvoiceDate = this.selectedCargo.transporterInvoiceDate
+            //     updatedCargo.dateOfCollection = this.selectedCargo.dateOfCollection
+            //     updatedCargo.specialRequirements = this.selectedCargo.specialRequirements
+            //     updatedCargo.deleteReason = this.selectedCargo.deleteReason
+            //     updatedCargo.billedToJkn = this.selectedCargo.billedToJkn
+            //     updatedCargo.commercialInvoiceReceived = this.selectedCargo.commercialInvoiceReceived
+            //     updatedCargo.packingListReceived = this.selectedCargo.packingListReceived
+            //     updatedCargo.hazardous = this.selectedCargo.hazardous
+            //     updatedCargo.isComplete = this.selectedCargo.isComplete
+            //     updatedCargo.isActive = this.selectedCargo.isActive
+            //     updatedCargo.containerId = this.selectedCargo.containerId
+            //     updatedCargo.cargoId = this.selectedCargo.cargoId
+            //     updatedCargo.description = this.selectedCargo.description
+            //     updatedCargo.dollarRate = this.selectedCargo.dollarRate
+            //     updatedCargo.cargoReadyPlace = this.selectedCargo.cargoReadyPlace
+            //     updatedCargo.endDateOfFreeStorage = this.selectedCargo.endDateOfFreeStorage
+            //     updatedCargo.dateCreated = this.selectedCargo.dateCreated
+            //     updatedCargo.atraxInvoiceNumber = this.selectedCargo.atraxInvoiceNumber
+            //     updatedCargo.atraxInvoiceDate = this.selectedCargo.atraxInvoiceDate
+            //     updatedCargo.totalChargeableWeight = this.chargeWeight
+            //    
+            //     // //calculate days
+            //     // const startDate = new Date(this.selectedCargo.endDateOfFreeStorage)
+            //     // const endDate = new Date(Date.now())
+            //     // const oneDay = 1000 * 60 *60 * 24
+            //     // const diffInTime = endDate.getTime() - startDate.getTime()
+            //     //
+            //     // //re-calc storage cost
+            //     //
+            //     // const days = Math.round(diffInTime / oneDay) + 1
+            //     //
+            //     // console.log("DAYS", days)
+            //     //
+            //     // this.chargeWeight = (this.selectedCargo.packageModels
+            //     //     .filter(active => active.isActive === true)
+            //     //     .reduce((acc, weight) => acc + weight.chargeableWeight, 0))
+            //     // console.log("CHARGE WEIGHT", this.chargeWeight)
+            //     //
+            //     // updatedCargo.storageCost =  ((this.selectedCargo.dollarRate * this.chargeWeight) * days).toFixed(2)
+            //     //
+            //     //
+            //     // //re-calc the number of days
+            //     // updatedCargo.numberOfStorageDays = Math.round(diffInTime / oneDay) + 1
+            //
+            //     console.log('CONTAINER ID', this.selectedCargo.containerId)
+            //     this.$store.commit('setSelectedCargo', updatedCargo)
+            //     this.updateCargo()
+            //         .then(() => {
+            //             this.hideCargoEditModal()
+            //             this.getCargoList()
+            //
+            //         })
+            // }
             
-            // this.selectedCargo.container.containerId = this.selectedCargo.containerId
-            console.log('CONTAINER ID', this.selectedCargo.containerId) 
-            this.$store.commit('setSelectedCargo', updatedCargo)
-            this.updateCargo()
-            .then(() => {
-                this.hideCargoEditModal()
-                this.getCargoList()
-            })
+            
         },
         toggleDeleteCargo() {
             this.isDeleteSelected = !this.isDeleteSelected
@@ -1474,7 +1561,6 @@ export default {
                 
             console.log("StorageCost", this.storageCost)
         },
-        //TODO - fix calculation
         calculateTotalQty() {
             this.quantity = this.selectedCargo.packageModels
                 .filter(active => active.isActive === true)
@@ -1531,5 +1617,29 @@ export default {
         color: red;
     }
     
-    
+    .blob {
+        background: transparent;
+        border-radius: 50%;
+        
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
+        transform: scale(1);
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+        }
+
+        70% {
+            transform: scale(1);
+            box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+        }
+
+        100% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+        }
+    }
 </style>
