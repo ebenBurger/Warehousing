@@ -38,8 +38,8 @@ namespace WarehouseReport.Api.Managers
                 
                 var volume = (packageModel.Length * packageModel.Width * packageModel.Height) * packageModel.Quantity;
                 
-                packageModel.KgCBMConversion = (packageModel.Weight / 1000) * packageModel.Quantity;
-                packageModel.VolumeCbm = (volume / 1000000) * packageModel.Quantity;
+                packageModel.KgCBMConversion = (packageModel.Weight / 1000);
+                packageModel.VolumeCbm = (volume / 1000000);
                 packageModel.ChargeableWeight = Math.Max(packageModel.VolumeCbm, packageModel.KgCBMConversion);
                 packageModel.VolumeMetric = (volume / 6000) * packageModel.Quantity;
 
