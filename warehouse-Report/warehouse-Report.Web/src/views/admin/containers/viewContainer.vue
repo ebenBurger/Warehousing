@@ -23,22 +23,12 @@
                     <div v-if="this.availableContainers.length >= 0">
                         <b-row>
                             <b-col>
-                                <h4 class="m-0">Containers Packing</h4>
-                            </b-col>
-                        </b-row>
-                        <b-row>
-                            <b-col>
-
-                            </b-col>
-                        </b-row>
-                        <b-row>
-                            <b-col>
-                                <h4 class="m-0">Available Containers</h4>
+                                <h4 class="m-0">Containers Loading</h4>
                             </b-col>
                         </b-row>
                         <b-row>
                             <b-col class="d-flex cursor-pointer">
-                                <b-card class="containerItem cursor-pointer" v-for="(container) in availableContainers" :key="container.containerId" @click="openContainerContentModal(container)">
+                                <b-card class="containerItem cursor-pointer" v-for="(container) in availableContainers.filter(a => a.status === 'Loading')" :key="container.containerId" @click="openContainerContentModal(container)">
                                     <div>
                                         <label class="w-100">
                                             {{container.fileReference}}
@@ -51,6 +41,33 @@
                                         </label>
                                     </div>
                                 </b-card>
+                            </b-col>
+                        </b-row>
+                        <b-row>
+                            <b-col>
+                                <h4 class="m-0">Available Containers</h4>
+                            </b-col>
+                        </b-row>
+                        <b-row>
+                            <b-col class="d-flex cursor-pointer">
+                                <div v-if="availableContainers">
+                                    <b-card class="containerItem cursor-pointer" 
+                                            v-for="(container) in availableContainers.filter(a => a.status === 'Available')" 
+                                            :class="container.status"
+                                            :key="container.containerId" @click="openContainerContentModal(container)">
+                                        <div>
+                                            <label class="w-100">
+                                                {{container.fileReference}}
+                                            </label>
+                                            <label class="w-100">
+                                                {{container.containerNumber}}
+                                            </label>
+                                            <label class="w-100">
+                                                ({{container.containerType}})
+                                            </label>
+                                        </div>
+                                    </b-card>
+                                </div>
                             </b-col>
                         </b-row>
                     </div>
@@ -89,6 +106,12 @@
                     <b-form-input v-model="containerData.port" />
                 </b-col>
             </b-row>
+            <b-row>
+                <b-col cols="4">
+                    <label>Bill of Lading</label>
+                    <b-form-input v-model="containerData.billOfLading" />
+                </b-col>
+            </b-row>
             <hr class="mx-3">
             <b-row>
                 <b-col>
@@ -107,7 +130,7 @@
         <b-modal v-if="selectedContainer" id="containerContentModal" hide-footer hide-header-close class="text-center" title="Update/ View Container">
             <b-row>
                 <b-col>
-                    {{selectedContainer.containerNumber}}
+                    {{selectedContainer.containerNumber}} || {{selectedContainer.vesel}} || {{selectedContainer.voyage}}
                 </b-col>
             </b-row>
             <b-tabs fill>
@@ -242,6 +265,7 @@ export default {
             this.$bvModal.hide('containerAddModal')
         },
         save() {
+            this.containerData.status = "Available"
             this.containerData.isActive = true
             this.$store.commit('setCreateContainerRequest', this.containerData)
             this.createContainer()
@@ -337,5 +361,9 @@ export default {
     left: 4rem;
     text-align: right;
     cursor: pointer;
+}
+
+.containerItem.Loading {
+    background: yellow;
 }
 </style>
