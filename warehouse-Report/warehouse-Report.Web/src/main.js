@@ -11,9 +11,9 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {
     faBiohazard, faBox,
     faCogs, faDollar, faEdit, faFileInvoiceDollar,
-    faHouseUser,
+    faHouseUser, faLock,
     faPlus,
-    faPowerOff, faShippingFast, faTrash, faTruckLoading, faUser, faUserCircle,
+    faPowerOff, faShippingFast, faTowerBroadcast, faTrash, faTruckLoading, faUser, faUserCircle,
     faUserCog,
     faUserEdit,
     faUserPlus, faUserTie, faWindowClose
@@ -63,7 +63,7 @@ Vue.filter('dateFilter', function (value) {
 library.add( 
     faUserPlus, faPowerOff, faPlus, faCogs, faUserEdit, faHouseUser, faUserCog, 
     faUserTie, faUserCircle, faShippingFast, faTrash, faWindowClose, faEdit, faTruckLoading,
-    faBiohazard, faBox, faFileInvoiceDollar, faDollar, faTrash, faUser
+    faBiohazard, faBox, faFileInvoiceDollar, faDollar, faTrash, faUser, faLock, faTowerBroadcast
 )
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
