@@ -114,7 +114,7 @@
                                     <b-row align-v="center">
                                         <span v-if=" Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24)) + 1 >= 0" class="mr-auto">
                                             {{
-                                                Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24)) + 1
+                                                Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24))
                                             }}
                                         </span>
                                         <span v-if=" Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24)) + 1 < 0" class="mr-auto">
@@ -458,7 +458,7 @@
                                             </label>
                                             <label v-if="selectedCargo.storageCost > 0">
                                                 <span v-if="storageCost >= 0"> USD</span>
-                                                {{selectedCargo.storageCost}}
+                                                {{selectedCargo.storageCost ? selectedCargo.storageCost.toFixed(2) : ''}}
                                                 <font-awesome-icon icon="fa-lock" class="ml-2" />
                                             </label>
                                         </b-col>
@@ -467,7 +467,7 @@
                                     <b-row>
                                         <b-col>
                                             <label class="font-weight-bold">Total Charged Weight</label>
-                                            <label>{{this.chargeWeight.toFixed(3)}}</label>
+                                            <label>{{this.chargeWeight ? this.chargeWeight.toFixed(3) : ''}}</label>
                                         </b-col>
                                         <b-col>
                                             <label class="font-weight-bold">Total Quantity</label>
@@ -553,7 +553,7 @@
                                     <div class="mt-2">
                                         <b-row>
                                             <b-col class="justify-content-end w-100 d-flex">
-                                                <b-button class="mx-1" variant="primary" squared @click="addClicked" size="sm">
+                                                <b-button v-if="!selectedCargo.containerId" class="mx-1" variant="primary" squared @click="addClicked" size="sm">
                                                     <font-awesome-icon icon="fa-plus" />
                                                 </b-button>
                                             </b-col>
@@ -565,12 +565,14 @@
                                                         <div class="d-flex justify-content-between align-items-center">
                                                             <label class="text-primary font-weight-bold mb-4 text-uppercase">{{item.description}}</label>
 
-                                                            <b-button class="mx-1" variant="outline-primary" squared @click="editClicked(item)" size="sm">
-                                                                <font-awesome-icon icon="fa-edit" />
-                                                            </b-button>
-                                                            <b-button class="mx-1" variant="outline-red" squared @click="toggleDeletePackage(item)" size="sm">
-                                                                <font-awesome-icon icon="fa-trash" />
-                                                            </b-button>
+                                                            <div class="d-flex justify-content-between align-items-center" v-if="!selectedCargo.containerId">
+                                                                <b-button class="mx-1" variant="outline-primary" squared @click="editClicked(item)" size="sm">
+                                                                    <font-awesome-icon icon="fa-edit" />
+                                                                </b-button>
+                                                                <b-button class="mx-1" variant="outline-red" squared @click="toggleDeletePackage(item)" size="sm">
+                                                                    <font-awesome-icon icon="fa-trash" />
+                                                                </b-button>
+                                                            </div>
                                                         </div>
                                                     </b-col>
                                                 </b-row>
@@ -776,7 +778,7 @@
                                             <b-col>
                                                 <div class="d-flex justify-content-end">
                                                     <div>
-                                                        <b-button variant="outline-red" squared @click="editClicked" class="ml-2">Cancel</b-button>
+                                                        <b-button variant="outline-red" squared @click="editClicked" class="ml-2">Cancel Edit</b-button>
                                                     </div>
                                                     <div>
                                                         <b-button variant="primary" squared class="ml-2" @click="updatedEditPackage">Update</b-button>
@@ -1341,46 +1343,44 @@ export default {
             this.packageList = true
         },
         cargoUpdate() {
-            // if (this.selectedCargo.containerId === 0) {
-                const updatedCargo = {}
-                updatedCargo.supplier = this.selectedCargo.supplier
-                updatedCargo.dateCollected = this.selectedCargo.dateCollected
-                updatedCargo.dateReceived = this.selectedCargo.dateReceived
-                updatedCargo.bpoNumber = this.selectedCargo.bpoNumber
-                updatedCargo.atraxInvoiceNumber = this.selectedCargo.atraxInvoiceNumber
-                updatedCargo.deliveryArea = this.selectedCargo.deliveryArea
-                updatedCargo.transporter = this.selectedCargo.transporter
-                updatedCargo.transporterCost = this.selectedCargo.transporterCost
-                updatedCargo.transporterInvoiceNumber = this.selectedCargo.transporterInvoiceNumber
-                updatedCargo.transporterInvoiceDate = this.selectedCargo.transporterInvoiceDate
-                updatedCargo.dateOfCollection = this.selectedCargo.dateOfCollection
-                updatedCargo.specialRequirements = this.selectedCargo.specialRequirements
-                updatedCargo.deleteReason = this.selectedCargo.deleteReason
-                updatedCargo.billedToJkn = this.selectedCargo.billedToJkn
-                updatedCargo.commercialInvoiceReceived = this.selectedCargo.commercialInvoiceReceived
-                updatedCargo.packingListReceived = this.selectedCargo.packingListReceived
-                updatedCargo.hazardous = this.selectedCargo.hazardous
-                updatedCargo.isComplete = this.selectedCargo.isComplete
-                updatedCargo.isActive = this.selectedCargo.isActive
-                updatedCargo.containerId = this.selectedCargo.containerId
-                updatedCargo.cargoId = this.selectedCargo.cargoId
-                updatedCargo.description = this.selectedCargo.description
-                updatedCargo.dollarRate = this.selectedCargo.dollarRate
-                updatedCargo.cargoReadyPlace = this.selectedCargo.cargoReadyPlace
-                updatedCargo.endDateOfFreeStorage = this.selectedCargo.endDateOfFreeStorage
-                updatedCargo.dateCreated = this.selectedCargo.dateCreated
-                updatedCargo.atraxInvoiceNumber = this.selectedCargo.atraxInvoiceNumber
-                updatedCargo.atraxInvoiceDate = this.selectedCargo.atraxInvoiceDate
+            const updatedCargo = {}
+            updatedCargo.supplier = this.selectedCargo.supplier
+            updatedCargo.dateCollected = this.selectedCargo.dateCollected
+            updatedCargo.dateReceived = this.selectedCargo.dateReceived
+            updatedCargo.bpoNumber = this.selectedCargo.bpoNumber
+            updatedCargo.atraxInvoiceNumber = this.selectedCargo.atraxInvoiceNumber
+            updatedCargo.deliveryArea = this.selectedCargo.deliveryArea
+            updatedCargo.transporter = this.selectedCargo.transporter
+            updatedCargo.transporterCost = this.selectedCargo.transporterCost
+            updatedCargo.transporterInvoiceNumber = this.selectedCargo.transporterInvoiceNumber
+            updatedCargo.transporterInvoiceDate = this.selectedCargo.transporterInvoiceDate
+            updatedCargo.dateOfCollection = this.selectedCargo.dateOfCollection
+            updatedCargo.specialRequirements = this.selectedCargo.specialRequirements
+            updatedCargo.deleteReason = this.selectedCargo.deleteReason
+            updatedCargo.billedToJkn = this.selectedCargo.billedToJkn
+            updatedCargo.commercialInvoiceReceived = this.selectedCargo.commercialInvoiceReceived
+            updatedCargo.packingListReceived = this.selectedCargo.packingListReceived
+            updatedCargo.hazardous = this.selectedCargo.hazardous
+            updatedCargo.isComplete = this.selectedCargo.isComplete
+            updatedCargo.isActive = this.selectedCargo.isActive
+            updatedCargo.containerId = this.selectedCargo.containerId
+            updatedCargo.cargoId = this.selectedCargo.cargoId
+            updatedCargo.description = this.selectedCargo.description
+            updatedCargo.dollarRate = this.selectedCargo.dollarRate
+            updatedCargo.cargoReadyPlace = this.selectedCargo.cargoReadyPlace
+            updatedCargo.endDateOfFreeStorage = this.selectedCargo.endDateOfFreeStorage
+            updatedCargo.dateCreated = this.selectedCargo.dateCreated
+            updatedCargo.atraxInvoiceNumber = this.selectedCargo.atraxInvoiceNumber
+            updatedCargo.atraxInvoiceDate = this.selectedCargo.atraxInvoiceDate
+            updatedCargo.totalChargeableWeight = this.chargeWeight
 
-                console.log('CONTAINER ID', this.selectedCargo.containerId)
-                this.$store.commit('setSelectedCargo', updatedCargo)
-                this.updateCargo()
-                    .then(() => {
-                        this.hideCargoEditModal()
-                        this.getCargoList()
-
-                    })
-            // }
+            console.log('CONTAINER ID', this.selectedCargo.containerId)
+            this.$store.commit('setSelectedCargo', updatedCargo)
+            this.updateCargo()
+                .then(() => {
+                    this.hideCargoEditModal()
+                    this.getCargoList()
+                })
             
             if (this.selectedCargo.isComplete) {
                 this.selectedCargo.isComplete = true
@@ -1523,7 +1523,6 @@ export default {
         editClicked(item) {
             this.editSelected = !this.editSelected
             this.itemSelectedForEdit = item
-            console.log("ITEM SELECTED FOR EDIT", this.itemSelectedForEdit)
         },
         togglePackageAdd() {
             this.packageList = !this.packageList
@@ -1536,7 +1535,7 @@ export default {
             const oneDay = 1000 * 60 *60 * 24
             
             const diffInTime = endDate.getTime() - startDate.getTime()
-            this.storageDays = Math.round(diffInTime / oneDay) + 1
+            this.storageDays = Math.round(diffInTime / oneDay)
             
         },
         //TODO - fix calculation
