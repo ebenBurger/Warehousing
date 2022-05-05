@@ -11,6 +11,7 @@ namespace WarehouseReport.Api.Models
         public string Supplier { get; set; }
         public string Description { get; set; }
         public DateTime DateCollected { get; set; }
+        public DateTime DateReceived { get; set; }
         public string BpoNumber { get; set; }
         public double Quantity { get; set; }
         
@@ -21,11 +22,10 @@ namespace WarehouseReport.Api.Models
         
         public DateTime DateCreated { get; set; }
         public DateTime? StorageInvoiceDate { get; set; }
-        public DateTime? CurrentDate { get; set; }
+        public DateTime PackDate { get; set; }
         public string? DeliveryArea { get; set; }
         
         public DateTime? DateOfCollection { get; set; }
-        public DateTime? DateReceived { get; set; }
         public string? Transporter { get; set; }
         public double? TransporterCost { get; set; }
         public string? TransporterInvoiceNumber { get; set; }
