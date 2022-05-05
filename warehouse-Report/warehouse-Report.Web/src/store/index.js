@@ -13,6 +13,7 @@ export default new Vuex.Store({
         //selected Item
         selectedSupplier: null,
         selectedCargo: null,
+        selectedCompleteCargo: null,
         selectedPackage: null,
         selectedTransporter: null,
         selectedContainer: null,
@@ -52,6 +53,7 @@ export default new Vuex.Store({
         setCargoRequest: (state, payload) => {state.cargoRequest = payload},
         setCargoCompleteRequest: (state, payload) => {state.cargoCompleteRequest = payload},
         setSelectedCargo: (state, payload) => {state.selectedCargo = payload},
+        setSelectedCompleteCargo: (state, payload) => {state.selectedCompleteCargo = payload},
 
         setCreateContainerRequest: (state, payload) => {state.createContainerRequest = payload},
         setContainerRequest: (state, payload) => {state.containerRequest = payload},
@@ -252,6 +254,31 @@ export default new Vuex.Store({
                         reject(err)
                         Vue.$toast.error("There was an error");
                     })
+            })
+        },
+        restoreCargo: ({state}) => {
+            const payload = state.selectedCompleteCargo
+
+            return new Promise((resolve, reject) => {
+                const callConfig = {
+                    method: 'post',
+                    url: state.baseUrl + '/Cargo/UpdateCargo',
+                    headers: {
+                        'Authorization': 'Bearer '+ localStorage.getItem('jwt'),
+                        'Content-Type': 'application/json'
+                    },
+                    data: payload,
+                }
+
+                axios(callConfig)
+                  .then(response => {
+                      resolve(response)
+                      Vue.$toast.success("Cargo restored");
+                  })
+                  .catch(err => {
+                      reject(err)
+                      Vue.$toast.error("There was an error with restoring");
+                  })
             })
         },
         
