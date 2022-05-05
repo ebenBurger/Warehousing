@@ -80,8 +80,10 @@ namespace WarehouseReport.Api.Managers
             {
                 cargoModel.PackDate = Convert.ToDateTime(DateTime.Now.ToLocalTime()
                     .ToString(System.Globalization.CultureInfo.InvariantCulture));
-                cargoModel.NumberOfStorageDays = (cargoModel.PackDate.Date - cargoModel.EndDateOfFreeStorage.Date).Days;
+                cargoModel.NumberOfStorageDays = (cargoModel.PackDate.Date - cargoModel.EndDateOfFreeStorage.Date).Days + 1;
                 cargoModel.StorageCost = (cargoModel.DollarRate * cargoModel.TotalChargeableWeight) * cargoModel.NumberOfStorageDays;
+                cargoModel.DateComplete = Convert.ToDateTime(DateTime.Now.ToLocalTime()
+                    .ToString(System.Globalization.CultureInfo.InvariantCulture));
             }
 
             _context.Cargo.Update(cargoModel);
