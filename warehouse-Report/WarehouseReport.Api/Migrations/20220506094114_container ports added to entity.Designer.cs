@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WarehouseReport.Api.Models;
 
 namespace WarehouseReport.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220506094114_container ports added to entity")]
+    partial class containerportsaddedtoentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -432,6 +434,9 @@ namespace WarehouseReport.Api.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("PackingLocation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Port")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SealOne")
