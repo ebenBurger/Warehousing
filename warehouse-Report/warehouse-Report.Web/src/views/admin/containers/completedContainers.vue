@@ -63,9 +63,38 @@
                             <label>Container Nuber</label>
                             {{selectedCompleteContainer.containerNumber}}
                         </b-col>
-                        <b-col></b-col>
+                        <b-col>
+                            <label>Bill of Lading</label>
+                            {{selectedCompleteContainer.billOfLading}}
+                        </b-col>
                         <b-col></b-col>
                     </b-row>
+                    <hr class="mx-3">
+                    <b-row>
+                        <b-col>
+                            <h4>Shipment Overview</h4>
+                        </b-col>
+                    </b-row>
+                    <div v-for="(item, index) in selectedCompleteContainer.cargo" :key="index">
+                        <hr class="mx-3">
+                        <b-row>
+                            <b-col cols="1">
+                                <label>{{index + 1}}</label>
+                            </b-col>
+                            <b-col >
+                                <label>Supplier</label>
+                                <label>{{item.supplier}}</label>
+                            </b-col>
+                            <b-col >
+                                <label>Cargo</label>
+                                <label>{{item.description}}</label>
+                            </b-col>
+                            <b-col >
+                                <label>Number of Storage Days</label>
+                                <label>{{item.numberOfStorageDays}}</label>
+                            </b-col>
+                        </b-row>
+                    </div>
                     <hr class="mx-3">
                     <b-row>
                         <b-col>
@@ -159,7 +188,7 @@ export default {
     updated() {
     },
     methods: {
-        ...mapActions(['requestCompleteContainer']),
+        ...mapActions(['requestCompleteContainer', "restoreContainer"]),
         goBack() {
             this.$router.back()
         },
@@ -175,7 +204,7 @@ export default {
         },
         openEditModal(rowItem) {
             this.$bvModal.show('containerEdit')
-            this.$store.commit('selectedCompleteContainer', rowItem)
+            this.$store.commit('setContainerCompleteRequest', rowItem)
             console.log("ITEM", rowItem)
         },
         hideEditModal() {
@@ -184,7 +213,14 @@ export default {
         restore() {
             this.isRestore = !this.isRestore
         },
-        reactivate() {},
+        reactivate() {
+            this.selectedCompleteContainer.isComplete = false
+            this.$store.commit('setContainerCompleteRequest', this.selectedCompleteContainer)
+                this.restoreContainer()
+                .then(() => {
+                    this.$router.push({path: '/viewContainer'})
+                })
+        },
     },
     computed: {
         ...mapState([
