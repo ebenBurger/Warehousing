@@ -20,8 +20,9 @@ namespace WarehouseReport.Api.Models
         public string BillOfLading { get; set; }
         public string Vesel { get; set; }
         public string Voyage { get; set; }
-        public string Port { get; set; }
         public string Status { get; set; }
+        public string LoadingPort { get; set; }
+        public string DestinationPort { get; set; }
         public bool IsComplete { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime? DateCompleted { get; set; }
