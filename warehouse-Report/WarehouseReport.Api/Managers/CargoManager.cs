@@ -48,7 +48,7 @@ namespace WarehouseReport.Api.Managers
         {
             cargoModel.DateCreated = Convert.ToDateTime(DateTime.Now.ToLocalTime()
             .ToString(System.Globalization.CultureInfo.InvariantCulture));
-            cargoModel.EndDateOfFreeStorage = cargoModel.DateReceived.AddDays(6);
+            cargoModel.EndDateOfFreeStorage = cargoModel.DateReceived.AddDays(7);
             cargoModel.CargoReadyPlace = "Atrax";
             
             if (cargoModel.DollarRate == 0)
@@ -80,7 +80,7 @@ namespace WarehouseReport.Api.Managers
             {
                 cargoModel.PackDate = Convert.ToDateTime(DateTime.Now.ToLocalTime()
                     .ToString(System.Globalization.CultureInfo.InvariantCulture));
-                cargoModel.NumberOfStorageDays = (cargoModel.PackDate.Date - cargoModel.EndDateOfFreeStorage.Date).Days + 1;
+                cargoModel.NumberOfStorageDays = (cargoModel.PackDate.Date - cargoModel.EndDateOfFreeStorage.Date).Days;
                 cargoModel.StorageCost = (cargoModel.DollarRate * cargoModel.TotalChargeableWeight) * cargoModel.NumberOfStorageDays;
                 cargoModel.DateComplete = Convert.ToDateTime(DateTime.Now.ToLocalTime()
                     .ToString(System.Globalization.CultureInfo.InvariantCulture));
