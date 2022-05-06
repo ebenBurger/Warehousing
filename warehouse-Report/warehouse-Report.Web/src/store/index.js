@@ -454,6 +454,30 @@ export default new Vuex.Store({
                   })
             })
         },
+        restoreContainer: ({state}) => {
+            const payload = state.selectedCompleteContainer
+
+            return new Promise((resolve, reject) => {
+                const callConfig = {
+                    method: 'post',
+                    url: state.baseUrl + '/Container/UpdateContainer',
+                    headers: {
+                        'Authorization': 'Bearer '+ localStorage.getItem('jwt'),
+                        'Content-Type': 'application/json'
+                    },
+                    data: payload,
+                }
+
+                axios(callConfig)
+                  .then(response => {
+                      resolve(response)
+                  })
+                  .catch(err => {
+                      reject(err)
+                      Vue.$toast.error("There was an error with restoring");
+                  })
+            })
+        },
     },
     modules: {},
 })
