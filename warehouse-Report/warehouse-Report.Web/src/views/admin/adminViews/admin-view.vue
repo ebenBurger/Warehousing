@@ -930,10 +930,6 @@ export default {
             dateCollected: null,
             bpoNumber: null,
             atraxInvoiceNumber: null,
-            //TODO
-            //number of storage days --- this needs to be calculated in UI 
-            //storage cost --- this needs to be calculated in UI
-            //current date ---- this needs to be populated in UI
             deliveryArea: null,
             transporter: null,
             transporterCost: null,
