@@ -79,6 +79,7 @@
                                         </span>
                                         <span v-if="data.item.commercialInvoiceReceived" class="mr-1">
                                             <font-awesome-icon icon="fa-file-invoice-dollar" />
+                                            <font-awesome-icon icon="fa-file-invoice-dollar" />
                                         </span>
                                         <span v-if="data.item.billedToJkn" class="mr-1">
                                             <font-awesome-icon icon="fa-dollar-sign" />
@@ -859,7 +860,8 @@
                                     </b-row>
                                     <b-row>
                                         <b-form-select v-model="selectedCargo.containerId">
-                                            <b-form-select-option v-for="(item, index) in containerList" :key="index" :value="item.containerId">{{item.containerNumber}} | {{item.containerType}} || {{item.status}}</b-form-select-option>
+                                            <b-form-select-option :value="this.null">{{selectedCargo.containerId !== null ? 'Remove From Container' : "Please select a container"}}</b-form-select-option>
+                                            <b-form-select-option v-for="(item, index) in containerList" :key="index" :value="item.containerId">{{item.containerNumber}} || {{item.containerType}} || {{item.status}}</b-form-select-option>
                                         </b-form-select>
                                     </b-row>
                                     <hr class="mx-3">
@@ -1130,7 +1132,8 @@ export default {
         quantity: null,
         totalWeight: null,
         search: null,
-        filteredItems:[]
+        filteredItems:[],
+        null: null,
         
     }),
     beforeCreate() {
