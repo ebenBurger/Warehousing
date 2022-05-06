@@ -23,6 +23,7 @@ namespace WarehouseReport.Api.Managers
             var data = _context.Package
                 .Where(a => a.IsActive == true)
                 .Include(b => b.Cargo)
+                .Include(c => c.Container)
                 .ToList();
 
             return data;
@@ -64,13 +65,13 @@ namespace WarehouseReport.Api.Managers
                     throw new Exception("Invalid Package Id");
                 }
                 
-                //TODO check the below
-                // var volume = (packageModel.Length * packageModel.Width * packageModel.Height) * packageModel.Quantity;
-                //
-                // packageModel.KgCBMConversion = (packageModel.Weight / 1000) * packageModel.Quantity;
-                // packageModel.VolumeCbm = (volume / 1000000) * packageModel.Quantity;
-                // packageModel.ChargeableWeight = Math.Max(packageModel.VolumeCbm, packageModel.KgCBMConversion);
-                // packageModel.VolumeMetric = (volume / 6000) * packageModel.Quantity;
+                //this needs to be tha same as above
+                var volume = (packageModel.Length * packageModel.Width * packageModel.Height);
+                
+                packageModel.KgCBMConversion = (packageModel.Weight / 1000);
+                packageModel.VolumeCbm = (volume / 1000000) * packageModel.Quantity;
+                packageModel.ChargeableWeight = Math.Max(packageModel.VolumeCbm, packageModel.KgCBMConversion);
+                packageModel.VolumeMetric = (volume / 6000) * packageModel.Quantity;
 
                 _context.Package.Update(packageModel);
                 await _context.SaveChangesAsync();
