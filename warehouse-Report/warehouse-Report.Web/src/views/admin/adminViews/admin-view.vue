@@ -95,13 +95,20 @@
 
                                 <template #cell(kgCBMConversionSum)="data">
                                     <b-row align-v="center" >
-                                        <span class="mr-auto">{{(data.item.packageModels.filter(active => active.isActive === true).reduce((acc, cbm) => acc + cbm.kgCBMConversion, 0)).toFixed(3)}}</span>
+                                        <span class="mr-auto">
+<!--                                            {{-->
+<!--                                                data.item.packageModels-->
+<!--                                            }}-->
+                                        </span>
+                                        <span class="mr-auto">
+                                            {{(data.item.packageModels.filter(active => active.isActive === true).reduce((acc, cbm) => acc + cbm.kgCBMConversion, 0)).toFixed(3)}}
+                                        </span>
                                     </b-row>
                                 </template>
 
                                 <template #cell(volumeSum)="data">
                                     <b-row align-v="center">
-                                        <span class="mr-auto">{{ (data.item.packageModels.filter(active => active.isActive === true).reduce((acc, vol) => acc + vol.volumeMetric, 0)).toFixed(3)}}</span>
+                                        <span class="mr-auto">{{ (data.item.packageModels.filter(active => active.isActive === true).reduce((acc, vol) => acc + vol.volumeCbm, 0)).toFixed(3)}}</span>
                                     </b-row>
                                 </template>
 
@@ -113,21 +120,34 @@
 
                                 <template #cell(storageDaysCalc)="data">
                                     <b-row align-v="center">
-                                        <span v-if=" Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24)) + 1 >= 0" class="mr-auto">
+                                        <span >
+                                            
+                                        </span>
+                                        <span ></span>
+                                        <span v-if=" Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24)) >= 0" class="mr-auto">
                                             {{
                                                 Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24))
                                             }}
                                         </span>
-                                        <span v-if=" Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24)) + 1 < 0" class="mr-auto">
-                                            0
+                                        <span v-if=" Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24)) < 0" class="mr-auto">
+                                            <font-awesome-icon icon="fa-stopwatch"  class="text-info"/>
                                         </span>
                                     </b-row>
                                 </template>
 
-                                <template #cell(storageCostsCalc)>
+                                <template #cell(storageCostsCalc)="data">
                                     <b-row align-v="center">
-                                        <span class="mr-auto">
-                                            
+                                        <span class="mr-auto" v-if="Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24)) > 0">
+                                            {{
+                                                Math.round(((data.item.packageModels.filter(active => active.isActive === true).reduce((acc, w) => acc + w.chargeableWeight, 0)
+                                                *
+                                                Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24)))
+                                                *
+                                                data.item.dollarRate) * 100 + Number.EPSILON) / 100
+                                            }}
+                                        </span>
+                                        <span class="mr-auto" v-if="Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24)) < 0">
+                                            <font-awesome-icon icon="fa-stopwatch"  class="text-info"/>
                                         </span>
                                     </b-row>
                                 </template>
@@ -447,7 +467,7 @@
                                             </label>
                                             <label v-if="selectedCargo.numberOfStorageDays > 0">
                                                 {{selectedCargo.numberOfStorageDays}}
-                                                <font-awesome-icon icon="fa-lock" class="ml-2" />
+                                                <font-awesome-icon icon="fa-lock" class="ml-2 text-success" />
                                             </label>
                                         </b-col>
                                         <b-col cols="4">
@@ -460,7 +480,7 @@
                                             <label v-if="selectedCargo.storageCost > 0">
                                                 <span v-if="storageCost >= 0"> USD</span>
                                                 {{selectedCargo.storageCost ? selectedCargo.storageCost.toFixed(2) : ''}}
-                                                <font-awesome-icon icon="fa-lock" class="ml-2" />
+                                                <font-awesome-icon icon="fa-lock" class="ml-2 text-success" />
                                             </label>
                                         </b-col>
                                     </b-row>
@@ -583,11 +603,11 @@
                                                         <h3 class="text-center">{{item.quantity}}</h3>
                                                     </b-col>
                                                     <b-col>
-                                                        <label class="text-center font-weight-bold">Weight (kg):</label>
+                                                        <label class="text-center font-weight-bold">Weight Total (kg):</label>
                                                         <h3 class="text-center">{{item.weight}}</h3>
                                                     </b-col>
                                                     <b-col>
-                                                        <label class="text-center font-weight-bold">Volume:</label>
+                                                        <label class="text-center font-weight-bold">Volume CBM:</label>
                                                         <h3 class="text-center">{{item.volumeCbm ? item.volumeCbm.toFixed(3) : ''}}</h3>
                                                     </b-col>
                                                     <b-col>
@@ -598,15 +618,15 @@
                                                 </b-row>
                                                 <b-row class="m-0 colStyle">
                                                     <b-col>
-                                                        <label class="text-center font-weight-bold">Length:</label>
+                                                        <label class="text-center font-weight-bold">Length: (cm)</label>
                                                         <h3 class="text-center">{{item.length}}</h3>
                                                     </b-col>
                                                     <b-col>
-                                                        <label class="text-center font-weight-bold">Width:</label>
+                                                        <label class="text-center font-weight-bold">Width: (cm)</label>
                                                         <h3 class="text-center">{{item.width}}</h3>
                                                     </b-col>
                                                     <b-col>
-                                                        <label class="text-center font-weight-bold">Height:</label>
+                                                        <label class="text-center font-weight-bold">Height: (cm)</label>
                                                         <h3 class="text-center">{{item.height}}</h3>
                                                     </b-col>
                                                     <b-col>
@@ -682,22 +702,22 @@
                                                 <b-form-input type="number" v-model="packageData.quantity"></b-form-input>
                                             </b-col>
                                             <b-col>
-                                                <label>Weight (kg)</label>
+                                                <label>Weight Total (kg)</label>
                                                 <b-form-input type="number" v-model="packageData.weight"></b-form-input>
                                             </b-col>
                                             
                                         </b-row>
                                         <b-row>
                                             <b-col>
-                                                <label>Length</label>
+                                                <label>Length (cm)</label>
                                                 <b-form-input type="number" v-model="packageData.length"></b-form-input>
                                             </b-col>
                                             <b-col>
-                                                <label>Width</label>
+                                                <label>Width (cm)</label>
                                                 <b-form-input type="number" v-model="packageData.width"></b-form-input>
                                             </b-col>
                                             <b-col>
-                                                <label>Height</label>
+                                                <label>Height (cm)</label>
                                                 <b-form-input type="number" v-model="packageData.height"></b-form-input>
                                             </b-col>
                                         </b-row>
@@ -755,22 +775,22 @@
                                                 <b-form-input type="number" v-model="itemSelectedForEdit.quantity"></b-form-input>
                                             </b-col>
                                             <b-col>
-                                                <label>Weight (kg)</label>
+                                                <label>Weight Total (kg)</label>
                                                 <b-form-input type="number" v-model="itemSelectedForEdit.weight"></b-form-input>
                                             </b-col>
 
                                         </b-row>
                                         <b-row>
                                             <b-col>
-                                                <label>Length</label>
+                                                <label>Length (cm)</label>
                                                 <b-form-input type="number" v-model="itemSelectedForEdit.length"></b-form-input>
                                             </b-col>
                                             <b-col>
-                                                <label>Width</label>
+                                                <label>Width (cm)</label>
                                                 <b-form-input type="number" v-model="itemSelectedForEdit.width"></b-form-input>
                                             </b-col>
                                             <b-col>
-                                                <label>Height</label>
+                                                <label>Height (cm)</label>
                                                 <b-form-input type="number" v-model="itemSelectedForEdit.height"></b-form-input>
                                             </b-col>
                                         </b-row>
@@ -1393,72 +1413,6 @@ export default {
 
                     })
             }
-            
-            // if (this.selectedCargo.containerId !== 0) {
-            //     const updatedCargo = {}
-            //     updatedCargo.supplier = this.selectedCargo.supplier
-            //     updatedCargo.dateCollected = this.selectedCargo.dateCollected
-            //     updatedCargo.bpoNumber = this.selectedCargo.bpoNumber
-            //     updatedCargo.atraxInvoiceNumber = this.selectedCargo.atraxInvoiceNumber
-            //     updatedCargo.deliveryArea = this.selectedCargo.deliveryArea
-            //     updatedCargo.transporter = this.selectedCargo.transporter
-            //     updatedCargo.transporterCost = this.selectedCargo.transporterCost
-            //     updatedCargo.transporterInvoiceNumber = this.selectedCargo.transporterInvoiceNumber
-            //     updatedCargo.transporterInvoiceDate = this.selectedCargo.transporterInvoiceDate
-            //     updatedCargo.dateOfCollection = this.selectedCargo.dateOfCollection
-            //     updatedCargo.specialRequirements = this.selectedCargo.specialRequirements
-            //     updatedCargo.deleteReason = this.selectedCargo.deleteReason
-            //     updatedCargo.billedToJkn = this.selectedCargo.billedToJkn
-            //     updatedCargo.commercialInvoiceReceived = this.selectedCargo.commercialInvoiceReceived
-            //     updatedCargo.packingListReceived = this.selectedCargo.packingListReceived
-            //     updatedCargo.hazardous = this.selectedCargo.hazardous
-            //     updatedCargo.isComplete = this.selectedCargo.isComplete
-            //     updatedCargo.isActive = this.selectedCargo.isActive
-            //     updatedCargo.containerId = this.selectedCargo.containerId
-            //     updatedCargo.cargoId = this.selectedCargo.cargoId
-            //     updatedCargo.description = this.selectedCargo.description
-            //     updatedCargo.dollarRate = this.selectedCargo.dollarRate
-            //     updatedCargo.cargoReadyPlace = this.selectedCargo.cargoReadyPlace
-            //     updatedCargo.endDateOfFreeStorage = this.selectedCargo.endDateOfFreeStorage
-            //     updatedCargo.dateCreated = this.selectedCargo.dateCreated
-            //     updatedCargo.atraxInvoiceNumber = this.selectedCargo.atraxInvoiceNumber
-            //     updatedCargo.atraxInvoiceDate = this.selectedCargo.atraxInvoiceDate
-            //     updatedCargo.totalChargeableWeight = this.chargeWeight
-            //    
-            //     // //calculate days
-            //     // const startDate = new Date(this.selectedCargo.endDateOfFreeStorage)
-            //     // const endDate = new Date(Date.now())
-            //     // const oneDay = 1000 * 60 *60 * 24
-            //     // const diffInTime = endDate.getTime() - startDate.getTime()
-            //     //
-            //     // //re-calc storage cost
-            //     //
-            //     // const days = Math.round(diffInTime / oneDay) + 1
-            //     //
-            //     // console.log("DAYS", days)
-            //     //
-            //     // this.chargeWeight = (this.selectedCargo.packageModels
-            //     //     .filter(active => active.isActive === true)
-            //     //     .reduce((acc, weight) => acc + weight.chargeableWeight, 0))
-            //     // console.log("CHARGE WEIGHT", this.chargeWeight)
-            //     //
-            //     // updatedCargo.storageCost =  ((this.selectedCargo.dollarRate * this.chargeWeight) * days).toFixed(2)
-            //     //
-            //     //
-            //     // //re-calc the number of days
-            //     // updatedCargo.numberOfStorageDays = Math.round(diffInTime / oneDay) + 1
-            //
-            //     console.log('CONTAINER ID', this.selectedCargo.containerId)
-            //     this.$store.commit('setSelectedCargo', updatedCargo)
-            //     this.updateCargo()
-            //         .then(() => {
-            //             this.hideCargoEditModal()
-            //             this.getCargoList()
-            //
-            //         })
-            // }
-            
-            
         },
         toggleDeleteCargo() {
             this.isDeleteSelected = !this.isDeleteSelected
@@ -1543,19 +1497,14 @@ export default {
             const oneDay = 1000 * 60 *60 * 24
 
             const diffInTime = endDate.getTime() - startDate.getTime()
-            const days = Math.round(diffInTime / oneDay) + 1
-            
-            console.log("DAYS", days)
+            const days = Math.round(diffInTime / oneDay)
             
             this.chargeWeight = (this.selectedCargo.packageModels
                 .filter(active => active.isActive === true)
                 .reduce((acc, weight) => acc + weight.chargeableWeight, 0))
-            console.log("CHARGE WEIGHT", this.chargeWeight)
             
             this.storageCost = ((this.selectedCargo.dollarRate * this.chargeWeight) * days).toFixed(2)
-            
                 
-            console.log("StorageCost", this.storageCost)
         },
         calculateTotalQty() {
             this.quantity = this.selectedCargo.packageModels
