@@ -9,14 +9,32 @@ import Toast from "vue-toastification";
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {
-    faBiohazard, faBox,
-    faCogs, faDollar, faEdit, faFileInvoiceDollar,
-    faHouseUser, faLock, faPlaneArrival, faPlaneDeparture,
+    faBiohazard,
+    faBox,
+    faCogs,
+    faDollar,
+    faEdit,
+    faFileInvoiceDollar,
+    faHouseUser,
+    faLock,
+    faPlaneArrival,
+    faPlaneDeparture,
     faPlus,
-    faPowerOff, faShip, faShippingFast, faSignsPost, faTowerBroadcast, faTrash, faTruckLoading, faUser, faUserCircle,
+    faPowerOff,
+    faShip,
+    faShippingFast,
+    faSignsPost,
+    faStopwatch,
+    faTowerBroadcast,
+    faTrash,
+    faTruckLoading,
+    faUser,
+    faUserCircle,
     faUserCog,
     faUserEdit,
-    faUserPlus, faUserTie, faWindowClose
+    faUserPlus,
+    faUserTie,
+    faWindowClose
 } from '@fortawesome/free-solid-svg-icons'
 
 import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
@@ -64,7 +82,7 @@ library.add(
     faUserPlus, faPowerOff, faPlus, faCogs, faUserEdit, faHouseUser, faUserCog, 
     faUserTie, faUserCircle, faShippingFast, faTrash, faWindowClose, faEdit, faTruckLoading,
     faBiohazard, faBox, faFileInvoiceDollar, faDollar, faTrash, faUser, faLock, faTowerBroadcast,
-    faPlaneArrival, faPlaneDeparture, faShip, faSignsPost
+    faPlaneArrival, faPlaneDeparture, faShip, faSignsPost, faStopwatch
 )
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
