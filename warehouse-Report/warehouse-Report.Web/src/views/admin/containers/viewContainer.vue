@@ -50,11 +50,12 @@
                         </b-row>
                         <b-row>
                             <b-col class="d-flex cursor-pointer">
-                                <div v-if="availableContainers">
+                                <div class="d-flex flex-wrap" v-if="availableContainers">
                                     <b-card class="containerItem cursor-pointer" 
                                             v-for="(container) in availableContainers.filter(a => a.status === 'Available')" 
                                             :class="container.status"
-                                            :key="container.containerId" @click="openContainerContentModal(container)">
+                                            :key="container.containerId" 
+                                            @click="openContainerContentModal(container)">
                                         <div>
                                             <label class="w-100">
                                                 {{container.fileReference}}
@@ -102,14 +103,18 @@
                     <b-form-input v-model="containerData.voyage" />
                 </b-col>
                 <b-col>
-                    <label>Port</label>
-                    <b-form-input v-model="containerData.port" />
+                    <label>Bill of Lading</label>
+                    <b-form-input v-model="containerData.billOfLading" />
                 </b-col>
             </b-row>
             <b-row>
                 <b-col cols="4">
-                    <label>Bill of Lading</label>
-                    <b-form-input v-model="containerData.billOfLading" />
+                    <label>Loading Port</label>
+                    <b-form-input v-model="containerData.loadingPort" />
+                </b-col>
+                <b-col cols="4">
+                    <label>Destination Port</label>
+                    <b-form-input v-model="containerData.destinationPort" />
                 </b-col>
             </b-row>
             <hr class="mx-3">
@@ -127,10 +132,35 @@
             </b-row>
         </b-modal>
 
-        <b-modal v-if="selectedContainer" id="containerContentModal" hide-footer hide-header-close class="text-center" title="Update/ View Container">
+        <b-modal v-if="selectedContainer" id="containerContentModal" size="xl" hide-footer hide-header-close class="text-center" title="Update/ View Container">
             <b-row>
                 <b-col>
-                    {{selectedContainer.containerNumber}} || {{selectedContainer.vesel}} || {{selectedContainer.voyage}}
+                    <label class="font-weight-bold">Container Number</label>
+                    {{selectedContainer.containerNumber}}
+                </b-col>
+                <b-col>
+                    <label>
+                        <font-awesome-icon icon="fa-ship" />
+                    </label>
+                    {{selectedContainer.vesel}}
+                </b-col>
+                <b-col>
+                    <label><font-awesome-icon icon="fa-signs-post" />
+                        
+                    </label>
+                    {{selectedContainer.voyage}}
+                </b-col>
+                <b-col>
+                    <label>
+                        <font-awesome-icon icon="fa-plane-departure" />
+                    </label>
+                    {{selectedContainer.loadingPort}}
+                </b-col>
+                <b-col>
+                    <label>
+                        <font-awesome-icon icon="fa-plane-arrival" />
+                    </label>
+                    {{selectedContainer.destinationPort}}
                 </b-col>
             </b-row>
             <b-tabs fill>
@@ -219,8 +249,10 @@ export default {
             fileReference: null,
             vesel: null,
             voyage: null,
-            port: null,
+            loadingPort: null,
+            destinationPort: null,
             isActive: null,
+            
         },
         availableContainers: [],
         options: [
