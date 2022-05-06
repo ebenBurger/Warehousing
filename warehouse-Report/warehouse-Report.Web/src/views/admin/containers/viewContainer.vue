@@ -204,17 +204,34 @@
                             </h4>
                         </div>
                         <div v-show="selectedContainer.cargo !== 0">
-                            <div v-for="(item, index) in selectedContainer.cargo" :key="index">
-                                <p v-if="item.isActive">
-                                    <span>
-                                        <font-awesome-icon icon="fa-user" />
-                                    </span>
-                                    {{item.supplier}} |
-                                    <span>
-                                        <font-awesome-icon icon="fa-box" />
-                                    </span>
-                                    {{item.description}}
-                                </p>
+                            <div class="mt-3" v-for="(item, index) in selectedContainer.cargo" :key="index">
+<!--                                <p v-if="item.isActive">-->
+                                    <b-row  v-if="item.isActive">
+                                        <b-col>
+                                            <label>Supplier</label>
+                                            {{item.supplier}}
+                                        </b-col>
+                                        <b-col>
+                                            <label>Description</label>
+                                            {{item.description}}
+                                        </b-col>
+                                        <b-col>
+                                            <label>BPO Number</label>
+                                            {{item.bpoNumber}}
+                                        </b-col>
+                                        <b-col>
+                                            <label>Date Complete</label>
+                                            {{item.dateComplete | dateFilter}}
+                                        </b-col>
+                                        <b-col>
+                                            <label>Number of storage days</label>
+                                            {{item.numberOfStorageDays}}
+                                        </b-col>
+<!--                                        <b-col>-->
+<!--                                            <label>Destination Port</label>-->
+<!--                                            {{item}}-->
+<!--                                        </b-col>-->
+                                    </b-row>
                             </div>
                         </div>
                 </b-tab>

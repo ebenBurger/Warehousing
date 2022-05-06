@@ -96,9 +96,6 @@
                                 <template #cell(kgCBMConversionSum)="data">
                                     <b-row align-v="center" >
                                         <span class="mr-auto">
-<!--                                            {{-->
-<!--                                                data.item.packageModels-->
-<!--                                            }}-->
                                         </span>
                                         <span class="mr-auto">
                                             {{(data.item.packageModels.filter(active => active.isActive === true).reduce((acc, cbm) => acc + cbm.kgCBMConversion, 0)).toFixed(3)}}
@@ -486,10 +483,7 @@
                                     </b-row>
                                     <hr class="mx-3">
                                     <b-row>
-                                        <b-col>
-                                            <label class="font-weight-bold">Total Charged Weight</label>
-                                            <label>{{this.chargeWeight ? this.chargeWeight.toFixed(3) : ''}}</label>
-                                        </b-col>
+                                        
                                         <b-col>
                                             <label class="font-weight-bold">Total Quantity</label>
                                             <label>{{this.quantity}}</label>
@@ -497,6 +491,10 @@
                                         <b-col>
                                             <label class="font-weight-bold">Total Weight</label>
                                             <label>{{this.totalWeight}} Kg</label>
+                                        </b-col>
+                                        <b-col>
+                                            <label class="font-weight-bold">Total Chargeable Weight</label>
+                                            <label>{{this.chargeWeight ? this.chargeWeight.toFixed(3) : ''}}</label>
                                         </b-col>
                                     </b-row>
                                     <hr class="mx-3">
@@ -1082,7 +1080,6 @@ export default {
         selectedCargoItem: {},
         isEnterPage: true,
         containerList: [],
-        selectedContainer: [],
         isCargoCreated: false,
         cargoCreatedData: 0,
         packageAdd: {
@@ -1180,6 +1177,7 @@ export default {
             "requestContainer", 
             "createPackage", 
             "updatePackage",
+            "updateContainer",
         ]),
         openCargoEntry(rowItem) {
             this.$bvModal.show('cargoEdit')
@@ -1213,26 +1211,11 @@ export default {
                 length: null,
                 width: null,
                 height: null,
-                //cargo ready place
-                //end date of free storage
                 atraxInvoiceNumber: null,
-                // atraxInvoiceDate: '',
-                // kg cbm conversion
-                //volume cbm
-                //volume metric
-                //chargeable weight
-
-                //number of storage days --- this needs to be calculated in UI 
-                //storage cost --- this needs to be calculated in UI
-                // storageInvoiceDate: null,
-                //current date ---- this needs to be populated in UI
-                // dollarRate: 0.0,
                 deliveryArea: null,
-                // dateOfCollection: '',
                 transporter: null,
                 transporterCost: null,
                 transportedInvoiceNumber: null,
-                // transporterInvoiceDate: null,
                 specialRequirements: null,
                 deleteReason: null,
                 billedToJkn: false,
@@ -1392,13 +1375,15 @@ export default {
             updatedCargo.atraxInvoiceNumber = this.selectedCargo.atraxInvoiceNumber
             updatedCargo.atraxInvoiceDate = this.selectedCargo.atraxInvoiceDate
             updatedCargo.totalChargeableWeight = this.chargeWeight
-
+            
             console.log('CONTAINER ID', this.selectedCargo.containerId)
             this.$store.commit('setSelectedCargo', updatedCargo)
             this.updateCargo()
-                .then(() => {
+                .then((resp) => {
                     this.hideCargoEditModal()
                     this.getCargoList()
+                    this.getContainerList()
+                    console.log('RESPONSE', resp.data)
                 })
             
             if (this.selectedCargo.isComplete) {
@@ -1414,6 +1399,7 @@ export default {
                     })
             }
         },
+        
         toggleDeleteCargo() {
             this.isDeleteSelected = !this.isDeleteSelected
             
@@ -1538,7 +1524,8 @@ export default {
     computed: {
         ...mapState([
             "selectedCargo",
-            "selectedPackage"
+            "selectedPackage",
+            "selectedContainer"
         ]),
         cargoRows() {
             return this.cargoTable.dataSource.length
