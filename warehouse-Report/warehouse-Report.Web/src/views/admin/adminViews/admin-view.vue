@@ -135,6 +135,7 @@
                                 <template #cell(storageCostsCalc)="data">
                                     <b-row align-v="center">
                                         <span class="mr-auto" v-if="Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24)) > 0">
+                                            USD
                                             {{
                                                 Math.round(((data.item.packageModels.filter(active => active.isActive === true).reduce((acc, w) => acc + w.chargeableWeight, 0)
                                                 *
@@ -173,7 +174,7 @@
                 </b-card>
             </b-col>
         </b-row>
-        <b-modal  id="cargoAddModal" size="xl" hide-footer hide-header-close class="text-center" title="Add Cargo">
+        <b-modal  id="cargoAddModal" size="xl" hide-footer hide-header-close class="text-center" title="Add Cargo" :no-close-on-backdrop="true">
             <b-row v-if="!isCargoCreated" class="align-items-center m-0 ">
                 <b-col class="d-flex justify-content-center">
                     <b-form class="w-100">
@@ -405,7 +406,7 @@
         </b-modal>
 
         <div v-if="selectedCargo" >
-            <b-modal id="cargoEdit" size="lg" hide-footer hide-header class="text-center" title="Edit Cargo Entry">
+            <b-modal id="cargoEdit" size="lg" hide-footer hide-header class="text-center" title="Edit Cargo Entry" :no-close-on-backdrop="true">
                 <b-row v-if="!isDeleteSelected">
                     <b-col>
                         <b-tabs fill>
@@ -609,7 +610,7 @@
                                                         <h3 class="text-center">{{item.volumeCbm ? item.volumeCbm.toFixed(3) : ''}}</h3>
                                                     </b-col>
                                                     <b-col>
-                                                        <label class="text-center font-weight-bold">Chargable Weight:</label>
+                                                        <label class="text-center font-weight-bold">Chargeable Weight:</label>
                                                         <h3 class="text-center">{{item.chargeableWeight ? item.chargeableWeight.toFixed(3) : ''}}</h3>
                                                     </b-col>
                                                     
@@ -684,9 +685,7 @@
                                             <b-col>
                                                 <div class="d-flex justify-content-between align-items-center">
                                                     <label class="text-primary font-weight-bold mb-4">Package Details</label>
-                                                    <b-button variant="primary" squared @click="addPackage">
-                                                        <font-awesome-icon icon="fa-plus" ></font-awesome-icon>
-                                                    </b-button>
+                                                    
                                                 </div>
                                             </b-col>
                                         </b-row>
@@ -717,6 +716,13 @@
                                             <b-col>
                                                 <label>Height (cm)</label>
                                                 <b-form-input type="number" v-model="packageData.height"></b-form-input>
+                                            </b-col>
+                                        </b-row>
+                                        <b-row>
+                                            <b-col class="text-right mt-2">
+                                                <b-button variant="primary" squared @click="addPackage">
+                                                    <font-awesome-icon icon="fa-plus" ></font-awesome-icon>
+                                                </b-button>
                                             </b-col>
                                         </b-row>
                                         <hr class="mx-3">
@@ -995,12 +1001,6 @@ export default {
                     sortable: true,
                     tdClass:'',
                 },
-                // {
-                //     label: 'Cargo Ready Place',
-                //     key: 'cargoReadyPlace',
-                //     sortable: false,
-                //     tdClass:'',
-                // },
                 {
                     label: 'BPO Number',
                     key: 'bpoNumber',
