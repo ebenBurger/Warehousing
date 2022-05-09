@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace WarehouseReport.Api.Models
 {
@@ -18,5 +19,8 @@ namespace WarehouseReport.Api.Models
             ErrorMessage = "Minimum four characters, at least one uppercase letter, one lowercase letter, one number and one special character")]
         [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
+
+        public string Name { get; set; }
+        public string Surname { get; set; }
     }
 }
