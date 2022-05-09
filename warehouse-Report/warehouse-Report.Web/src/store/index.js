@@ -23,6 +23,8 @@ export default new Vuex.Store({
         //request objects
         loginRequest: null,
         
+        userCreateRequest: null,
+        
         createSupplierRequest: null,
         supplierRequest: null,
         
@@ -45,6 +47,7 @@ export default new Vuex.Store({
         },
 
         setLoginRequest: (state, payload) => {state.loginRequest = payload},
+        setUserCreateRequest: (state, payload) => {state.userCreateRequest = payload},
         
         setSupplierRequest: (state, payload) => {state.supplierRequest = payload},
         setCreateSupplierRequest: (state, payload) => {state.createSupplierRequest = payload},
@@ -86,6 +89,31 @@ export default new Vuex.Store({
         },
         
         //Add Users - Admin
+        createAdminUser: ({state}) => {
+            const payload = state.userCreateRequest
+
+            return new Promise((resolve, reject) => {
+                const callConfig = {
+                    method: 'post',
+                    url: state.baseUrl + '/Authentication/register-admin',
+                    headers: {
+                        // 'Authorization': 'Bearer '+ localStorage.getItem('jwt'),
+                        'Content-Type': 'application/json'
+                    },
+                    data: payload,
+                }
+
+                axios(callConfig)
+                  .then((response) => {
+                      resolve(response)
+                  })
+                  .catch(err => {
+                      console.log('CLIENT SAVING ERROR', err)
+                      reject(err)
+                      Vue.$toast.error("There was an error");
+                  })
+            })
+        },
         
         //Add User - User
         
@@ -127,7 +155,6 @@ export default new Vuex.Store({
                 axios(callConfig)
                     .then((response) => {
                       resolve(response)
-                      Vue.$toast.success("Lets welcome to the new guy");
                     })
                     .catch(err => {
                         console.log('CLIENT SAVING ERROR', err)
@@ -153,7 +180,6 @@ export default new Vuex.Store({
                 axios(callConfig)
                     .then(response => {
                         resolve(response)
-                        Vue.$toast.success("Well, that was smooth, all good from this side");
                     })
                     .catch(err => {
                         reject(err)
@@ -180,7 +206,6 @@ export default new Vuex.Store({
                 axios(callConfig)
                     .then((response) => {
                         resolve(response)
-                        Vue.$toast.success("Cargo captured and ready for packaging");
                     })
                     .catch(err => {
                         reject(err)
@@ -299,7 +324,6 @@ export default new Vuex.Store({
                 axios(callConfig)
                     .then((response) => {
                         resolve(response)
-                        Vue.$toast.success("Package was saved");
                     })
                     .catch(err => {
                         reject(err)
@@ -324,7 +348,6 @@ export default new Vuex.Store({
                 axios(callConfig)
                     .then(response => {
                         resolve(response)
-                        // Vue.$toast.success("Package Updated");
                     })
                     .catch(err => {
                         reject(err)
@@ -351,7 +374,6 @@ export default new Vuex.Store({
                 axios(callConfig)
                   .then((response) => {
                       resolve(response)
-                      Vue.$toast.success("Transport Captured");
                   })
                   .catch(err => {
                       reject(err)
@@ -378,7 +400,6 @@ export default new Vuex.Store({
                 axios(callConfig)
                     .then((response) => {
                         resolve(response)
-                        Vue.$toast.success("Container Created");
                     })
                     .catch(err => {
                         reject(err)
@@ -446,7 +467,6 @@ export default new Vuex.Store({
                 axios(callConfig)
                   .then(response => {
                       resolve(response)
-                      Vue.$toast.success("Container Updated");
                   })
                   .catch(err => {
                       reject(err)

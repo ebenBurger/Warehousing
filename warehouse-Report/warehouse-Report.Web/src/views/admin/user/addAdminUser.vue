@@ -14,6 +14,16 @@
                                 <label class="text-primary font-weight-bold mb-4">Enter details for an Admin User account</label>
                             </b-col>
                         </b-row>
+<!--                        <b-row>-->
+<!--                            <b-col>-->
+<!--                                <label>Name</label>-->
+<!--                                <b-form-input v-model="userDetails.name"></b-form-input>-->
+<!--                            </b-col>-->
+<!--                            <b-col>-->
+<!--                                <label>Surname</label>-->
+<!--                                <b-form-input v-model="userDetails.surname"></b-form-input>-->
+<!--                            </b-col>-->
+<!--                        </b-row>-->
                         <b-row>
                             <b-col>
                                 <label>UserName</label>
@@ -79,6 +89,8 @@
 </template>
 
 <script>
+import {mapActions} from "vuex";
+
 export default {
     data: () => ({
         userDetails: {
@@ -101,6 +113,8 @@ export default {
     updated() {
     },
     methods: {
+        ...mapActions(['createAdminUser' ]),
+        
         goBack() {
             this.$router.push({path: '/admin-home'})
         },
@@ -110,7 +124,13 @@ export default {
         hideAddAdminModal() {
             this.$bvModal.hide('adminUserAdd')
         },
-        save () {},
+        save () {
+            this.$store.commit("setUserCreateRequest", this.userDetails)
+                this.createAdminUser()
+                    .then(() => {
+                        this.$router.push({path: '/admin-home'})
+                    })
+        },
     },
     computed: {},
 }
