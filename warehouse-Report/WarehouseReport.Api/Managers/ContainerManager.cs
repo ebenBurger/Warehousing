@@ -69,10 +69,20 @@ namespace WarehouseReport.Api.Managers
                     throw new Exception("Invalid Container Id");
                 }
 
+                if (containerModel.PackingDate != null)
+                {
+                    containerModel.Status = "Loading";
+                }
+                if (containerModel.PackingDate == null)
+                {
+                    containerModel.Status = "Available";
+                }
+
                 if (containerModel.IsComplete)
                 {
                     containerModel.DateCompleted = Convert.ToDateTime(DateTime.Now.ToLocalTime()
                         .ToString(System.Globalization.CultureInfo.InvariantCulture));
+                    containerModel.Status = "Complete";
                 }
 
                 _context.Container.Update(containerModel);
