@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "0dNMNfFYB231gJkag8zK4wKKUsqS++CegfPmzIjV2MwQ1SWTEv6MlE7E+Po7KWbR7BW692jSpRHZOYYfGEGzRQ==",
+  "dgSpecHash": "8neya12pzSy6YMuWRDOLaBmwcAAz8zxggbFkMCv+bx9LSWGaRIhGomV7T4W+vgDEgpSPhU/XwWPl8hvcfKFkJQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Eben.ATRAX\\Documents\\projects\\warehouseReport\\warehouse-Report\\WarehouseReport.Api\\WarehouseReport.Api.csproj",
+  "projectFilePath": "C:\\Users\\Eben.ATRAX\\Documents\\projects\\warehousing\\warehouseReporting\\warehouse-Report\\WarehouseReport.Api\\WarehouseReport.Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Eben.ATRAX\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Eben.ATRAX\\.nuget\\packages\\microsoft.aspnetcore.authentication\\2.2.0\\microsoft.aspnetcore.authentication.2.2.0.nupkg.sha512",
