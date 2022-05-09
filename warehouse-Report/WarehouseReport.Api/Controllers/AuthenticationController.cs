@@ -66,7 +66,8 @@ namespace WarehouseReport.Api.Controllers
                 {
                     token = new JwtSecurityTokenHandler().WriteToken(token),
                     expiration = token.ValidTo,
-                    role = userRoles
+                    role = userRoles,
+                    user = user.UserName
                 });
             }
             return Unauthorized();
@@ -131,6 +132,7 @@ namespace WarehouseReport.Api.Controllers
                 Email = model.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = model.Username
+                
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
