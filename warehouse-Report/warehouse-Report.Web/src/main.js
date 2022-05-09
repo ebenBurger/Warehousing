@@ -9,6 +9,7 @@ import Toast from "vue-toastification";
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {
+    faArrowsAltH, faArrowsAltV,
     faBiohazard,
     faBox,
     faCogs,
@@ -82,7 +83,7 @@ library.add(
     faUserPlus, faPowerOff, faPlus, faCogs, faUserEdit, faHouseUser, faUserCog, 
     faUserTie, faUserCircle, faShippingFast, faTrash, faWindowClose, faEdit, faTruckLoading,
     faBiohazard, faBox, faFileInvoiceDollar, faDollar, faTrash, faUser, faLock, faTowerBroadcast,
-    faPlaneArrival, faPlaneDeparture, faShip, faSignsPost, faStopwatch
+    faPlaneArrival, faPlaneDeparture, faShip, faSignsPost, faStopwatch, faArrowsAltH, faArrowsAltV
 )
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 

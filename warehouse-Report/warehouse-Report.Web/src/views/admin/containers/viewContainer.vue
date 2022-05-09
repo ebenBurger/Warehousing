@@ -78,7 +78,7 @@
                 </b-card>
             </b-col>
         </b-row>
-        <b-modal id="containerAddModal" hide-footer hide-header-close class="text-center" title="Create Container" size="xl">
+        <b-modal id="containerAddModal" hide-footer hide-header-close class="text-center" title="Create Container" size="xl" :no-close-on-backdrop="true">
             <b-row>
                 <b-col>
                     <label>File Reference</label>
@@ -132,8 +132,8 @@
             </b-row>
         </b-modal>
 
-        <b-modal v-if="selectedContainer" id="containerContentModal" size="xl" hide-footer hide-header-close class="text-center" title="Update/ View Container">
-            <b-row>
+        <b-modal v-if="selectedContainer" id="containerContentModal" size="xl" hide-footer hide-header-close class="text-center" title="Update/ View Container" :no-close-on-backdrop="true">
+            <b-row class="mb-3">
                 <b-col>
                     <label class="font-weight-bold">Container Number</label>
                     {{selectedContainer.containerNumber}}
@@ -162,6 +162,13 @@
                     </label>
                     {{selectedContainer.destinationPort}}
                 </b-col>
+                <b-col>
+                    <label>
+                        <font-awesome-icon icon="fa-arrows-alt-v" />
+                        <font-awesome-icon icon="fa-arrows-alt-h" />
+                    </label>
+                    {{selectedContainer.containerType}}
+                </b-col>
             </b-row>
             <b-tabs fill>
                 <b-tab title="Update Container">
@@ -181,15 +188,19 @@
                                 <label>Packing Loacation</label>
                                 <b-form-input v-model="selectedContainer.packingLocation"/>
                             </b-col>
-                        </b-row>
-                        <b-row>
-                            <b-col cols="7">
+                            <b-col cols="6">
                                 <label>Packing Date</label>
-                                <b-form-datepicker v-model="selectedContainer.packingDate"/>
+                                <b-form-datepicker
+                                    reset-button
+                                    v-model="selectedContainer.packingDate"
+                                />
                             </b-col>
                         </b-row>
                         <b-row>
-                            <b-col cols="2">
+                            
+                        </b-row>
+                        <b-row>
+                            <b-col cols="1">
                                 <label>Complete</label>
                                 <toggle-button :value="false"
                                                v-model="selectedContainer.isComplete"/>
@@ -197,15 +208,15 @@
                         </b-row>
                     </b-form>
                 </b-tab>
-                <b-tab title="View Cargo">
-                        <div v-show="selectedContainer.cargo === 0">
+                <b-tab title="View Cargo Loaded">
+                        <div v-show="selectedContainer.cargo.length === 0">
                             <h4 class="my-5 text-center">
                                 This container is empty
                             </h4>
                         </div>
-                        <div v-show="selectedContainer.cargo !== 0">
+                        <hr class="mx-3">
+                        <div v-show="selectedContainer.cargo.length >= 0">
                             <div class="mt-3" v-for="(item, index) in selectedContainer.cargo" :key="index">
-<!--                                <p v-if="item.isActive">-->
                                     <b-row  v-if="item.isActive">
                                         <b-col>
                                             <label>Supplier</label>
@@ -227,16 +238,13 @@
                                             <label>Number of storage days</label>
                                             {{item.numberOfStorageDays}}
                                         </b-col>
-<!--                                        <b-col>-->
-<!--                                            <label>Destination Port</label>-->
-<!--                                            {{item}}-->
-<!--                                        </b-col>-->
                                     </b-row>
+                                <hr class="mx-3" />
                             </div>
                         </div>
                 </b-tab>
             </b-tabs>
-            <hr class="mx-3">
+            
             <b-row>
                 <b-col>
                     <div class="d-flex justify-content-end">
@@ -346,9 +354,11 @@ export default {
             })
         },
         openContainerContentModal(item) {
-            this.$store.commit('setSelectedContainer', item)
-            this.$bvModal.show('containerContentModal')
-            console.log("SELECTED CONTAINER", item)
+            if (item) {
+                this.$store.commit('setSelectedContainer', item)
+                this.$bvModal.show('containerContentModal')
+                console.log("SELECTED CONTAINER", item)
+            }
         },
         hideContainerContentModal() {
             this.$bvModal.hide('containerContentModal')
