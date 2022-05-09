@@ -345,6 +345,7 @@ export default {
             .then((response) => {
                 this.availableContainers = response.data
                 console.log("CONTAINER", response.data)
+                console.log("CONTAINER STATUS", response.data.status)
             })
             .catch((err) => {
                 this.$router.push({path: '/'})
@@ -383,7 +384,7 @@ export default {
 
 <style scoped>
 .containerItem {
-    background: red;
+    background: lightgray;
     margin: 1rem;
     width: 10rem;
     height: 10rem;
