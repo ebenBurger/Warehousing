@@ -89,7 +89,7 @@ export default {
                 }
             })
             .catch(() => {
-                console.log('USer not logged in')
+                console.log('User not logged in')
                 this.isLoading = false
             })
         },
