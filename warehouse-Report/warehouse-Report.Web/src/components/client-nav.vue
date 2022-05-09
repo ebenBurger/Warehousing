@@ -1,0 +1,143 @@
+<template>
+    <div>
+        <b-navbar class="navbar">
+            <b-navbar-brand class="text-white">
+                Atrax Logistics - Warehouse Portal
+            </b-navbar-brand>
+            <div>
+                <b-navbar-nav class="align-items-center">
+                    <router-link exact-active-class="active" to="/home">
+                        <font-awesome-icon icon="fa-house-user" />
+                        Home
+                    </router-link>
+                    
+                    <div @click="openLogoutModal" class="logout navItemSpacing">
+                        <font-awesome-icon icon="fa-power-off" />
+                        Log Out
+                    </div>
+                </b-navbar-nav>
+            </div>
+        </b-navbar>
+
+        <b-modal id="logoutModal" hide-footer>
+            <b-row>
+                <b-col cols="12" class="text-center"><p>Are you sure you want to sign out?</p></b-col>
+            </b-row>
+            <b-row>
+                <b-col cols="12" class="text-center">
+                    <b-button @click="closeLogoutModal" class="mr-2 ml-2" variant="outline-red" squared>No</b-button>
+                    <b-button variant="outline-primary" @click="logout" class="mr-2 ml-2" squared>Yes</b-button>
+                </b-col>
+            </b-row>
+            <div class="d-block"></div>
+        </b-modal>
+
+        <b-sidebar id="sidebar-backdrop"
+                   title="Edit Pages"
+                   backdrop
+                   shadow>
+            <template #default="{ hide }">
+                <div class="p-3">
+                    <h4 id="sidebar-no-header-title">Choose the page to edit</h4>
+                    <nav class="mb-3">
+                        <b-nav vertical>
+                            <b-nav-item to="/clientAdd">
+                                <font-awesome-icon icon="fa-user-plus" />
+                                Add Client
+                            </b-nav-item>
+                            <b-nav-item to="/addUser">
+                                <font-awesome-icon icon="fa-user-cog" />
+                                Add User
+                            </b-nav-item>
+                            <b-nav-item to="/addAdminUser">
+                                <font-awesome-icon icon="fa-user-cog" />
+                                Add Admin User
+                            </b-nav-item>
+                        </b-nav>
+                    </nav>
+                    <b-button variant="primary" @click="hide">Close</b-button>
+                </div>
+            </template>
+        </b-sidebar>
+
+    </div>
+</template>
+
+<script>
+export default {
+    data: () => ({}),
+    beforeCreate() {
+    },
+    created() {
+    },
+    beforeMount() {
+    },
+    mounted() {
+    },
+    beforeUpdate() {
+    },
+    updated() {
+    },
+    methods: {
+        logout() {
+            this.$router.push({path: '/'})
+            localStorage.removeItem('jwt')
+            localStorage.removeItem('user')
+        },
+        openLogoutModal() {
+            this.$bvModal.show('logoutModal')
+        },
+        closeLogoutModal() {
+            this.$bvModal.hide('logoutModal')
+        },
+    },
+    computed: {},
+}
+</script>
+
+<style scoped>
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    background: lightgrey;
+}
+
+a {
+    color: black;
+    margin: 0 0.3rem;
+    padding: 0.1rem 0.4rem;
+}
+
+.collapsed {
+    color: black;
+}
+.not-collapsed {
+    color: white;
+}
+
+ul a:hover {
+    color: blue;
+    text-decoration: none;
+    border-radius: 12px;
+}
+
+.active {
+    color: white;
+    text-decoration: none;
+    border-radius: 12px;
+}
+
+.logout {
+    cursor: pointer;
+    color: red;
+}
+
+.logout:hover {
+    color: black;
+}
+
+.navItemSpacing {
+    margin: 0 0.3rem;
+    padding: 0.1rem 0.4rem;
+}
+</style>
