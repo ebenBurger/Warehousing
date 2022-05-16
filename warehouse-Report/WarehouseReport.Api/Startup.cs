@@ -95,6 +95,11 @@ namespace WarehouseReport.Api
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WarehouseReport.Api v1"));
             }
+            if (!env.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WarehouseReport.Api v1"));
+            }
             
             //Allow CORS connection
             app.UseCors(builder => builder
