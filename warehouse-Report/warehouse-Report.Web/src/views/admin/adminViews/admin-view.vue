@@ -256,6 +256,14 @@
                             </b-col>
 
                         </b-row>
+                        <b-row v-if="cargo.commercialInvoiceReceived">
+                            <b-col cols="3"></b-col>
+                            <b-col cols="3">
+                                <b-form-input v-model="cargo.commercialInvoiceNumber" placeholder="Commercial Invoice Number"></b-form-input> 
+                            </b-col>
+                            <b-col cols="3"></b-col>
+                            <b-col cols="3"></b-col>
+                        </b-row>
                         
                         <hr class="mx-3">
                         <b-row>
@@ -885,36 +893,50 @@
                                 </b-form>
                             </b-tab>
                             <b-tab title="Container" class="tabItem">
-                                <b-form class="w-100" v-if="containerList.length >= 1">
+                                <div v-if="selectedCargo.commercialInvoiceReceived && selectedCargo.billedToJkn && selectedCargo.packingListReceived">
+                                    <b-form class="w-100" v-if="containerList.length >= 1">
+                                        <b-row>
+                                            <b-col>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <label class="text-primary font-weight-bold mb-4">Container Details</label>
+                                                </div>
+                                            </b-col>
+                                        </b-row>
+                                        <b-row>
+                                            <b-form-select v-model="selectedCargo.containerId">
+                                                <b-form-select-option :value="this.null">{{selectedCargo.containerId !== null ? 'Remove From Container' : "Please select a container"}}</b-form-select-option>
+                                                <b-form-select-option v-for="(item, index) in containerList" :key="index" :value="item.containerId">{{item.containerNumber}} || {{item.containerType}} || {{item.status}}</b-form-select-option>
+                                            </b-form-select>
+                                        </b-row>
+                                        <hr class="mx-3">
+                                        <b-row>
+                                            <b-col>
+                                                <div class="d-flex justify-content-end">
+                                                    <div>
+                                                        <b-button variant="outline-red" squared @click="hideCargoEditModal" class="ml-2">Cancel</b-button>
+                                                    </div>
+                                                    <div>
+                                                        <b-button variant="primary" squared @click="cargoUpdate" class="ml-2">Update</b-button>
+                                                    </div>
+                                                </div>
+                                            </b-col>
+                                        </b-row>
+                                    </b-form>
+                                    <div v-if="containerList.length === 0" class="text-center my-5">
+                                        <h3>There are no containers available to select from</h3>
+                                    </div>
+                                </div>
+                                <div v-if="!selectedCargo.commercialInvoiceReceived || !selectedCargo.billedToJkn || !selectedCargo.packingListReceived">
                                     <b-row>
-                                        <b-col>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <label class="text-primary font-weight-bold mb-4">Container Details</label>
-                                            </div>
+                                        <b-col class="text-center my-4">
+                                            <p>Cargo is incomplete and not allowed to be loaded in a container</p>
+                                            <p>Please, complete all requirements to pack.</p>
+                                            <p class="font-weight-bold">Missing:</p>
+                                            <p class="font-weight-bold text-danger" v-if="!selectedCargo.commercialInvoiceReceived">Commercial Invoice</p>
+                                            <p class="font-weight-bold text-danger" v-if="!selectedCargo.billedToJkn">Billed To JKN</p>
+                                            <p class="font-weight-bold text-danger" v-if="!selectedCargo.packingListReceived">Packing List</p>
                                         </b-col>
                                     </b-row>
-                                    <b-row>
-                                        <b-form-select v-model="selectedCargo.containerId">
-                                            <b-form-select-option :value="this.null">{{selectedCargo.containerId !== null ? 'Remove From Container' : "Please select a container"}}</b-form-select-option>
-                                            <b-form-select-option v-for="(item, index) in containerList" :key="index" :value="item.containerId">{{item.containerNumber}} || {{item.containerType}} || {{item.status}}</b-form-select-option>
-                                        </b-form-select>
-                                    </b-row>
-                                    <hr class="mx-3">
-                                    <b-row>
-                                        <b-col>
-                                            <div class="d-flex justify-content-end">
-                                                <div>
-                                                    <b-button variant="outline-red" squared @click="hideCargoEditModal" class="ml-2">Cancel</b-button>
-                                                </div>
-                                                <div>
-                                                    <b-button variant="primary" squared @click="cargoUpdate" class="ml-2">Update</b-button>
-                                                </div>
-                                            </div>
-                                        </b-col>
-                                    </b-row>
-                                </b-form>
-                                <div v-if="containerList.length === 0" class="text-center my-5">
-                                    <h3>There are no containers available to select from</h3>
                                 </div>
                             </b-tab>
                         </b-tabs>
@@ -973,6 +995,7 @@ export default {
             deleteReason: null,
             billedToJkn: false,
             commercialInvoiceReceived: false,
+            commercialInvoiceNumber: null,
             packingListReceived: false,
             hazardous: false,
             isComplete: false,
