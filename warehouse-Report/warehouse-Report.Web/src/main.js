@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {
     faArrowsAltH, faArrowsAltV,
     faBiohazard,
-    faBox,
+    faBox, faCalendarDays,
     faCogs,
     faDollar,
     faEdit,
@@ -21,7 +21,7 @@ import {
     faPlaneArrival,
     faPlaneDeparture,
     faPlus,
-    faPowerOff,
+    faPowerOff, faServer,
     faShip,
     faShippingFast,
     faSignsPost,
@@ -83,7 +83,8 @@ library.add(
     faUserPlus, faPowerOff, faPlus, faCogs, faUserEdit, faHouseUser, faUserCog, 
     faUserTie, faUserCircle, faShippingFast, faTrash, faWindowClose, faEdit, faTruckLoading,
     faBiohazard, faBox, faFileInvoiceDollar, faDollar, faTrash, faUser, faLock, faTowerBroadcast,
-    faPlaneArrival, faPlaneDeparture, faShip, faSignsPost, faStopwatch, faArrowsAltH, faArrowsAltV
+    faPlaneArrival, faPlaneDeparture, faShip, faSignsPost, faStopwatch, faArrowsAltH, faArrowsAltV,
+    faServer, faCalendarDays
 )
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
