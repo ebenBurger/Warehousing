@@ -31,6 +31,7 @@ namespace WarehouseReport.Api.Models
         public string? TransporterInvoiceNumber { get; set; }
         public DateTime? TransporterInvoiceDate { get; set; }
         public string? SpecialRequirements { get; set; }
+        public string CommercialInvoiceNumber { get; set; }
         public DateTime? DateComplete { get; set; }
         public double DollarRate { get; set; }
         
