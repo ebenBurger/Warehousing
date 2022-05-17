@@ -44,6 +44,8 @@
                                 :tbody-tr-class="rowClass"
                                 :current-page="cargoTable.currentPage"
                                 id="cargoTable"
+                                :filter="search"
+                                :filter-function="filterSearch"
                             >
                                 <template #table-busy>
                                     <div class="text-center my-2">
@@ -117,35 +119,44 @@
 
                                 <template #cell(storageDaysCalc)="data">
                                     <b-row align-v="center">
-                                        <span >
-                                            
-                                        </span>
-                                        <span ></span>
-                                        <span v-if=" Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24)) >= 0" class="mr-auto">
+                                        <span v-if="data.item.numberOfStorageDays === 0">
+                                            <span v-if=" Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24)) >= 0" class="mr-auto">
                                             {{
-                                                Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24))
-                                            }}
+                                                    Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24))
+                                                }}
                                         </span>
                                         <span v-if=" Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24)) < 0" class="mr-auto">
                                             <font-awesome-icon icon="fa-stopwatch"  class="text-info"/>
+                                        </span>
+                                        </span>
+                                        <span v-if="data.item.numberOfStorageDays > 0">
+                                            {{data.item.numberOfStorageDays}}
+                                            <font-awesome-icon icon="fa-calendar-days" />
                                         </span>
                                     </b-row>
                                 </template>
 
                                 <template #cell(storageCostsCalc)="data">
                                     <b-row align-v="center">
-                                        <span class="mr-auto" v-if="Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24)) > 0">
+                                        <span v-if="data.item.storageCost === 0">
+                                            <span class="mr-auto" v-if="Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24)) > 0">
                                             USD
                                             {{
-                                                Math.round(((data.item.packageModels.filter(active => active.isActive === true).reduce((acc, w) => acc + w.chargeableWeight, 0)
-                                                *
-                                                Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24)))
-                                                *
-                                                data.item.dollarRate) * 100 + Number.EPSILON) / 100
-                                            }}
+                                                    Math.round(((data.item.packageModels.filter(active => active.isActive === true).reduce((acc, w) => acc + w.chargeableWeight, 0)
+                                                            *
+                                                            Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24)))
+                                                        *
+                                                        data.item.dollarRate) * 100 + Number.EPSILON) / 100
+                                                }}
                                         </span>
                                         <span class="mr-auto" v-if="Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24)) < 0">
                                             <font-awesome-icon icon="fa-stopwatch"  class="text-info"/>
+                                        </span>
+                                        </span>
+                                        <span v-if="data.item.storageCost > 0">
+                                            Usd
+                                            {{Math.round((data.item.storageCost + Number.EPSILON) * 100) / 100}}
+                                            <font-awesome-icon icon="fa-server" />
                                         </span>
                                     </b-row>
                                 </template>
@@ -1144,7 +1155,7 @@ export default {
         chargeWeight: null, 
         quantity: null,
         totalWeight: null,
-        search: null,
+        search: "",
         filteredItems:[],
         null: null,
         
@@ -1162,7 +1173,7 @@ export default {
         setTimeout(() => {
             this.isEnterPage = false
         }, 0)
-        this.filteredItems = this.search
+        // this.filteredItems = this.search
     },
     beforeUpdate() {
     },
@@ -1383,6 +1394,7 @@ export default {
                     this.hideCargoEditModal()
                     this.getCargoList()
                     this.getContainerList()
+                    
                     console.log('RESPONSE', resp.data)
                 })
             
@@ -1412,6 +1424,7 @@ export default {
                 .then(() => {
                     this.hideCargoEditModal()
                     this.getCargoList()
+                    this.toggleDeleteCargo()
                 })
         },
         toggleDeletePackage(item) {
@@ -1513,13 +1526,14 @@ export default {
         },
         
         //TODO filter
-        filterSearch() {
-            if (this.search != null){
-                console.log("SEARCH", this.search.length)
-                console.log("TABLE SEARCH", this.cargoTable.dataSource.filter(supp => supp.supplier === this.search))
-                this.cargoTable.dataSource.filter(supp => supp.supplier === this.search)
+        filterSearch(row, search) {
+            if (row.supplier !== search) {
+                return false
+            } else {
+                return true
             }
         },
+        
     },
     computed: {
         ...mapState([
@@ -1530,6 +1544,7 @@ export default {
         cargoRows() {
             return this.cargoTable.dataSource.length
         },
+        
     },
 }
 </script>
