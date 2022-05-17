@@ -6,7 +6,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        baseUrl: 'https://localhost:5001',
+        baseUrl: 'https://atrax-warehouse-api.azurewebsites.net/',
         userIdentifier: null,//not used
         user: null,//not used
         
