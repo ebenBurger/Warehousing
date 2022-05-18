@@ -141,24 +141,28 @@
                 <b-col>
                     <label>
                         <font-awesome-icon icon="fa-ship" />
+                        <small class="ml-2 text-info">Vessel</small>
                     </label>
                     {{selectedContainer.vesel}}
                 </b-col>
                 <b-col>
-                    <label><font-awesome-icon icon="fa-signs-post" />
-                        
+                    <label>
+                        <font-awesome-icon icon="fa-signs-post" />
+                        <small class="ml-2 text-info">Voyage</small>
                     </label>
                     {{selectedContainer.voyage}}
                 </b-col>
                 <b-col>
                     <label>
                         <font-awesome-icon icon="fa-plane-departure" />
+                        <small class="ml-2 text-info">Loading</small>
                     </label>
                     {{selectedContainer.loadingPort}}
                 </b-col>
                 <b-col>
                     <label>
                         <font-awesome-icon icon="fa-plane-arrival" />
+                        <small class="ml-2 text-info">Arrival</small>
                     </label>
                     {{selectedContainer.destinationPort}}
                 </b-col>
@@ -166,6 +170,7 @@
                     <label>
                         <font-awesome-icon icon="fa-arrows-alt-v" />
                         <font-awesome-icon icon="fa-arrows-alt-h" />
+                        <small class="ml-2 text-info">Size</small>
                     </label>
                     {{selectedContainer.containerType}}
                 </b-col>
@@ -215,7 +220,7 @@
                             </h4>
                         </div>
                         <hr class="mx-3">
-                        <div v-show="selectedContainer.cargo.length >= 0">
+                        <div v-show="selectedContainer.cargo.length > 0">
                             <div class="mt-3" v-for="(item, index) in selectedContainer.cargo" :key="index">
                                     <b-row  v-if="item.isActive">
                                         <b-col>
@@ -237,6 +242,10 @@
                                         <b-col>
                                             <label>Number of storage days</label>
                                             {{item.numberOfStorageDays}}
+                                        </b-col>
+                                        <b-col>
+                                            <label>Status</label>
+                                            {{item.isComplete ? "Complete" : 'Incomplete'}}
                                         </b-col>
                                     </b-row>
                                 <hr class="mx-3" />
