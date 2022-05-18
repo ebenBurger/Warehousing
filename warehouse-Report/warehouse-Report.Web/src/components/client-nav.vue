@@ -80,9 +80,10 @@ export default {
     },
     methods: {
         logout() {
-            this.$router.push({path: '/'})
+            this.$router.push({name: 'login'})
             localStorage.removeItem('jwt')
             localStorage.removeItem('user')
+            window.location.reload()
         },
         openLogoutModal() {
             this.$bvModal.show('logoutModal')
