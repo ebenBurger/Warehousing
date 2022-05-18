@@ -61,6 +61,7 @@ const routes = [
                 name: 'adminMain',
                 component: adminView,
                 meta: {
+                    title: "Home",
                     requiresAuth: true,
                     adminAuth: true,
                     userAuth: false,
@@ -71,6 +72,7 @@ const routes = [
                 name: 'CompleteCargo',
                 component: completeCargo,
                 meta: {
+                    title: "Complete Shipment",
                     requiresAuth: true,
                     adminAuth: true,
                     userAuth: false,
@@ -81,6 +83,7 @@ const routes = [
                 name: 'createClient',
                 component: createClient,
                 meta: {
+                    title: "Add Supplier",
                     requiresAuth: true,
                     adminAuth: true,
                     userAuth: false,
@@ -91,6 +94,7 @@ const routes = [
                 name: 'viewClient',
                 component: viewClient,
                 meta: {
+                    title: "Client",
                     requiresAuth: true,
                     adminAuth: true,
                     userAuth: false,
@@ -101,6 +105,7 @@ const routes = [
                 name: 'addUser',
                 component: addUser,
                 meta: {
+                    title: "Add User",
                     requiresAuth: true,
                     adminAuth: true,
                     userAuth: false,
@@ -111,6 +116,7 @@ const routes = [
                 name: 'addAdminUser',
                 component: addAdminUser,
                 meta: {
+                    title: "Add Admin",
                     requiresAuth: true,
                     adminAuth: true,
                     userAuth: false,
@@ -121,6 +127,7 @@ const routes = [
                 name: 'viewContainer',
                 component: viewContainer,
                 meta: {
+                    title: "Containers",
                     requiresAuth: true,
                     adminAuth: true,
                     userAuth: false,
@@ -131,6 +138,7 @@ const routes = [
                 name: 'completedContainers',
                 component: completedContainers,
                 meta: {
+                    title: "Complete Containers",
                     requiresAuth: true,
                     adminAuth: true,
                     userAuth: false,
@@ -153,20 +161,25 @@ router.beforeEach((to, from, next) => {
 
     if (to.meta.requiresAuth) {
         if (!role || !token) {
+            document.title = `${to.meta.title} | Atrax`
             router.push({path: '/'})
         } else {
             if (to.meta.adminAuth) {
                 if (role === "Admin") {
+                    document.title = `${to.meta.title} | Atrax`
                     return next()
                 } else {
                     router.push({path: '/'})
+                    document.title = `${to.meta.title} | Atrax`
                     localStorage.removeItem('jwt')
                     localStorage.removeItem('role')
                 }
             } else if (to.meta.userAuth) {
                 if (role === "User") {
+                    document.title = `${to.meta.title} | Atrax`
                     return next()
                 } else {
+                    document.title = `${to.meta.title} | Atrax`
                     router.push({path: '/'})
                     localStorage.removeItem('jwt')
                     localStorage.removeItem('role')
