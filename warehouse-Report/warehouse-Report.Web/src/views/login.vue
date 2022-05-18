@@ -105,7 +105,6 @@ export default {
 .login-container {
     .card {
         background: #f0f0f0;
-        //background-image: url("../assets/login");
         
         .form-control {
             //background: lightgray;
