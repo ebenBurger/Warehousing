@@ -23,6 +23,7 @@ const routes = [
         name: 'login',
         component: login,
         meta: {
+            title: 'Login',
             requiresAuth: false,
             adminAuth: false,
             userAuth: false,
@@ -38,7 +39,7 @@ const routes = [
             
             {
                 path: '/home',
-                name: 'userMain',
+                name: 'userView',
                 component: userView,
                 meta: {
                     requiresAuth: true,
@@ -162,14 +163,14 @@ router.beforeEach((to, from, next) => {
     if (to.meta.requiresAuth) {
         if (!role || !token) {
             document.title = `${to.meta.title} | Atrax`
-            router.push({path: '/'})
+            router.push({name: 'login'})
         } else {
             if (to.meta.adminAuth) {
                 if (role === "Admin") {
                     document.title = `${to.meta.title} | Atrax`
                     return next()
                 } else {
-                    router.push({path: '/'})
+                    router.push({name: 'login'})
                     document.title = `${to.meta.title} | Atrax`
                     localStorage.removeItem('jwt')
                     localStorage.removeItem('role')
@@ -180,7 +181,7 @@ router.beforeEach((to, from, next) => {
                     return next()
                 } else {
                     document.title = `${to.meta.title} | Atrax`
-                    router.push({path: '/'})
+                    router.push({name: 'login'})
                     localStorage.removeItem('jwt')
                     localStorage.removeItem('role')
                 }
