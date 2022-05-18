@@ -36,7 +36,6 @@
     <Content Include="src\App.vue" />
     <Content Include="package.json" />
     <Content Include="README.md" />
-    <Content Include="src\assets\login-img.jpg" />
     <Content Include="src\components\admin-nav.vue" />
     <Content Include="src\components\client-nav.vue" />
     <Content Include="src\components\loader.vue" />
@@ -59,6 +58,7 @@
   <ItemGroup>
     <Folder Include="public\" />
     <Folder Include="src\" />
+    <Folder Include="src\assets" />
     <Folder Include="src\assets\" />
     <Folder Include="src\components\" />
     <Folder Include="src\router\" />

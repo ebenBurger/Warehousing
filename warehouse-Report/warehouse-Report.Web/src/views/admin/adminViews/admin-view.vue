@@ -11,7 +11,7 @@
                                     <h4 class="m-0">Warehouse Report</h4>
                                 </b-col>
                                 <b-col>
-                                    <b-form-input v-model="search" placeholder="Search suppliers" @keyup="filterSearch"/>
+                                    <b-form-input v-model="search" placeholder="Search Supplier || BPO Number"/>
                                 </b-col>
                                 <b-col>
                                     <b-col class="text-right">
@@ -35,7 +35,7 @@
                             <b-table
                                 sort-icon-left
                                 striped hover
-                                :items="cargoTable.dataSource"
+                                :items="filterSearch"
                                 :fields="cargoTable.tableColumns"
                                 :busy="cargoTable.isLoading"
                                 :per-page="cargoTable.resultsPerPage"
@@ -79,7 +79,6 @@
                                         </span>
                                         <span v-if="data.item.commercialInvoiceReceived" class="mr-1">
                                             <font-awesome-icon icon="fa-file-invoice-dollar" />
-                                            <font-awesome-icon icon="fa-file-invoice-dollar" />
                                         </span>
                                         <span v-if="data.item.billedToJkn" class="mr-1">
                                             <font-awesome-icon icon="fa-dollar-sign" />
@@ -117,35 +116,44 @@
 
                                 <template #cell(storageDaysCalc)="data">
                                     <b-row align-v="center">
-                                        <span >
-                                            
-                                        </span>
-                                        <span ></span>
-                                        <span v-if=" Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24)) >= 0" class="mr-auto">
+                                        <span v-if="data.item.numberOfStorageDays === 0">
+                                            <span v-if=" Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24)) >= 0" class="mr-auto">
                                             {{
-                                                Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24))
-                                            }}
+                                                    Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24))
+                                                }}
                                         </span>
                                         <span v-if=" Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24)) < 0" class="mr-auto">
                                             <font-awesome-icon icon="fa-stopwatch"  class="text-info"/>
+                                        </span>
+                                        </span>
+                                        <span v-if="data.item.numberOfStorageDays > 0">
+                                            {{data.item.numberOfStorageDays}}
+                                            <font-awesome-icon icon="fa-calendar-days" />
                                         </span>
                                     </b-row>
                                 </template>
 
                                 <template #cell(storageCostsCalc)="data">
                                     <b-row align-v="center">
-                                        <span class="mr-auto" v-if="Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24)) > 0">
+                                        <span v-if="data.item.storageCost === 0">
+                                            <span class="mr-auto" v-if="Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24)) > 0">
                                             USD
                                             {{
-                                                Math.round(((data.item.packageModels.filter(active => active.isActive === true).reduce((acc, w) => acc + w.chargeableWeight, 0)
-                                                *
-                                                Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24)))
-                                                *
-                                                data.item.dollarRate) * 100 + Number.EPSILON) / 100
-                                            }}
+                                                    Math.round(((data.item.packageModels.filter(active => active.isActive === true).reduce((acc, w) => acc + w.chargeableWeight, 0)
+                                                            *
+                                                            Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24)))
+                                                        *
+                                                        data.item.dollarRate) * 100 + Number.EPSILON) / 100
+                                                }}
                                         </span>
                                         <span class="mr-auto" v-if="Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24)) < 0">
                                             <font-awesome-icon icon="fa-stopwatch"  class="text-info"/>
+                                        </span>
+                                        </span>
+                                        <span v-if="data.item.storageCost > 0">
+                                            Usd
+                                            {{Math.round((data.item.storageCost + Number.EPSILON) * 100) / 100}}
+                                            <font-awesome-icon icon="fa-server" />
                                         </span>
                                     </b-row>
                                 </template>
@@ -244,6 +252,14 @@
                                 />
                             </b-col>
 
+                        </b-row>
+                        <b-row v-if="cargo.commercialInvoiceReceived">
+                            <b-col cols="3"></b-col>
+                            <b-col cols="3">
+                                <b-form-input v-model="cargo.commercialInvoiceNumber" placeholder="Commercial Invoice Number"></b-form-input> 
+                            </b-col>
+                            <b-col cols="3"></b-col>
+                            <b-col cols="3"></b-col>
                         </b-row>
                         
                         <hr class="mx-3">
@@ -439,6 +455,16 @@
                                         <b-col cols="4">
                                             <label><span class="font-weight-bold">BPO Number:</span> </label>
                                             <label>{{selectedCargo.bpoNumber}}</label>
+                                        </b-col>
+
+                                        <b-col v-if="selectedCargo.commercialInvoiceReceived" cols="4">
+                                            <label><span class="font-weight-bold">Commercial Invoice Number:</span> </label>
+                                            <span>
+                                                <b-form-input v-model="selectedCargo.commercialInvoiceNumber"/>
+                                            </span>
+<!--                                            <span v-show="selectedCargo.commercialInvoiceNumber ? selectedCargo.commercialInvoiceNumber.length > 6 : selectedCargo.commercialInvoiceNumber.length > 12">-->
+<!--                                                <label>{{selectedCargo.commercialInvoiceNumber}}</label>-->
+<!--                                            </span>-->
                                         </b-col>
                                     </b-row>
                                     <b-row>
@@ -874,36 +900,50 @@
                                 </b-form>
                             </b-tab>
                             <b-tab title="Container" class="tabItem">
-                                <b-form class="w-100" v-if="containerList.length >= 1">
+                                <div v-if="selectedCargo.commercialInvoiceReceived && selectedCargo.billedToJkn && selectedCargo.packingListReceived">
+                                    <b-form class="w-100" v-if="containerList.length >= 1">
+                                        <b-row>
+                                            <b-col>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <label class="text-primary font-weight-bold mb-4">Container Details</label>
+                                                </div>
+                                            </b-col>
+                                        </b-row>
+                                        <b-row>
+                                            <b-form-select v-model="selectedCargo.containerId">
+                                                <b-form-select-option :value="this.null">{{selectedCargo.containerId !== null ? 'Remove From Container' : "Please select a container"}}</b-form-select-option>
+                                                <b-form-select-option v-for="(item, index) in containerList" :key="index" :value="item.containerId">{{item.containerNumber}} || {{item.containerType}} || {{item.status}}</b-form-select-option>
+                                            </b-form-select>
+                                        </b-row>
+                                        <hr class="mx-3">
+                                        <b-row>
+                                            <b-col>
+                                                <div class="d-flex justify-content-end">
+                                                    <div>
+                                                        <b-button variant="outline-red" squared @click="hideCargoEditModal" class="ml-2">Cancel</b-button>
+                                                    </div>
+                                                    <div>
+                                                        <b-button variant="primary" squared @click="cargoUpdate" class="ml-2">Update</b-button>
+                                                    </div>
+                                                </div>
+                                            </b-col>
+                                        </b-row>
+                                    </b-form>
+                                    <div v-if="containerList.length === 0" class="text-center my-5">
+                                        <h3>There are no containers available to select from</h3>
+                                    </div>
+                                </div>
+                                <div v-if="!selectedCargo.commercialInvoiceReceived || !selectedCargo.billedToJkn || !selectedCargo.packingListReceived">
                                     <b-row>
-                                        <b-col>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <label class="text-primary font-weight-bold mb-4">Container Details</label>
-                                            </div>
+                                        <b-col class="text-center my-4">
+                                            <p>Cargo is incomplete and not allowed to be loaded in a container</p>
+                                            <p>Please, complete all requirements to pack.</p>
+                                            <p class="font-weight-bold">Missing:</p>
+                                            <p class="font-weight-bold text-danger" v-if="!selectedCargo.commercialInvoiceReceived">Commercial Invoice</p>
+                                            <p class="font-weight-bold text-danger" v-if="!selectedCargo.billedToJkn">Billed To JKN</p>
+                                            <p class="font-weight-bold text-danger" v-if="!selectedCargo.packingListReceived">Packing List</p>
                                         </b-col>
                                     </b-row>
-                                    <b-row>
-                                        <b-form-select v-model="selectedCargo.containerId">
-                                            <b-form-select-option :value="this.null">{{selectedCargo.containerId !== null ? 'Remove From Container' : "Please select a container"}}</b-form-select-option>
-                                            <b-form-select-option v-for="(item, index) in containerList" :key="index" :value="item.containerId">{{item.containerNumber}} || {{item.containerType}} || {{item.status}}</b-form-select-option>
-                                        </b-form-select>
-                                    </b-row>
-                                    <hr class="mx-3">
-                                    <b-row>
-                                        <b-col>
-                                            <div class="d-flex justify-content-end">
-                                                <div>
-                                                    <b-button variant="outline-red" squared @click="hideCargoEditModal" class="ml-2">Cancel</b-button>
-                                                </div>
-                                                <div>
-                                                    <b-button variant="primary" squared @click="cargoUpdate" class="ml-2">Update</b-button>
-                                                </div>
-                                            </div>
-                                        </b-col>
-                                    </b-row>
-                                </b-form>
-                                <div v-if="containerList.length === 0" class="text-center my-5">
-                                    <h3>There are no containers available to select from</h3>
                                 </div>
                             </b-tab>
                         </b-tabs>
@@ -947,6 +987,7 @@ import {mapActions, mapState} from "vuex";
 import Loader from "@/components/loader";
 
 export default {
+    name: "adminView",
     components: {Loader},
     data: () => ({
         cargo: {
@@ -962,6 +1003,7 @@ export default {
             deleteReason: null,
             billedToJkn: false,
             commercialInvoiceReceived: false,
+            commercialInvoiceNumber: null,
             packingListReceived: false,
             hazardous: false,
             isComplete: false,
@@ -1144,7 +1186,7 @@ export default {
         chargeWeight: null, 
         quantity: null,
         totalWeight: null,
-        search: null,
+        search: "",
         filteredItems:[],
         null: null,
         
@@ -1162,7 +1204,6 @@ export default {
         setTimeout(() => {
             this.isEnterPage = false
         }, 0)
-        this.filteredItems = this.search
     },
     beforeUpdate() {
     },
@@ -1190,7 +1231,6 @@ export default {
         },
         hideCargoEditModal() {
             this.$bvModal.hide('cargoEdit')
-            //TODO clear the pervasive memory on changes not saved.
             this.cargoTable.isLoading = false
             this.editSelected = false
         },
@@ -1220,6 +1260,7 @@ export default {
                 deleteReason: null,
                 billedToJkn: false,
                 commercialInvoiceReceived: false,
+                commercialInvoiceNumber: false,
                 packingListReceived: false,
                 hazardous: false,
                 isComplete: false,
@@ -1246,7 +1287,7 @@ export default {
                 
             })
             .catch(() => {
-                this.$router.push({path: '/'})
+                this.$router.push({name: 'login'})
                 localStorage.removeItem('jwt')
                 localStorage.removeItem('user')
             })
@@ -1258,7 +1299,6 @@ export default {
                 .then((res) => {
                     this.cargoCreatedId = res.data.result
                     this.isCargoCreated = true
-                    console.log("CARGO CREATE REQUEST 2", res.data.result)
                 })
         },
         savePackageToDb() {
@@ -1273,8 +1313,6 @@ export default {
                 packItem.weight = item.weight
                 packItem.width = item.width
                 packItem.isActive = true
-                console.log('PACKAGE ITEM', packItem)
-                console.log('SELECTED CARGO', this.selectedCargo)
                 this.$store.commit("setCreatePackageRequest", packItem)
                 this.createPackage()
                     .then(() => {
@@ -1285,8 +1323,7 @@ export default {
                         this.isEnterPage = false
                     })
             })
-            location.reload()
-           
+            window.location.reload()
         },
         saveExtraPackageToDb() {
             this.isEnterPage = true
@@ -1300,8 +1337,6 @@ export default {
                 packItem.weight = item.weight
                 packItem.width = item.width
                 packItem.isActive = true
-                console.log('PACKAGE ITEM', packItem)
-                console.log('SELECTED CARGO', this.selectedCargo)
                 this.$store.commit("setCreatePackageRequest", packItem)
                 this.createPackage()
                     .then(() => {
@@ -1338,8 +1373,6 @@ export default {
         },
         removePackage(item) {
             this.packageAdd.dataSource.splice(item.index, 1)
-            console.log("REMOVE ITEM", item)
-            
         },
         confirmPackageList() {
             this.packageList = true
@@ -1361,6 +1394,7 @@ export default {
             updatedCargo.deleteReason = this.selectedCargo.deleteReason
             updatedCargo.billedToJkn = this.selectedCargo.billedToJkn
             updatedCargo.commercialInvoiceReceived = this.selectedCargo.commercialInvoiceReceived
+            updatedCargo.commercialInvoiceNumber = this.selectedCargo.commercialInvoiceNumber
             updatedCargo.packingListReceived = this.selectedCargo.packingListReceived
             updatedCargo.hazardous = this.selectedCargo.hazardous
             updatedCargo.isComplete = this.selectedCargo.isComplete
@@ -1376,20 +1410,19 @@ export default {
             updatedCargo.atraxInvoiceDate = this.selectedCargo.atraxInvoiceDate
             updatedCargo.totalChargeableWeight = this.chargeWeight
             
-            console.log('CONTAINER ID', this.selectedCargo.containerId)
             this.$store.commit('setSelectedCargo', updatedCargo)
             this.updateCargo()
                 .then((resp) => {
                     this.hideCargoEditModal()
                     this.getCargoList()
                     this.getContainerList()
+                    
                     console.log('RESPONSE', resp.data)
                 })
             
             if (this.selectedCargo.isComplete) {
                 this.selectedCargo.isComplete = true
 
-                console.log('CONTAINER ID', this.selectedCargo.containerId)
                 this.$store.commit('setSelectedCargo', this.selectedCargo)
                 this.updateCargo()
                     .then(() => {
@@ -1412,12 +1445,12 @@ export default {
                 .then(() => {
                     this.hideCargoEditModal()
                     this.getCargoList()
+                    this.toggleDeleteCargo()
                 })
         },
         toggleDeletePackage(item) {
             this.deleteSelected = !this.deleteSelected
             this.itemSelectedForDelete = item
-            console.log("ITEM", item)
         },
         deletePackage() {
             this.itemSelectedForDelete.isActive = false
@@ -1426,7 +1459,6 @@ export default {
                 .then(() => {
                     this.deleteSelected = false
                     this.hideCargoEditModal()
-                    console.log('ITEM SELECTED', this.itemSelectedForDelete)
                 })
         },
         updatedEditPackage() {
@@ -1445,7 +1477,6 @@ export default {
             this.$store.commit('setSelectedPackage', updatedItem)
             this.updatePackage()
                 .then(() => {
-                    console.log("UPDATED ITEM", updatedItem);
                     this.editSelected = !this.editSelected
                 })
         },
@@ -1453,7 +1484,6 @@ export default {
             this.requestContainer()
                 .then((response) => {
                     this.containerList = response.data 
-                    console.log("CONTAINER LIST", this.containerList)
                 })
         },
         addClicked() {
@@ -1502,23 +1532,13 @@ export default {
             this.totalWeight = (this.selectedCargo.packageModels
                 .filter(active => active.isActive === true)
                 .reduce((acc, weight) => acc + weight.weight, 0)).toFixed(3)
-            console.log('TOTAL WEIGHT', this.totalWeight)
         },
         openCompleteCargo() {
-            this.$router.push({path: '/completeCargo'})
+            this.$router.push({name: 'completedCargo'})
         },
         rowClass(item, type) {
             if (!item || type !== 'row') return
             if (item.hazardous === true) return 'table-danger'
-        },
-        
-        //TODO filter
-        filterSearch() {
-            if (this.search != null){
-                console.log("SEARCH", this.search.length)
-                console.log("TABLE SEARCH", this.cargoTable.dataSource.filter(supp => supp.supplier === this.search))
-                this.cargoTable.dataSource.filter(supp => supp.supplier === this.search)
-            }
         },
     },
     computed: {
@@ -1529,6 +1549,11 @@ export default {
         ]),
         cargoRows() {
             return this.cargoTable.dataSource.length
+        },
+        filterSearch() {
+            return this.cargoTable.dataSource.filter((item) => {
+                return item.supplier.toLowerCase().match(this.search.toLowerCase()) || item.bpoNumber.toLowerCase().match(this.search.toLowerCase())
+            })
         },
     },
 }

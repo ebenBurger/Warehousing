@@ -23,6 +23,7 @@ const routes = [
         name: 'login',
         component: login,
         meta: {
+            title: 'Login',
             requiresAuth: false,
             adminAuth: false,
             userAuth: false,
@@ -38,7 +39,7 @@ const routes = [
             
             {
                 path: '/home',
-                name: 'userMain',
+                name: 'userView',
                 component: userView,
                 meta: {
                     requiresAuth: true,
@@ -57,80 +58,88 @@ const routes = [
         children: [
 
             {
-                path: '/admin-home',
-                name: 'adminMain',
+                path: '/home',
+                name: 'adminView',
                 component: adminView,
                 meta: {
+                    title: "Home",
                     requiresAuth: true,
                     adminAuth: true,
                     userAuth: false,
                 },
             },
             {
-                path: '/completeCargo',
-                name: 'CompleteCargo',
+                path: '/cargo',
+                name: 'completedCargo',
                 component: completeCargo,
                 meta: {
+                    title: "Complete Shipment",
                     requiresAuth: true,
                     adminAuth: true,
                     userAuth: false,
                 },
             },
             {
-                path: '/clientAdd',
+                path: '/Add',
                 name: 'createClient',
                 component: createClient,
                 meta: {
+                    title: "Add Supplier",
                     requiresAuth: true,
                     adminAuth: true,
                     userAuth: false,
                 },
             },
             {
-                path: '/clientView',
-                name: 'viewClient',
+                path: '/client',
+                name: 'clientView',
                 component: viewClient,
                 meta: {
+                    title: "Client",
                     requiresAuth: true,
                     adminAuth: true,
                     userAuth: false,
                 },
             },
             {
-                path: '/addUser',
-                name: 'addUser',
+                path: '/add',
+                name: 'createUser',
                 component: addUser,
                 meta: {
+                    title: "Add User",
                     requiresAuth: true,
                     adminAuth: true,
                     userAuth: false,
                 },
             },
             {
-                path: '/addAdminUser',
-                name: 'addAdminUser',
+                path: '/adminUser',
+                name: 'createAdminUser',
                 component: addAdminUser,
                 meta: {
+                    title: "Add Admin",
                     requiresAuth: true,
                     adminAuth: true,
                     userAuth: false,
                 },
             },
             {
-                path: '/viewContainer',
-                name: 'viewContainer',
+                path: '/container',
+                name: 'containerView',
                 component: viewContainer,
                 meta: {
+                    title: "Containers",
                     requiresAuth: true,
                     adminAuth: true,
                     userAuth: false,
                 },
             },
             {
-                path: '/completedContainers',
-                name: 'completedContainers',
+                path: '/container',
+                name: 'completeContainer',
                 component: completedContainers,
                 meta: {
+                    title: "Complete Containers",
                     requiresAuth: true,
                     adminAuth: true,
                     userAuth: false,
@@ -153,21 +162,26 @@ router.beforeEach((to, from, next) => {
 
     if (to.meta.requiresAuth) {
         if (!role || !token) {
-            router.push({path: '/'})
+            document.title = `${to.meta.title} | Atrax`
+            router.push({name: 'login'})
         } else {
             if (to.meta.adminAuth) {
                 if (role === "Admin") {
+                    document.title = `${to.meta.title} | Atrax`
                     return next()
                 } else {
-                    router.push({path: '/'})
+                    router.push({name: 'login'})
+                    document.title = `${to.meta.title} | Atrax`
                     localStorage.removeItem('jwt')
                     localStorage.removeItem('role')
                 }
             } else if (to.meta.userAuth) {
                 if (role === "User") {
+                    document.title = `${to.meta.title} | Atrax`
                     return next()
                 } else {
-                    router.push({path: '/'})
+                    document.title = `${to.meta.title} | Atrax`
+                    router.push({name: 'login'})
                     localStorage.removeItem('jwt')
                     localStorage.removeItem('role')
                 }

@@ -8,11 +8,14 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <h4 class="m-0">Complete Container</h4>
                             </div>
-                            <b-col class="text-right">
-                                <b-button variant="outline-primary" size="sm" squared @click="goBack">
-                                    Back
-                                </b-button>
-                            </b-col>
+                        </b-col>
+                        <b-col>
+                            <b-form-input v-model="search" placeholder="Search File Reference || Container Number" />
+                        </b-col>
+                        <b-col class="text-right">
+                            <b-button variant="outline-primary" size="sm" squared @click="goBack">
+                                Back
+                            </b-button>
                         </b-col>
                     </b-row>
                     <b-row >
@@ -20,7 +23,7 @@
                             <b-table
                                 sort-icon-left
                                 striped hover
-                                :items="containerTable.dataSource"
+                                :items="filterSearch"
                                 :fields="containerTable.tableColumns"
                                 :busy="containerTable.isLoading"
                                 :per-page="containerTable.resultsPerPage"
@@ -139,6 +142,7 @@
 import {mapActions, mapState} from "vuex";
 
 export default {
+    name: "completeContainer",
     data: () => ({
         containerTable : {
             resultsPerPage: 10,
@@ -173,6 +177,7 @@ export default {
             ]
         },
         isRestore: false,
+        search: '',
     }),
     beforeCreate() {
     },
@@ -190,7 +195,7 @@ export default {
     methods: {
         ...mapActions(['requestCompleteContainer', "restoreContainer"]),
         goBack() {
-            this.$router.back()
+            this.$router.push({name: 'containerView'})
         },
         completeContainer() {
             this.containerTable.isLoading = true
@@ -228,6 +233,11 @@ export default {
         ]),
         rows () {
             return this.containerTable.dataSource.length
+        },
+        filterSearch() {
+            return this.containerTable.dataSource.filter((item) => {
+                return item.fileReference.toLowerCase().match(this.search.toLowerCase()) || item.containerNumber.toLowerCase().match(this.search.toLowerCase())
+            })
         },
     },
 }

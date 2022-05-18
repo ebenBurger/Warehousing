@@ -6,7 +6,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        baseUrl: 'https://atrax-warehouse-api.azurewebsites.net/',
+        baseUrl: 'https://localhost:5001',
+        // baseUrl: 'https://atrax-warehouse-api.azurewebsites.net/',
         userIdentifier: null,//not used
         user: null,//not used
         
@@ -23,6 +24,7 @@ export default new Vuex.Store({
         //request objects
         loginRequest: null,
         
+        adminCreateRequest: null,
         userCreateRequest: null,
         
         createSupplierRequest: null,
@@ -47,6 +49,7 @@ export default new Vuex.Store({
         },
 
         setLoginRequest: (state, payload) => {state.loginRequest = payload},
+        setAdminCreateRequest: (state, payload) => {state.adminCreateRequest = payload},
         setUserCreateRequest: (state, payload) => {state.userCreateRequest = payload},
         
         setSupplierRequest: (state, payload) => {state.supplierRequest = payload},
@@ -78,7 +81,6 @@ export default new Vuex.Store({
                         localStorage.setItem('jwt', response.data.token)
                         localStorage.setItem('role', response.data.role[0])
                         resolve(response)
-                        Vue.$toast("Welcome to the Portal");
                     })
                     .catch((err) => {
                         reject()
@@ -90,14 +92,13 @@ export default new Vuex.Store({
         
         //Add Users - Admin
         createAdminUser: ({state}) => {
-            const payload = state.userCreateRequest
+            const payload = state.adminCreateRequest
 
             return new Promise((resolve, reject) => {
                 const callConfig = {
                     method: 'post',
                     url: state.baseUrl + '/Authentication/register-admin',
                     headers: {
-                        // 'Authorization': 'Bearer '+ localStorage.getItem('jwt'),
                         'Content-Type': 'application/json'
                     },
                     data: payload,
@@ -116,6 +117,30 @@ export default new Vuex.Store({
         },
         
         //Add User - User
+        createUser: ({state}) => {
+            const payload = state.userCreateRequest
+
+            return new Promise((resolve, reject) => {
+                const callConfig = {
+                    method: 'post',
+                    url: state.baseUrl + '/Authentication/register',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    data: payload,
+                }
+
+                axios(callConfig)
+                  .then((response) => {
+                      resolve(response)
+                  })
+                  .catch(err => {
+                      console.log('CLIENT SAVING ERROR', err)
+                      reject(err)
+                      Vue.$toast.error("There was an error");
+                  })
+            })
+        },
         
         //Supplier
         requestSupplier: ({state}) => {

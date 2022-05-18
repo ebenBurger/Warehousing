@@ -117,6 +117,7 @@ import {mapActions} from "vuex";
 
 
 export default {
+    name: "createClient",
     data: () => ({
         supplierDetails: {
             name: null,

@@ -1,26 +1,54 @@
 ﻿<template>
     <div>
+        <Loader />
         <b-row>
             <b-col>
                 <b-card>
                     <b-row>
                         <b-col>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <h4 class="m-0">Complete Shipments</h4>
-                            </div>
-                            <b-col class="text-right">
-                                <b-button variant="outline-primary" size="sm" squared @click="goBack">
-                                    Back
-                                </b-button>
-                            </b-col>
+                            <b-row>
+                                <b-col>
+                                    <h4 class="m-0">Complete Shipments</h4>
+                                </b-col>
+                                <b-col>
+                                    <b-form-input v-model="search" placeholder="Search Supplier || BPO Number || Container Number"/>
+                                </b-col>
+                                <b-col>
+                                    <b-col class="text-right">
+                                        <b-button variant="outline-primary" size="sm" squared @click="goBack">
+                                            Back
+                                        </b-button>
+                                        <b-button class="ml-3" variant="outline-primary" size="sm" squared >
+                                            <download-excel
+                                                :data="filterSearch"
+                                                worksheet="Complete Containers"
+                                                :name='this.fileName'
+                                                :before-finish   = "finishDownload"
+                                                :export-fields="{
+                                                    'Supplier': 'supplier',
+                                                    'BPO Number': 'bpoNumber',
+                                                    'Total Chargeable Weight': 'totalChargeableWeight',
+                                                    'Number Of Storage Days': 'numberOfStorageDays',
+                                                    'Container Number' : 'container.containerNumber',
+                                                }"
+                                            >
+                                                <font-awesome-icon class="mr-1" icon="fa-file-export" />
+                                                Export Excel
+                                                
+                                            </download-excel>
+                                        </b-button>
+                                    </b-col>
+                                </b-col>
+                            </b-row>
                         </b-col>
                     </b-row>
+                    
                     <b-row >
                         <b-col>
                             <b-table
                                 sort-icon-left
                                 striped hover
-                                :items="cargoCompleteTable.dataSource"
+                                :items="filterSearch"
                                 :fields="cargoCompleteTable.tableColumns"
                                 :busy="cargoCompleteTable.isLoading"
                                 :per-page="cargoCompleteTable.resultsPerPage"
@@ -138,6 +166,7 @@
 
                         </b-col>
                     </b-row>
+                    
                 </b-card>
             </b-col>
         </b-row>
@@ -288,13 +317,17 @@
                 </div>
             </b-modal>
         </div>
+        
     </div>
 </template>
 
 <script>
 import {mapActions, mapState} from "vuex";
+import Loader from "@/components/loader";
 
 export default {
+    name: "completedCargo",
+    components: {Loader},
     data: () => ({
         cargoCompleteTable : {
             resultsPerPage: 10,
@@ -401,6 +434,14 @@ export default {
             ]
         },
         isRestore: false,
+        search: '',
+        json_field: {
+            Supplier: "supplier",
+            'BPO Number': 'bpoNumber',
+        },
+        jsonData: [],
+        fileName: `Complete Cargo ${new Date().toLocaleDateString('en-ZA')}.xls`,
+        loading: false,
     }),
     beforeCreate() {
     },
@@ -419,7 +460,7 @@ export default {
         ...mapActions(["requestCompleteCargo", "restoreCargo"]),
         
         goBack() {
-            this.$router.back()
+            this.$router.push({name: 'adminView'})
         },
         
         completeCargo () {
@@ -428,8 +469,7 @@ export default {
                 .then((response) => {
                     this.cargoCompleteTable.dataSource = response.data
                     this.cargoCompleteTable.isLoading = false
-                    console.log('COMPLETE', response.data)
-                    console.log('COMPLETE 2', this.cargoCompleteTable.dataSource)
+                    console.log('COMPLETE ', this.cargoCompleteTable.dataSource)
                 })
         },
         rowClass(item, type) {
@@ -456,6 +496,9 @@ export default {
                         this.$router.push({path: '/admin-home'})
                     })
         },
+
+        finishDownload(){
+        }
     },
     computed: {
         ...mapState([
@@ -463,6 +506,11 @@ export default {
         ]),
         cargoRows() {
             return this.cargoCompleteTable.dataSource.length
+        },
+        filterSearch() {
+            return this.cargoCompleteTable.dataSource.filter((item) => {
+                return item.supplier.toLowerCase().match(this.search.toLowerCase()) || item.bpoNumber.toLowerCase().match(this.search.toLowerCase()) || item.container.containerNumber.toLowerCase().match(this.search.toLowerCase())
+            })
         },
     },
 }
