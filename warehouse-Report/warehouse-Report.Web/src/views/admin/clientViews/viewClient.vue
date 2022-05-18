@@ -4,15 +4,19 @@
             <b-col>
                 <b-card>
                     <b-row>
-                        <b-col>
+                        <b-col cols="4">
                             <h4 class="m-0">Client View</h4>
                         </b-col>
+                        <b-col cols="3" class="justify-content-center">
+                            <b-form-input v-model="search" placeholder="Search Company || Name || Surname" />
+                        </b-col>
+                        <b-col cols="4"></b-col>
                     </b-row>
                     <b-row class="mt-3">
                         <b-col>
                             <b-table
                                 striped hover
-                                :items="supplierTable.dataSource"
+                                :items="filterSearch"
                                 :fields="supplierTable.tableColumns"
                                 :busy="supplierTable.isLoading"
                                 @row-clicked="openContact"
@@ -266,6 +270,7 @@ export default {
             ]
         },
         isDeleteSelected: false,
+        search: '',
     }),
     beforeCreate() {
     },
@@ -335,6 +340,11 @@ export default {
         ]),
         rows() {
             return this.supplierTable.dataSource.length
+        },
+        filterSearch() {
+            return this.supplierTable.dataSource.filter((item) => {
+                return item.companyName.toLowerCase().match(this.search.toLowerCase()) || item.name.toLowerCase().match(this.search.toLowerCase()) || item.surname.toLowerCase().match(this.search.toLowerCase())
+            })
         },
     },
 }

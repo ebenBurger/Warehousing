@@ -11,7 +11,7 @@
                                     <h4 class="m-0">Warehouse Report</h4>
                                 </b-col>
                                 <b-col>
-                                    <b-form-input v-model="search" placeholder="Search Supplier || BPO Number || Container Number"/>
+                                    <b-form-input v-model="search" placeholder="Search Supplier || BPO Number"/>
                                 </b-col>
                                 <b-col>
                                     <b-col class="text-right">

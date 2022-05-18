@@ -10,7 +10,7 @@
                             </div>
                         </b-col>
                         <b-col>
-                            <b-form-input v-model="search" placeholder="Search File Reference or container Number" />
+                            <b-form-input v-model="search" placeholder="Search File Reference || Container Number" />
                         </b-col>
                         <b-col class="text-right">
                             <b-button variant="outline-primary" size="sm" squared @click="goBack">
