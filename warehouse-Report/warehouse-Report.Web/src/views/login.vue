@@ -3,8 +3,8 @@
         <b-row align-h="center" align-v="center" class="full-height  login-container mb-0">
             <b-col cols="3">
                 <b-card class="mb-2">
-                    <b-card-header>
-<!--                        <img src="@/assets/nextecLogo.png" alt="" class="img-to-fit">-->
+                    <b-card-header class="bg-transparent">
+                        <img src="@/assets/Logo.png" alt="" class="img-to-fit">
                     </b-card-header>
                     <b-card-text>
                         <b-form>
@@ -24,11 +24,11 @@
                                     Login
                                 </b-button>
                             </b-row>
-                            <b-row class="mx-0">
-                                <b-button class="mt-3 primary-no-border" size="sm" variant="outline-primary" block squared>
-                                    Forgot Password?
-                                </b-button>
-                            </b-row>
+<!--                            <b-row class="mx-0">-->
+<!--                                <b-button class="mt-3 primary-no-border" size="sm" variant="outline-primary" block squared>-->
+<!--                                    Forgot Password?-->
+<!--                                </b-button>-->
+<!--                            </b-row>-->
                         </b-form>
                     </b-card-text>
                 </b-card>
@@ -39,7 +39,6 @@
 
 <script>
 import {mapActions} from "vuex";
-// import md5 from 'js-md5'
 
 export default {
     name: "login",
@@ -102,6 +101,20 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+.login-container {
+    .card {
+        background: #f0f0f0;
+        //background-image: url("../assets/login");
+        
+        .form-control {
+            //background: lightgray;
+            border: 1px solid lightgray;
+            
+            .focus {
+                background: green;
+            }
+        }
+    }
+}
 </style>
