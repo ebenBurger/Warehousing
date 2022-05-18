@@ -79,6 +79,8 @@
 </template>
 
 <script>
+import {mapActions} from "vuex";
+
 export default {
     name: "createUser",
     data: () => ({
@@ -102,6 +104,8 @@ export default {
     updated() {
     },
     methods: {
+        ...mapActions(["createUser"]),
+        
         goBack() {
             this.$router.push({name: 'adminView'})
         },
@@ -111,7 +115,13 @@ export default {
         hideUserAddModal() {
             this.$bvModal.hide('UserAdd')
         },
-        save() {},
+        save() {
+            this.$store.commit('setUserCreateRequest', this.userDetails)
+                this.createUser()
+                .then(() => {
+                    this.$router.push({name: 'adminView'})
+                })
+        },
     },
     computed: {},
 }
