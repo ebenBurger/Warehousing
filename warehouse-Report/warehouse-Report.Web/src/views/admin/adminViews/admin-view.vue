@@ -1286,7 +1286,6 @@ export default {
             .then(response => {
                 this.cargoTable.dataSource = response.data
                 this.cargoTable.isLoading = false
-                console.log("CARGO", this.cargoTable.dataSource)
                 
             })
             .catch(() => {

@@ -80,13 +80,16 @@ export default {
             
             this.login()
             .then((response) => {
-                console.log("RESPONSE", response)
                 this.isLoading = false
                 if (response.data.role[0] === "User") {
                     this.$router.push({name: 'userView'})
+                    localStorage.setItem('jwt', response.data.token)
+                    localStorage.setItem('role', response.data.role)
                 }
                 if (response.data.role[0] === "Admin") {
                     this.$router.push({name: 'adminView'})
+                    localStorage.setItem('jwt', response.data.token)
+                    localStorage.setItem('role', response.data.role)
                 }
             })
             .catch(() => {
