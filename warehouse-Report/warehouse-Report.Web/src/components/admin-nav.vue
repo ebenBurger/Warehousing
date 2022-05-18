@@ -54,7 +54,7 @@
                         <b-nav vertical>
                             <b-nav-item to="/clientAdd">
                                 <font-awesome-icon icon="fa-user-plus" />
-                                Add Client
+                                Add Supplier
                             </b-nav-item>
                             <b-nav-item to="/addUser">
                                 <font-awesome-icon icon="fa-user-cog" />
@@ -70,7 +70,6 @@
                 </div>
             </template>
         </b-sidebar>
-
     </div>
 </template>
 

@@ -81,7 +81,6 @@
                                         </span>
                                         <span v-if="data.item.commercialInvoiceReceived" class="mr-1">
                                             <font-awesome-icon icon="fa-file-invoice-dollar" />
-                                            <font-awesome-icon icon="fa-file-invoice-dollar" />
                                         </span>
                                         <span v-if="data.item.billedToJkn" class="mr-1">
                                             <font-awesome-icon icon="fa-dollar-sign" />
@@ -458,6 +457,16 @@
                                         <b-col cols="4">
                                             <label><span class="font-weight-bold">BPO Number:</span> </label>
                                             <label>{{selectedCargo.bpoNumber}}</label>
+                                        </b-col>
+
+                                        <b-col v-if="selectedCargo.commercialInvoiceReceived" cols="4">
+                                            <label><span class="font-weight-bold">Commercial Invoice Number:</span> </label>
+                                            <span>
+                                                <b-form-input v-model="selectedCargo.commercialInvoiceNumber"/>
+                                            </span>
+<!--                                            <span v-show="selectedCargo.commercialInvoiceNumber ? selectedCargo.commercialInvoiceNumber.length > 6 : selectedCargo.commercialInvoiceNumber.length > 12">-->
+<!--                                                <label>{{selectedCargo.commercialInvoiceNumber}}</label>-->
+<!--                                            </span>-->
                                         </b-col>
                                     </b-row>
                                     <b-row>
@@ -1254,6 +1263,7 @@ export default {
                 deleteReason: null,
                 billedToJkn: false,
                 commercialInvoiceReceived: false,
+                commercialInvoiceNumber: false,
                 packingListReceived: false,
                 hazardous: false,
                 isComplete: false,
@@ -1395,6 +1405,7 @@ export default {
             updatedCargo.deleteReason = this.selectedCargo.deleteReason
             updatedCargo.billedToJkn = this.selectedCargo.billedToJkn
             updatedCargo.commercialInvoiceReceived = this.selectedCargo.commercialInvoiceReceived
+            updatedCargo.commercialInvoiceNumber = this.selectedCargo.commercialInvoiceNumber
             updatedCargo.packingListReceived = this.selectedCargo.packingListReceived
             updatedCargo.hazardous = this.selectedCargo.hazardous
             updatedCargo.isComplete = this.selectedCargo.isComplete
