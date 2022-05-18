@@ -11,7 +11,7 @@
                                     <h4 class="m-0">Warehouse Report</h4>
                                 </b-col>
                                 <b-col>
-                                    <b-form-input v-model="search" placeholder="Search supplier or BPO Number"/>
+                                    <b-form-input v-model="search" placeholder="Search Supplier || BPO Number || Container Number"/>
                                 </b-col>
                                 <b-col>
                                     <b-col class="text-right">
@@ -1286,6 +1286,7 @@ export default {
             .then(response => {
                 this.cargoTable.dataSource = response.data
                 this.cargoTable.isLoading = false
+                console.log("CARGO", this.cargoTable.dataSource)
                 
             })
             .catch(() => {
@@ -1543,16 +1544,6 @@ export default {
             if (!item || type !== 'row') return
             if (item.hazardous === true) return 'table-danger'
         },
-        
-        //TODO filter
-        /*filterSearch(row, search) {
-            if (row.supplier !== search) {
-                return false
-            } else {
-                return true
-            }
-        },*/
-        
     },
     computed: {
         ...mapState([

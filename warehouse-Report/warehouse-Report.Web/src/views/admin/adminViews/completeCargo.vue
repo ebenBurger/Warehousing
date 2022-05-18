@@ -5,22 +5,30 @@
                 <b-card>
                     <b-row>
                         <b-col>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <h4 class="m-0">Complete Shipments</h4>
-                            </div>
-                            <b-col class="text-right">
-                                <b-button variant="outline-primary" size="sm" squared @click="goBack">
-                                    Back
-                                </b-button>
-                            </b-col>
+                            <b-row>
+                                <b-col>
+                                    <h4 class="m-0">Complete Shipments</h4>
+                                </b-col>
+                                <b-col>
+                                    <b-form-input v-model="search" placeholder="Search Supplier || BPO Number || Container Number"/>
+                                </b-col>
+                                <b-col>
+                                    <b-col class="text-right">
+                                        <b-button variant="outline-primary" size="sm" squared @click="goBack">
+                                            Back
+                                        </b-button>
+                                    </b-col>
+                                </b-col>
+                            </b-row>
                         </b-col>
                     </b-row>
+                    
                     <b-row >
                         <b-col>
                             <b-table
                                 sort-icon-left
                                 striped hover
-                                :items="cargoCompleteTable.dataSource"
+                                :items="filterSearch"
                                 :fields="cargoCompleteTable.tableColumns"
                                 :busy="cargoCompleteTable.isLoading"
                                 :per-page="cargoCompleteTable.resultsPerPage"
@@ -402,6 +410,7 @@ export default {
             ]
         },
         isRestore: false,
+        search: '',
     }),
     beforeCreate() {
     },
@@ -464,6 +473,11 @@ export default {
         ]),
         cargoRows() {
             return this.cargoCompleteTable.dataSource.length
+        },
+        filterSearch() {
+            return this.cargoCompleteTable.dataSource.filter((item) => {
+                return item.supplier.toLowerCase().match(this.search.toLowerCase()) || item.bpoNumber.toLowerCase().match(this.search.toLowerCase()) || item.container.containerNumber.toLowerCase().match(this.search.toLowerCase())
+            })
         },
     },
 }
