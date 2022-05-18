@@ -70,7 +70,10 @@
                                 <B-form class="w-100">
                                     <b-row>
                                         <b-col>
-                                            <label class="text-primary font-weight-bold mb-4">Company Details</label>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <label class="text-primary font-weight-bold mb-4">Company Details</label>
+                                                <b-button variant="outline-red" squared @click="toggleDelete" size="sm">Delete</b-button>
+                                            </div>
                                         </b-col>
                                     </b-row>
                                     <b-row>
@@ -117,10 +120,8 @@
                                     <hr class="mx-3">
                                     <b-row>
                                         <b-col>
-
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <label class="text-primary font-weight-bold mb-4">Contact Person Details</label>
-                                                <b-button variant="outline-red" squared @click="toggleDelete" size="sm">Delete</b-button>
                                             </div>
                                         </b-col>
                                     </b-row>
@@ -176,7 +177,7 @@
                     <div v-if="isDeleteSelected">
                         <div class="d-flex justify-content-center">
                             <p class="h4">
-                                Are you sure you want to delete the supplier <span class="text-danger font-weight-bold">{{selectedSupplier.name}} {{selectedSupplier.surname}}</span>
+                                Are you sure you want to delete the supplier <span class="text-danger font-weight-bold">{{selectedSupplier.companyName}} -- {{selectedSupplier.name}} {{selectedSupplier.surname}}</span>
                             </p>
                         </div>
                         <hr class="mx-3">
