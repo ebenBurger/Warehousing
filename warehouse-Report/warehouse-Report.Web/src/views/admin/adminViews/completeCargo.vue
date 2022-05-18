@@ -295,6 +295,7 @@
 import {mapActions, mapState} from "vuex";
 
 export default {
+    name: "completedCargo",
     data: () => ({
         cargoCompleteTable : {
             resultsPerPage: 10,
@@ -419,7 +420,7 @@ export default {
         ...mapActions(["requestCompleteCargo", "restoreCargo"]),
         
         goBack() {
-            this.$router.back()
+            this.$router.push({name: 'adminView'})
         },
         
         completeCargo () {

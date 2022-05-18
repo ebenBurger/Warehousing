@@ -80,6 +80,7 @@
 
 <script>
 export default {
+    name: "createUser",
     data: () => ({
         userDetails: {
             userName: null,
@@ -102,7 +103,7 @@ export default {
     },
     methods: {
         goBack() {
-            this.$router.push({path: '/admin-home'})
+            this.$router.push({name: 'adminView'})
         },
         showUserAddModal() {
             this.$bvModal.show('UserAdd')

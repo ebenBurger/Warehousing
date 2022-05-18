@@ -42,6 +42,7 @@ import {mapActions} from "vuex";
 // import md5 from 'js-md5'
 
 export default {
+    name: "login",
     data: () => ({
         state: 'login',
         showErrors: false,
@@ -82,10 +83,10 @@ export default {
                 console.log("RESPONSE", response)
                 this.isLoading = false
                 if (response.data.role[0] === "User") {
-                    this.$router.push({path: '/home'})
+                    this.$router.push({name: 'userMain'})
                 }
                 if (response.data.role[0] === "Admin") {
-                    this.$router.push({path: '/admin-home'})
+                    this.$router.push({name: 'adminView'})
                 }
             })
             .catch(() => {

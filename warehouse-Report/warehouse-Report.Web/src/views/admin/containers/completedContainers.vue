@@ -139,6 +139,7 @@
 import {mapActions, mapState} from "vuex";
 
 export default {
+    name: "completeContainer",
     data: () => ({
         containerTable : {
             resultsPerPage: 10,
@@ -190,7 +191,7 @@ export default {
     methods: {
         ...mapActions(['requestCompleteContainer', "restoreContainer"]),
         goBack() {
-            this.$router.back()
+            this.$router.push({name: 'containerView'})
         },
         completeContainer() {
             this.containerTable.isLoading = true

@@ -6,15 +6,15 @@
             </b-navbar-brand>
             <div>
                 <b-navbar-nav class="align-items-center">
-                    <router-link exact-active-class="active" to="/admin-home">
+                    <router-link exact-active-class="active" :to="{name: 'adminView'}">
                         <font-awesome-icon icon="fa-house-user" />
                         Home
                     </router-link>
-                    <router-link exact-active-class="active" to="/viewContainer">
+                    <router-link exact-active-class="active" :to="{name: 'containerView'}">
                         <font-awesome-icon icon="fa-shipping-fast" />
                         Containers
                     </router-link>
-                    <router-link exact-active-class="active" to="/clientView">
+                    <router-link exact-active-class="active" :to="{name: 'clientView'}">
                         <font-awesome-icon icon="fa-user-tie" />
                         Client
                     </router-link>
@@ -52,15 +52,15 @@
                     <h4 id="sidebar-no-header-title">Admin Selections</h4>
                     <nav class="mb-3">
                         <b-nav vertical>
-                            <b-nav-item to="/clientAdd">
+                            <b-nav-item :to="{name: 'createClient'}">
                                 <font-awesome-icon icon="fa-user-plus" />
                                 Add Supplier
                             </b-nav-item>
-                            <b-nav-item to="/addUser">
+                            <b-nav-item :to="{name: 'createUser'}">
                                 <font-awesome-icon icon="fa-user-cog" />
                                 Add User
                             </b-nav-item>
-                            <b-nav-item to="/addAdminUser">
+                            <b-nav-item :to="{name: 'createAdminUser'}">
                                 <font-awesome-icon icon="fa-user-cog" />
                                 Add Admin User
                             </b-nav-item>
@@ -75,6 +75,7 @@
 
 <script>
 export default {
+    name: "admin-nav",
     data: () => ({}),
     beforeCreate() {
     },
@@ -90,7 +91,7 @@ export default {
     },
     methods: {
         logout() {
-            this.$router.push({path: '/'})
+            this.$router.push({name: 'login'})
             localStorage.removeItem('jwt')
             localStorage.removeItem('user')
         },

@@ -276,6 +276,7 @@ import {mapActions, mapState} from "vuex";
 
 export default {
     data: () => ({
+        name: "containerView",
         containerData: {
             containerNumber: null,
             containerType: null,
@@ -321,7 +322,7 @@ export default {
         ...mapActions(["createContainer", "requestContainer", "updateContainer"]),
 
         openCompleteContainers() {
-            this.$router.push({path: '/completedContainers'})
+            this.$router.push({name: 'completeContainer'})
         },
         
         openContainerModal() {

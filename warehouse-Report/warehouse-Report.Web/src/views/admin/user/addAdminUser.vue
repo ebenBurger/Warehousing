@@ -92,6 +92,7 @@
 import {mapActions} from "vuex";
 
 export default {
+    name: "createAdminUser",
     data: () => ({
         userDetails: {
             userName: null,
@@ -116,7 +117,7 @@ export default {
         ...mapActions(['createAdminUser' ]),
         
         goBack() {
-            this.$router.push({path: '/admin-home'})
+            this.$router.push({name: 'adminView'})
         },
         showAddAdminModal() {
             this.$bvModal.show('adminUserAdd')

@@ -200,6 +200,7 @@
 import {mapActions, mapState} from "vuex";
 
 export default {
+    name: "clientView",
     data: () => ({
         supplier: {
             name: null,

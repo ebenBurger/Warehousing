@@ -989,6 +989,7 @@ import {mapActions, mapState} from "vuex";
 import Loader from "@/components/loader";
 
 export default {
+    name: "adminView",
     components: {Loader},
     data: () => ({
         cargo: {
@@ -1290,7 +1291,7 @@ export default {
                 
             })
             .catch(() => {
-                this.$router.push({path: '/'})
+                this.$router.push({name: 'login'})
                 localStorage.removeItem('jwt')
                 localStorage.removeItem('user')
             })
@@ -1302,7 +1303,6 @@ export default {
                 .then((res) => {
                     this.cargoCreatedId = res.data.result
                     this.isCargoCreated = true
-                    console.log("CARGO CREATE REQUEST 2", res.data.result)
                 })
         },
         savePackageToDb() {
@@ -1317,8 +1317,6 @@ export default {
                 packItem.weight = item.weight
                 packItem.width = item.width
                 packItem.isActive = true
-                console.log('PACKAGE ITEM', packItem)
-                console.log('SELECTED CARGO', this.selectedCargo)
                 this.$store.commit("setCreatePackageRequest", packItem)
                 this.createPackage()
                     .then(() => {
@@ -1344,8 +1342,6 @@ export default {
                 packItem.weight = item.weight
                 packItem.width = item.width
                 packItem.isActive = true
-                console.log('PACKAGE ITEM', packItem)
-                console.log('SELECTED CARGO', this.selectedCargo)
                 this.$store.commit("setCreatePackageRequest", packItem)
                 this.createPackage()
                     .then(() => {
@@ -1382,8 +1378,6 @@ export default {
         },
         removePackage(item) {
             this.packageAdd.dataSource.splice(item.index, 1)
-            console.log("REMOVE ITEM", item)
-            
         },
         confirmPackageList() {
             this.packageList = true
@@ -1421,7 +1415,6 @@ export default {
             updatedCargo.atraxInvoiceDate = this.selectedCargo.atraxInvoiceDate
             updatedCargo.totalChargeableWeight = this.chargeWeight
             
-            console.log('CONTAINER ID', this.selectedCargo.containerId)
             this.$store.commit('setSelectedCargo', updatedCargo)
             this.updateCargo()
                 .then((resp) => {
@@ -1435,7 +1428,6 @@ export default {
             if (this.selectedCargo.isComplete) {
                 this.selectedCargo.isComplete = true
 
-                console.log('CONTAINER ID', this.selectedCargo.containerId)
                 this.$store.commit('setSelectedCargo', this.selectedCargo)
                 this.updateCargo()
                     .then(() => {
@@ -1464,7 +1456,6 @@ export default {
         toggleDeletePackage(item) {
             this.deleteSelected = !this.deleteSelected
             this.itemSelectedForDelete = item
-            console.log("ITEM", item)
         },
         deletePackage() {
             this.itemSelectedForDelete.isActive = false
@@ -1473,7 +1464,6 @@ export default {
                 .then(() => {
                     this.deleteSelected = false
                     this.hideCargoEditModal()
-                    console.log('ITEM SELECTED', this.itemSelectedForDelete)
                 })
         },
         updatedEditPackage() {
@@ -1492,7 +1482,6 @@ export default {
             this.$store.commit('setSelectedPackage', updatedItem)
             this.updatePackage()
                 .then(() => {
-                    console.log("UPDATED ITEM", updatedItem);
                     this.editSelected = !this.editSelected
                 })
         },
@@ -1500,7 +1489,6 @@ export default {
             this.requestContainer()
                 .then((response) => {
                     this.containerList = response.data 
-                    console.log("CONTAINER LIST", this.containerList)
                 })
         },
         addClicked() {
@@ -1549,10 +1537,9 @@ export default {
             this.totalWeight = (this.selectedCargo.packageModels
                 .filter(active => active.isActive === true)
                 .reduce((acc, weight) => acc + weight.weight, 0)).toFixed(3)
-            console.log('TOTAL WEIGHT', this.totalWeight)
         },
         openCompleteCargo() {
-            this.$router.push({path: '/completeCargo'})
+            this.$router.push({name: 'completedCargo'})
         },
         rowClass(item, type) {
             if (!item || type !== 'row') return

@@ -57,8 +57,8 @@ const routes = [
         children: [
 
             {
-                path: '/admin-home',
-                name: 'adminMain',
+                path: '/home',
+                name: 'adminView',
                 component: adminView,
                 meta: {
                     title: "Home",
@@ -68,8 +68,8 @@ const routes = [
                 },
             },
             {
-                path: '/completeCargo',
-                name: 'CompleteCargo',
+                path: '/cargo',
+                name: 'completedCargo',
                 component: completeCargo,
                 meta: {
                     title: "Complete Shipment",
@@ -79,7 +79,7 @@ const routes = [
                 },
             },
             {
-                path: '/clientAdd',
+                path: '/Add',
                 name: 'createClient',
                 component: createClient,
                 meta: {
@@ -90,8 +90,8 @@ const routes = [
                 },
             },
             {
-                path: '/clientView',
-                name: 'viewClient',
+                path: '/client',
+                name: 'clientView',
                 component: viewClient,
                 meta: {
                     title: "Client",
@@ -101,8 +101,8 @@ const routes = [
                 },
             },
             {
-                path: '/addUser',
-                name: 'addUser',
+                path: '/add',
+                name: 'createUser',
                 component: addUser,
                 meta: {
                     title: "Add User",
@@ -112,8 +112,8 @@ const routes = [
                 },
             },
             {
-                path: '/addAdminUser',
-                name: 'addAdminUser',
+                path: '/adminUser',
+                name: 'createAdminUser',
                 component: addAdminUser,
                 meta: {
                     title: "Add Admin",
@@ -123,8 +123,8 @@ const routes = [
                 },
             },
             {
-                path: '/viewContainer',
-                name: 'viewContainer',
+                path: '/container',
+                name: 'containerView',
                 component: viewContainer,
                 meta: {
                     title: "Containers",
@@ -134,8 +134,8 @@ const routes = [
                 },
             },
             {
-                path: '/completedContainers',
-                name: 'completedContainers',
+                path: '/container',
+                name: 'completeContainer',
                 component: completedContainers,
                 meta: {
                     title: "Complete Containers",
