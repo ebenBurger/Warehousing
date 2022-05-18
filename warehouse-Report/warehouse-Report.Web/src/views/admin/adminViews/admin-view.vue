@@ -1204,7 +1204,6 @@ export default {
         setTimeout(() => {
             this.isEnterPage = false
         }, 0)
-        // this.filteredItems = this.search
     },
     beforeUpdate() {
     },
@@ -1232,7 +1231,6 @@ export default {
         },
         hideCargoEditModal() {
             this.$bvModal.hide('cargoEdit')
-            //TODO clear the pervasive memory on changes not saved.
             this.cargoTable.isLoading = false
             this.editSelected = false
         },
@@ -1325,8 +1323,7 @@ export default {
                         this.isEnterPage = false
                     })
             })
-            location.reload()
-           
+            window.location.reload()
         },
         saveExtraPackageToDb() {
             this.isEnterPage = true

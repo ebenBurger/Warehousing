@@ -19,12 +19,15 @@
                                         </b-button>
                                         <b-button class="ml-3" variant="outline-primary" size="sm" squared >
                                             <download-excel
-                                                :data="this.cargoCompleteTable.dataSource"
+                                                :data="filterSearch"
                                                 worksheet="Complete Containers"
                                                 :name='this.fileName'
                                                 :export-fields="{
                                                     'Supplier': 'supplier',
-                                                    'BPO Number': 'bpoNumber'
+                                                    'BPO Number': 'bpoNumber',
+                                                    'Total Chargeable Weight': 'totalChargeableWeight',
+                                                    'Number Of Storage Days': 'numberOfStorageDays',
+                                                    'Container Number' : 'container.containerNumber',
                                                 }"
                                             >
                                                 <font-awesome-icon class="mr-1" icon="fa-file-export" />
