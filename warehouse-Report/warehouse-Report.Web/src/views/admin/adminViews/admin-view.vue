@@ -11,7 +11,7 @@
                                     <h4 class="m-0">Warehouse Report</h4>
                                 </b-col>
                                 <b-col>
-                                    <b-form-input v-model="search" placeholder="Search suppliers"/>
+                                    <b-form-input v-model="search" placeholder="Search supplier or BPO Number"/>
                                 </b-col>
                                 <b-col>
                                     <b-col class="text-right">
@@ -1565,7 +1565,7 @@ export default {
         },
         filterSearch() {
             return this.cargoTable.dataSource.filter((item) => {
-                return item.supplier.toLowerCase().match(this.search.toLowerCase())
+                return item.supplier.toLowerCase().match(this.search.toLowerCase()) || item.bpoNumber.toLowerCase().match(this.search.toLowerCase())
             })
         },
     },
