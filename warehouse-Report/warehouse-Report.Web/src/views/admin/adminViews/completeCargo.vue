@@ -1,5 +1,6 @@
 ﻿<template>
     <div>
+        <Loader />
         <b-row>
             <b-col>
                 <b-card>
@@ -22,6 +23,7 @@
                                                 :data="filterSearch"
                                                 worksheet="Complete Containers"
                                                 :name='this.fileName'
+                                                :before-finish   = "finishDownload"
                                                 :export-fields="{
                                                     'Supplier': 'supplier',
                                                     'BPO Number': 'bpoNumber',
@@ -35,13 +37,6 @@
                                                 
                                             </download-excel>
                                         </b-button>
-
-                                    </b-col>
-                                    <b-col class="text-right">
-                                        
-                                    </b-col>
-                                    <b-col>
-                                        
                                     </b-col>
                                 </b-col>
                             </b-row>
@@ -171,6 +166,7 @@
 
                         </b-col>
                     </b-row>
+                    
                 </b-card>
             </b-col>
         </b-row>
@@ -327,9 +323,11 @@
 
 <script>
 import {mapActions, mapState} from "vuex";
+import Loader from "@/components/loader";
 
 export default {
     name: "completedCargo",
+    components: {Loader},
     data: () => ({
         cargoCompleteTable : {
             resultsPerPage: 10,
@@ -442,7 +440,8 @@ export default {
             'BPO Number': 'bpoNumber',
         },
         jsonData: [],
-        fileName: `Complete Cargo ${new Date().toLocaleDateString('en-ZA')}.xls`
+        fileName: `Complete Cargo ${new Date().toLocaleDateString('en-ZA')}.xls`,
+        loading: false,
     }),
     beforeCreate() {
     },
@@ -470,12 +469,7 @@ export default {
                 .then((response) => {
                     this.cargoCompleteTable.dataSource = response.data
                     this.cargoCompleteTable.isLoading = false
-                    this.jsonData = this.cargoCompleteTable.dataSource.map(v => {
-                        v.supplier
-                        v.bpoNumber
-                    })
-                    console.log('COMPLETE', response.data)
-                    console.log('COMPLETE 2', this.cargoCompleteTable.dataSource)
+                    console.log('COMPLETE ', this.cargoCompleteTable.dataSource)
                 })
         },
         rowClass(item, type) {
@@ -502,10 +496,9 @@ export default {
                         this.$router.push({path: '/admin-home'})
                     })
         },
-        
-        data() {
-            
-        },
+
+        finishDownload(){
+        }
     },
     computed: {
         ...mapState([
