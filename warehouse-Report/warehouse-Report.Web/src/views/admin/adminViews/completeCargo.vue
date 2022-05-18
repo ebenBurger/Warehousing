@@ -17,6 +17,24 @@
                                         <b-button variant="outline-primary" size="sm" squared @click="goBack">
                                             Back
                                         </b-button>
+                                        <b-button class="ml-3" variant="outline-primary" size="sm" squared >
+                                            <download-excel
+                                                :data="this.cargoCompleteTable.dataSource"
+                                                worksheet="Complete Containers"
+                                                :name='this.fileName'
+                                            >
+                                                <font-awesome-icon class="mr-1" icon="fa-file-export" />
+                                                Export Excel
+                                                
+                                            </download-excel>
+                                        </b-button>
+
+                                    </b-col>
+                                    <b-col class="text-right">
+                                        
+                                    </b-col>
+                                    <b-col>
+                                        
                                     </b-col>
                                 </b-col>
                             </b-row>
@@ -296,6 +314,7 @@
                 </div>
             </b-modal>
         </div>
+        
     </div>
 </template>
 
@@ -411,6 +430,12 @@ export default {
         },
         isRestore: false,
         search: '',
+        json_field: {
+            Supplier: "supplier",
+            'BPO Number': 'bpoNumber',
+        },
+        jsonData: [],
+        fileName: `Complete Cargo ${new Date().toLocaleDateString('en-ZA')}.xls`
     }),
     beforeCreate() {
     },
@@ -438,6 +463,10 @@ export default {
                 .then((response) => {
                     this.cargoCompleteTable.dataSource = response.data
                     this.cargoCompleteTable.isLoading = false
+                    this.jsonData = this.cargoCompleteTable.dataSource.map(v => {
+                        v.supplier
+                        v.bpoNumber
+                    })
                     console.log('COMPLETE', response.data)
                     console.log('COMPLETE 2', this.cargoCompleteTable.dataSource)
                 })
@@ -465,6 +494,10 @@ export default {
                     .then(() => {
                         this.$router.push({path: '/admin-home'})
                     })
+        },
+        
+        data() {
+            
         },
     },
     computed: {
