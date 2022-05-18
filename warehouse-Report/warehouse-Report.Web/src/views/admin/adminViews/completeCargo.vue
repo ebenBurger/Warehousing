@@ -22,6 +22,10 @@
                                                 :data="this.cargoCompleteTable.dataSource"
                                                 worksheet="Complete Containers"
                                                 :name='this.fileName'
+                                                :export-fields="{
+                                                    'Supplier': 'supplier',
+                                                    'BPO Number': 'bpoNumber'
+                                                }"
                                             >
                                                 <font-awesome-icon class="mr-1" icon="fa-file-export" />
                                                 Export Excel
