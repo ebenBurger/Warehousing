@@ -1323,7 +1323,6 @@ export default {
                         this.isEnterPage = false
                     })
             })
-            window.location.reload()
         },
         saveExtraPackageToDb() {
             this.isEnterPage = true
@@ -1347,7 +1346,6 @@ export default {
                         this.packageAdd.dataSource.splice(0, this.packageAdd.dataSource.length)
                         this.isEnterPage = false
                     })
-                location.reload()
             })
 
         },

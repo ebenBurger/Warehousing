@@ -169,7 +169,8 @@ router.beforeEach((to, from, next) => {
                 if (role === "Admin") {
                     document.title = `${to.meta.title} | Atrax`
                     return next()
-                } else {
+                } 
+                    else {
                     router.push({name: 'login'})
                     document.title = `${to.meta.title} | Atrax`
                     localStorage.removeItem('jwt')
@@ -179,13 +180,15 @@ router.beforeEach((to, from, next) => {
                 if (role === "User") {
                     document.title = `${to.meta.title} | Atrax`
                     return next()
-                } else {
+                } 
+                    else {
                     document.title = `${to.meta.title} | Atrax`
                     router.push({name: 'login'})
                     localStorage.removeItem('jwt')
                     localStorage.removeItem('role')
                 }
             }
+                
         }
 
     } else {
