@@ -83,7 +83,7 @@ export default {
                 console.log("RESPONSE", response)
                 this.isLoading = false
                 if (response.data.role[0] === "User") {
-                    this.$router.push({name: 'userMain'})
+                    this.$router.push({name: 'userView'})
                 }
                 if (response.data.role[0] === "Admin") {
                     this.$router.push({name: 'adminView'})

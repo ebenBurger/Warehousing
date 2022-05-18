@@ -126,10 +126,10 @@ export default {
             this.$bvModal.hide('adminUserAdd')
         },
         save () {
-            this.$store.commit("setUserCreateRequest", this.userDetails)
+            this.$store.commit("setAdminCreateRequest", this.userDetails)
                 this.createAdminUser()
                     .then(() => {
-                        this.$router.push({path: '/admin-home'})
+                        this.$router.push({name: 'adminView'})
                     })
         },
     },
