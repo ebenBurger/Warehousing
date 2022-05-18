@@ -11,7 +11,7 @@
                                     <h4 class="m-0">Warehouse Report</h4>
                                 </b-col>
                                 <b-col>
-                                    <b-form-input v-model="search" placeholder="Search suppliers" @keyup="filterSearch"/>
+                                    <b-form-input v-model="search" placeholder="Search suppliers"/>
                                 </b-col>
                                 <b-col>
                                     <b-col class="text-right">
@@ -35,7 +35,7 @@
                             <b-table
                                 sort-icon-left
                                 striped hover
-                                :items="cargoTable.dataSource"
+                                :items="filterSearch"
                                 :fields="cargoTable.tableColumns"
                                 :busy="cargoTable.isLoading"
                                 :per-page="cargoTable.resultsPerPage"
@@ -44,8 +44,6 @@
                                 :tbody-tr-class="rowClass"
                                 :current-page="cargoTable.currentPage"
                                 id="cargoTable"
-                                :filter="search"
-                                :filter-function="filterSearch"
                             >
                                 <template #table-busy>
                                     <div class="text-center my-2">
@@ -1547,13 +1545,13 @@ export default {
         },
         
         //TODO filter
-        filterSearch(row, search) {
+        /*filterSearch(row, search) {
             if (row.supplier !== search) {
                 return false
             } else {
                 return true
             }
-        },
+        },*/
         
     },
     computed: {
@@ -1565,7 +1563,11 @@ export default {
         cargoRows() {
             return this.cargoTable.dataSource.length
         },
-        
+        filterSearch() {
+            return this.cargoTable.dataSource.filter((item) => {
+                return item.supplier.toLowerCase().match(this.search.toLowerCase())
+            })
+        },
     },
 }
 </script>
