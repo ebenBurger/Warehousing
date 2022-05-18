@@ -81,7 +81,6 @@ export default new Vuex.Store({
                         localStorage.setItem('jwt', response.data.token)
                         localStorage.setItem('role', response.data.role[0])
                         resolve(response)
-                        Vue.$toast("Welcome to the Portal");
                     })
                     .catch((err) => {
                         reject()
