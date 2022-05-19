@@ -1298,7 +1298,7 @@ export default {
                 })
         },
         getCargoList() {
-            this.loading = true
+            this.loading = false
             this.cargoTable.isLoading = true
             this.requestCargo()
             .then(response => {
@@ -1570,7 +1570,8 @@ export default {
         },
         filterSearch() {
             return this.cargoTable.dataSource.filter((item) => {
-                return item.supplier.toLowerCase().match(this.search.toLowerCase()) || item.bpoNumber.toLowerCase().match(this.search.toLowerCase())
+                return item.supplier.toLowerCase().match(this.search.toLowerCase()) 
+                    || item.bpoNumber.toLowerCase().match(this.search.toLowerCase())
             })
         },
     },
