@@ -42,7 +42,6 @@
     <Content Include="src\router\index.js" />
     <Content Include="src\store\index.js" />
     <Content Include="src\style.scss" />
-    <Content Include="src\user\userViews\user-view.vue" />
     <Content Include="src\views\admin\adminViews\admin-view.vue" />
     <Content Include="src\views\admin\adminViews\completeCargo.vue" />
     <Content Include="src\views\admin\clientViews\createClient.vue" />
@@ -54,6 +53,7 @@
     <Content Include="src\views\layouts\adminLayout.vue" />
     <Content Include="src\views\layouts\layout.vue" />
     <Content Include="src\views\login.vue" />
+    <Content Include="src\views\userViews\user-view.vue" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="public\" />
@@ -63,8 +63,6 @@
     <Folder Include="src\components\" />
     <Folder Include="src\router\" />
     <Folder Include="src\store\" />
-    <Folder Include="src\user\" />
-    <Folder Include="src\user\userViews\" />
     <Folder Include="src\views\" />
     <Folder Include="src\views\admin\" />
     <Folder Include="src\views\admin\adminViews\" />

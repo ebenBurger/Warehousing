@@ -42,6 +42,7 @@ const routes = [
                 name: 'userView',
                 component: userView,
                 meta: {
+                    title: 'Home',
                     requiresAuth: true,
                     adminAuth: false,
                     userAuth: true,
