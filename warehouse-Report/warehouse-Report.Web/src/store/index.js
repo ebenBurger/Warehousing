@@ -252,7 +252,7 @@ export default new Vuex.Store({
                     .then(response => {
                         state.cargoRequest = response.data
                         resolve(response)
-                        console.log("CARGO LIST", response.data)
+                        
                     })
                     .catch(err => {
                         reject(err)
