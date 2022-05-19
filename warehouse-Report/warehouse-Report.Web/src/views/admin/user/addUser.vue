@@ -16,6 +16,16 @@
                         </b-row>
                         <b-row>
                             <b-col>
+                                <label>First Name</label>
+                                <b-form-input v-model="userDetails.firstName"></b-form-input>
+                            </b-col>
+                            <b-col>
+                                <label>Surname</label>
+                                <b-form-input v-model="userDetails.surname"></b-form-input>
+                            </b-col>
+                        </b-row>
+                        <b-row>
+                            <b-col>
                                 <label>UserName</label>
                                 <b-form-input v-model="userDetails.userName"></b-form-input>
                             </b-col>
@@ -86,6 +96,8 @@ export default {
     data: () => ({
         userDetails: {
             userName: null,
+            firstName: null,
+            surname: null,
             email: null,
             password:null,
             password2: null,

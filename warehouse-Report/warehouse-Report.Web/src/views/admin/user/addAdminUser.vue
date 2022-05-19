@@ -14,16 +14,16 @@
                                 <label class="text-primary font-weight-bold mb-4">Enter details for an Admin User account</label>
                             </b-col>
                         </b-row>
-<!--                        <b-row>-->
-<!--                            <b-col>-->
-<!--                                <label>Name</label>-->
-<!--                                <b-form-input v-model="userDetails.name"></b-form-input>-->
-<!--                            </b-col>-->
-<!--                            <b-col>-->
-<!--                                <label>Surname</label>-->
-<!--                                <b-form-input v-model="userDetails.surname"></b-form-input>-->
-<!--                            </b-col>-->
-<!--                        </b-row>-->
+                        <b-row>
+                            <b-col>
+                                <label>Frist Name</label>
+                                <b-form-input v-model="userDetails.firstName"></b-form-input>
+                            </b-col>
+                            <b-col>
+                                <label>Surname</label>
+                                <b-form-input v-model="userDetails.surname"></b-form-input>
+                            </b-col>
+                        </b-row>
                         <b-row>
                             <b-col>
                                 <label>UserName</label>
@@ -95,6 +95,8 @@ export default {
     name: "createAdminUser",
     data: () => ({
         userDetails: {
+            firstName: null,
+            surname: null,
             userName: null,
             email: null,
             password:null,
