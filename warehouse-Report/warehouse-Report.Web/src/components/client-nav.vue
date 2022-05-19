@@ -10,7 +10,11 @@
                         <font-awesome-icon icon="fa-house-user" />
                         Home
                     </router-link>-->
-                    
+                    <div class="text-center">
+                        <h6>
+                            Welcome {{user}}
+                        </h6>
+                    </div>
                     <div @click="openLogoutModal" class="logout navItemSpacing">
                         <font-awesome-icon icon="fa-power-off" />
                         Log Out
@@ -63,7 +67,11 @@ export default {
             this.$bvModal.hide('logoutModal')
         },
     },
-    computed: {},
+    computed: {
+        user() {
+            return localStorage.getItem('user')
+        },
+    },
 }
 </script>
 
