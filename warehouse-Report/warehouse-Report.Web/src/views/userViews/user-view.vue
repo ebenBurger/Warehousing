@@ -123,7 +123,6 @@
                                         </span>
                                         <span v-if="data.item.numberOfStorageDays > 0">
                                             {{data.item.numberOfStorageDays}}
-                                            <font-awesome-icon icon="fa-calendar-days" />
                                         </span>
                                     </b-row>
                                 </template>
@@ -148,7 +147,6 @@
                                         <span v-if="data.item.storageCost > 0">
                                             Usd
                                             {{Math.round((data.item.storageCost + Number.EPSILON) * 100) / 100}}
-                                            <font-awesome-icon icon="fa-server" />
                                         </span>
                                     </b-row>
                                 </template>
