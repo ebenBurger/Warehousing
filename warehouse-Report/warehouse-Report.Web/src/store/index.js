@@ -7,7 +7,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         baseUrl: 'https://localhost:5001',
-        // baseUrl: 'https://atrax-warehouse-api.azurewebsites.net/',
+        // baseUrl: 'https://atrax-warehouse-api.azurewebsites.net',
         userIdentifier: null,//not used
         user: null,//not used
         
@@ -85,7 +85,7 @@ export default new Vuex.Store({
                     .catch((err) => {
                         reject()
                         console.log("ERROR", err)
-                        Vue.$toast.error("Oops!!! try that again, seems like your username or password was incorrect there");
+                        Vue.$toast.error("Oops!!! try that again, seems like your username or password was incorrect");
                     })
             })
         },
