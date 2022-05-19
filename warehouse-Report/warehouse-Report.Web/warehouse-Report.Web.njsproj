@@ -70,6 +70,7 @@
     <Folder Include="src\views\admin\containers\" />
     <Folder Include="src\views\admin\user\" />
     <Folder Include="src\views\layouts\" />
+    <Folder Include="src\views\userViews\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="babel.config.js" />

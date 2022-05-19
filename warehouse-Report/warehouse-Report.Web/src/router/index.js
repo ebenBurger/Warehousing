@@ -2,9 +2,11 @@ import Vue from "vue";
 import login from "@/views/login";
 import VueRouter from 'vue-router'
 
+//user
 import layout from "@/views/layouts/layout";
-import userView from "@/views/user/userViews/user-view";
+import UserView from "@/views/userViews/user-view";
 
+//admin
 import adminLayout from "@/views/layouts/adminLayout";
 import adminView from "@/views/admin/adminViews/admin-view";
 import createClient from "@/views/admin/clientViews/createClient";
@@ -40,7 +42,7 @@ const routes = [
             {
                 path: '/home',
                 name: 'userView',
-                component: userView,
+                component: UserView,
                 meta: {
                     title: 'Home',
                     requiresAuth: true,
