@@ -18,7 +18,7 @@ import {
     faEdit, faFileExport,
     faFileInvoiceDollar,
     faHouseUser,
-    faLock,
+    faLock, faPeopleCarry,
     faPlaneArrival,
     faPlaneDeparture,
     faPlus,
@@ -86,7 +86,7 @@ library.add(
     faUserTie, faUserCircle, faShippingFast, faTrash, faWindowClose, faEdit, faTruckLoading,
     faBiohazard, faBox, faFileInvoiceDollar, faDollar, faTrash, faUser, faLock, faTowerBroadcast,
     faPlaneArrival, faPlaneDeparture, faShip, faSignsPost, faStopwatch, faArrowsAltH, faArrowsAltV,
-    faServer, faCalendarDays, faFileExport, faCheck, faTimes
+    faServer, faCalendarDays, faFileExport, faCheck, faTimes, faPeopleCarry
 )
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 

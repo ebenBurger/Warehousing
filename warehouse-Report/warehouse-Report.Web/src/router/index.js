@@ -5,6 +5,7 @@ import VueRouter from 'vue-router'
 //user
 import layout from "@/views/layouts/layout";
 import UserView from "@/views/userViews/user-view";
+import completeCargoUser from "@/views/userViews/completeCargoUser";
 
 //admin
 import adminLayout from "@/views/layouts/adminLayout";
@@ -40,11 +41,22 @@ const routes = [
         children: [
             
             {
-                path: '/home',
+                path: 'home',
                 name: 'userView',
                 component: UserView,
                 meta: {
                     title: 'Home',
+                    requiresAuth: true,
+                    adminAuth: false,
+                    userAuth: true,
+                },
+            },
+            {
+                path: 'cargo',
+                name: 'completeCargoUser',
+                component: completeCargoUser,
+                meta: {
+                    title: 'Cargo',
                     requiresAuth: true,
                     adminAuth: false,
                     userAuth: true,

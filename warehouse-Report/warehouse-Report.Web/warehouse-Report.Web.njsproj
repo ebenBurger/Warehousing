@@ -53,6 +53,7 @@
     <Content Include="src\views\layouts\adminLayout.vue" />
     <Content Include="src\views\layouts\layout.vue" />
     <Content Include="src\views\login.vue" />
+    <Content Include="src\views\userViews\completeCargoUser.vue" />
     <Content Include="src\views\userViews\user-view.vue" />
   </ItemGroup>
   <ItemGroup>

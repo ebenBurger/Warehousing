@@ -7,16 +7,33 @@
                         <b-col>
                             <b-row>
                                 <b-col>
-                                    <h4 class="m-0">Current Shipments</h4>
+                                    <h4 class="m-0">Complete Shipments</h4>
                                 </b-col>
                                 <b-col>
                                     <b-form-input v-model="search" placeholder="Search Supplier || BPO Number"/>
                                 </b-col>
                                 <b-col>
                                     <b-col class="text-right">
-                                        <b-button class="ml-3" variant="outline-primary" size="sm" squared @click="goToCompleteCargo">
-                                            <font-awesome-icon icon="fa-truck-loading" class="mr-1" />
-                                            Completed Shipments
+                                        <b-button class="ml-3" variant="outline-primary" size="sm" squared >
+                                            <download-excel
+                                                :data="filterSearch"
+                                                worksheet="Complete Containers"
+                                                :name='this.fileName'
+                                                :export-fields="{
+                                                    'Supplier': 'supplier',
+                                                    'BPO Number': 'bpoNumber',
+                                                    'Total Chargeable Weight': 'totalChargeableWeight',
+                                                    'Container Number' : 'container.containerNumber',
+                                                }"
+                                            >
+                                                <font-awesome-icon class="mr-1" icon="fa-file-export" />
+                                                Export Excel
+
+                                            </download-excel>
+                                        </b-button>
+                                        <b-button class="ml-3" variant="outline-primary" size="sm" squared @click="goToBack">
+                                            <font-awesome-icon icon="fa-people-carry" class="mr-1" />
+                                            Current Shipments
                                         </b-button>
                                     </b-col>
                                 </b-col>
@@ -111,45 +128,14 @@
 
                                 <template #cell(storageDaysCalc)="data">
                                     <b-row align-v="center">
-                                        <span v-if="data.item.numberOfStorageDays === 0">
-                                            <span v-if=" Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24)) >= 0" class="mr-auto">
-                                            {{
-                                                    Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24))
-                                                }}
-                                        </span>
-                                        <span v-if=" Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24)) < 0" class="mr-auto">
-                                            <font-awesome-icon icon="fa-stopwatch"  class="text-info"/>
-                                        </span>
-                                        </span>
-                                        <span v-if="data.item.numberOfStorageDays > 0">
-                                            {{data.item.numberOfStorageDays}}
-                                            <font-awesome-icon icon="fa-calendar-days" />
-                                        </span>
+                                        {{data.item.numberOfStorageDays}}
                                     </b-row>
                                 </template>
 
                                 <template #cell(storageCostsCalc)="data">
                                     <b-row align-v="center">
-                                        <span v-if="data.item.storageCost === 0">
-                                            <span class="mr-auto" v-if="Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24)) > 0">
-                                            USD
-                                            {{
-                                                    Math.round(((data.item.packageModels.filter(active => active.isActive === true).reduce((acc, w) => acc + w.chargeableWeight, 0)
-                                                            *
-                                                            Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24)))
-                                                        *
-                                                        data.item.dollarRate) * 100 + Number.EPSILON) / 100
-                                                }}
-                                        </span>
-                                        <span class="mr-auto" v-if="Math.round(((new Date()).getTime() - (new Date(data.item.endDateOfFreeStorage)).getTime()) / (1000 * 60 * 60 * 24)) < 0">
-                                            <font-awesome-icon icon="fa-stopwatch"  class="text-info"/>
-                                        </span>
-                                        </span>
-                                        <span v-if="data.item.storageCost > 0">
-                                            Usd
-                                            {{Math.round((data.item.storageCost + Number.EPSILON) * 100) / 100}}
-                                            <font-awesome-icon icon="fa-server" />
-                                        </span>
+                                        USD
+                                        {{Math.round((data.item.storageCost + Number.EPSILON) * 100) / 100}}
                                     </b-row>
                                 </template>
 
@@ -270,6 +256,9 @@
                                     <b-col class="text-center">
                                         <label>
                                             Hazardous?
+                                            <span>
+                                                ( <font-awesome-icon class="text-danger" icon="fa-biohazard" /> )
+                                            </span>
                                         </label>
                                         <label class="label-good" v-if="selectedCargo.hazardous"><font-awesome-icon icon="fa-check" /></label>
                                         <label class="label-bad" v-if="!selectedCargo.hazardous"><font-awesome-icon icon="fa-times" /></label>
@@ -277,6 +266,9 @@
                                     <b-col class="text-center">
                                         <label>
                                             Commercial Invoice Received?
+                                            <span>
+                                                ( <font-awesome-icon icon="fa-file-invoice-dollar" /> )
+                                            </span>
                                         </label>
                                         <label class="label-good" v-if="selectedCargo.commercialInvoiceReceived">
                                             <font-awesome-icon icon="fa-check" />
@@ -290,6 +282,9 @@
                                     <b-col class="text-center">
                                         <label>
                                             Packing List Received?
+                                            <span>
+                                                ( <font-awesome-icon icon="fa-box" /> )
+                                            </span>
                                         </label>
                                         <label class="label-good" v-if="selectedCargo.packingListReceived">
                                             <font-awesome-icon icon="fa-check" />
@@ -301,7 +296,9 @@
                                     <b-col class="text-center">
                                         <label>
                                             Billed To JKN?
-                                        </label>
+                                            <span>
+                                                ( <font-awesome-icon icon="fa-dollar-sign" /> )
+                                            </span></label>
                                         <label class="label-good" v-if="selectedCargo.billedToJkn">
                                             <font-awesome-icon icon="fa-check" />
                                         </label>
@@ -325,7 +322,7 @@
                                 <div>
                                     <div class="mt-2">
                                         <div v-for="item in selectedCargo.packageModels" :key="item.index" class="w-100 my-2">
-                                            <div v-if="item.isActive">
+                                            <div v-if="item.isActive" >
                                                 <b-row >
                                                     <b-col>
                                                         <div class="d-flex justify-content-between align-items-center">
@@ -384,7 +381,7 @@
                     <b-col>
                         <div class="d-flex justify-content-end">
                             <div>
-                                <b-button variant="outline-red" squared @click="closeCargoModal" class="ml-2">Cancel</b-button>
+                                <b-button variant="outline-red" squared class="ml-2" @click="closeCargoModal">Cancel</b-button>
                             </div>
                         </div>
                     </b-col>
@@ -398,7 +395,7 @@
 import {mapActions, mapState} from "vuex";
 
 export default {
-    name: 'userView',
+    name: 'completeCargoUser',
     data: () => ({
         cargoTable: {
             resultsPerPage: 10,
@@ -513,11 +510,12 @@ export default {
         quantity: null,
         totalWeight: null,
         search: '',
+        fileName: `Complete Cargo ${new Date().toLocaleDateString('en-ZA')}.xls`,
     }),
     beforeCreate() {
     },
     created() {
-        this.getCargoList()
+        this.completeCargo()
     },
     beforeMount() {
     },
@@ -528,15 +526,11 @@ export default {
     updated() {
     },
     methods: {
-        ...mapActions(["requestCargo"]),
-        
+        ...mapActions(["requestCompleteCargo"]),
+
         openCargoModal(rowItem) {
             this.$bvModal.show('cargo')
             this.$store.commit('setSelectedCargo', rowItem)
-            this.calculateStorageDays()
-            this.calculateStorageCost()
-            this.calculateTotalQty()
-            this.calculateTotalWeight()
         },
         closeCargoModal() {
             this.$bvModal.hide('cargo')
@@ -545,78 +539,32 @@ export default {
             if (!item || type !== 'row') return
             if (item.hazardous === true) return 'table-danger'
         },
-        getCargoList() {
-            this.loading = true
+        goToBack() {
+            this.$router.push({name: 'userView'})
+        },
+        completeCargo() {
             this.cargoTable.isLoading = true
-            this.requestCargo()
-                .then(response => {
+            this.requestCompleteCargo()
+                .then((response) => {
                     this.cargoTable.dataSource = response.data
                     this.cargoTable.isLoading = false
-                    console.log("CARGO LIST", response.data)
+                    console.log('COMPLETE', response.data)
                 })
-                .catch(() => {
-                    console.log("ERROR IN CATCH")
-                    // this.$router.push({name: 'login'})
-                    // localStorage.removeItem('jwt')
-                    // localStorage.removeItem('user')
-                    // window.location.reload()
-                })
-        },
-
-        calculateStorageDays() {
-            const startDate = new Date(this.selectedCargo.endDateOfFreeStorage)
-            const endDate = new Date(Date.now())
-
-            const oneDay = 1000 * 60 *60 * 24
-
-            const diffInTime = endDate.getTime() - startDate.getTime()
-            this.storageDays = Math.round(diffInTime / oneDay)
-
-        },
-        calculateStorageCost() {
-            const startDate = new Date(this.selectedCargo.endDateOfFreeStorage)
-            const endDate = new Date(Date.now())
-
-            const oneDay = 1000 * 60 *60 * 24
-
-            const diffInTime = endDate.getTime() - startDate.getTime()
-            const days = Math.round(diffInTime / oneDay)
-
-            this.chargeWeight = (this.selectedCargo.packageModels
-                .filter(active => active.isActive === true)
-                .reduce((acc, weight) => acc + weight.chargeableWeight, 0))
-
-            this.storageCost = ((this.selectedCargo.dollarRate * this.chargeWeight) * days).toFixed(2)
-
-        },
-        calculateTotalQty() {
-            this.quantity = this.selectedCargo.packageModels
-                .filter(active => active.isActive === true)
-                .reduce((acc, qty) => acc + qty.quantity, 0)
-
-        },
-        calculateTotalWeight() {
-            this.totalWeight = (this.selectedCargo.packageModels
-                .filter(active => active.isActive === true)
-                .reduce((acc, weight) => acc + weight.weight, 0)).toFixed(3)
-        },
-        goToCompleteCargo() {
-            this.$router.push({name: 'completeCargoUser'})
         },
     },
     computed: {
-        ...mapState(["selectedCargo"]),
-        
+        ...mapState([
+            "selectedCargo"
+        ]),
         cargoRows() {
             return this.cargoTable.dataSource.length
         },
         filterSearch() {
             return this.cargoTable.dataSource.filter((item) => {
-                return item.supplier.toLowerCase().match(this.search.toLowerCase()) 
+                return item.supplier.toLowerCase().match(this.search.toLowerCase())
                     || item.bpoNumber.toLowerCase().match(this.search.toLowerCase())
             })
         },
-        
     },
 }
 </script>
