@@ -459,7 +459,7 @@
                                             </b-col>
 
                                             <b-col v-if="selectedCargo.commercialInvoiceReceived" cols="4">
-                                                <label><span class="font-weight-bold">Commercial Invoice Number:</span> </label>
+                                                <label><span class="font-weight-bold">Commercial Invoice #:</span> </label>
                                                 <span>
                                                 <b-form-input v-model="selectedCargo.commercialInvoiceNumber"/>
                                             </span>
@@ -1290,9 +1290,9 @@ export default {
                 this.cargoTable.isLoading = false
             })
             .catch(() => {
-                this.$router.push({name: 'login'})
-                localStorage.removeItem('jwt')
-                localStorage.removeItem('user')
+                // this.$router.push({name: 'login'})
+                // localStorage.removeItem('jwt')
+                // localStorage.removeItem('user')
             })
         },
         saveCargo() {
