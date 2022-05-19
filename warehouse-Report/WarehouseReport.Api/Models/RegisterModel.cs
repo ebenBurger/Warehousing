@@ -5,6 +5,8 @@ namespace WarehouseReport.Api.Models
 {
     public class RegisterModel
     {
+        [Key]
+        public int Id { get; set; }
         [Required(ErrorMessage = "Username is required")]
         public string Username { get; set; }
 
@@ -20,7 +22,7 @@ namespace WarehouseReport.Api.Models
         [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
 
-        public string Name { get; set; }
+        public string FirstName { get; set; }
         public string Surname { get; set; }
     }
 }

@@ -438,11 +438,6 @@ export default {
         },
         isRestore: false,
         search: '',
-        json_field: {
-            Supplier: "supplier",
-            'BPO Number': 'bpoNumber',
-        },
-        jsonData: [],
         fileName: `Complete Cargo ${new Date().toLocaleDateString('en-ZA')}.xls`,
         loading: false,
     }),

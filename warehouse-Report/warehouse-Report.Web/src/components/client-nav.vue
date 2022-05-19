@@ -6,11 +6,15 @@
             </b-navbar-brand>
             <div>
                 <b-navbar-nav class="align-items-center">
-                    <router-link exact-active-class="active" to="/home">
+<!--                    <router-link exact-active-class="active" :to="{name: 'userView'}">
                         <font-awesome-icon icon="fa-house-user" />
                         Home
-                    </router-link>
-                    
+                    </router-link>-->
+                    <div class="text-center">
+                        <h6>
+                            Welcome {{user}}
+                        </h6>
+                    </div>
                     <div @click="openLogoutModal" class="logout navItemSpacing">
                         <font-awesome-icon icon="fa-power-off" />
                         Log Out
@@ -19,7 +23,7 @@
             </div>
         </b-navbar>
 
-        <b-modal id="logoutModal" hide-footer>
+        <b-modal id="logoutModal" hide-footer title="Log Out">
             <b-row>
                 <b-col cols="12" class="text-center"><p>Are you sure you want to sign out?</p></b-col>
             </b-row>
@@ -29,36 +33,7 @@
                     <b-button variant="outline-primary" @click="logout" class="mr-2 ml-2" squared>Yes</b-button>
                 </b-col>
             </b-row>
-            <div class="d-block"></div>
         </b-modal>
-
-        <b-sidebar id="sidebar-backdrop"
-                   title="Edit Pages"
-                   backdrop
-                   shadow>
-            <template #default="{ hide }">
-                <div class="p-3">
-                    <h4 id="sidebar-no-header-title">Choose the page to edit</h4>
-                    <nav class="mb-3">
-                        <b-nav vertical>
-                            <b-nav-item to="/clientAdd">
-                                <font-awesome-icon icon="fa-user-plus" />
-                                Add Client
-                            </b-nav-item>
-                            <b-nav-item to="/addUser">
-                                <font-awesome-icon icon="fa-user-cog" />
-                                Add User
-                            </b-nav-item>
-                            <b-nav-item to="/addAdminUser">
-                                <font-awesome-icon icon="fa-user-cog" />
-                                Add Admin User
-                            </b-nav-item>
-                        </b-nav>
-                    </nav>
-                    <b-button variant="primary" @click="hide">Close</b-button>
-                </div>
-            </template>
-        </b-sidebar>
 
     </div>
 </template>
@@ -92,7 +67,11 @@ export default {
             this.$bvModal.hide('logoutModal')
         },
     },
-    computed: {},
+    computed: {
+        user() {
+            return localStorage.getItem('user')
+        },
+    },
 }
 </script>
 

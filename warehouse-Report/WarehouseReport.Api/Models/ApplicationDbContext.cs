@@ -17,6 +17,8 @@ namespace WarehouseReport.Api.Models
         public DbSet<PackageModel> Package { get; set; }
         public DbSet<TransporterModel> Transporter { get; set; }
 
+        public DbSet<RegisterModel> RegisterModels { get; set; }
+
         //Updated dbSet object
         // public DbSet<ToDoItemModel> ToDoItems { get; set; }
         //

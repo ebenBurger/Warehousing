@@ -459,7 +459,7 @@
                                             </b-col>
 
                                             <b-col v-if="selectedCargo.commercialInvoiceReceived" cols="4">
-                                                <label><span class="font-weight-bold">Commercial Invoice Number:</span> </label>
+                                                <label><span class="font-weight-bold">Commercial Invoice #:</span> </label>
                                                 <span>
                                                 <b-form-input v-model="selectedCargo.commercialInvoiceNumber"/>
                                             </span>
@@ -528,33 +528,50 @@
                                         <hr class="mx-3">
                                         <b-row>
                                             <b-col class="text-center">
-                                                <label>Hazardous? <span>( <font-awesome-icon class="text-danger" icon="fa-biohazard" /> )</span></label>
+                                                <label>
+                                                    Hazardous? 
+                                                    <span>
+                                                        ( <font-awesome-icon class="text-danger" icon="fa-biohazard" /> )
+                                                    </span>
+                                                </label>
                                                 <toggle-button :value="false"
                                                                v-model="selectedCargo.hazardous"
                                                                class="d-flex justify-content-center"
                                                                :labels="{checked: 'Yes'}"/>
                                             </b-col>
                                             <b-col class="text-center">
-                                                <label>Commercial Invoice Received? </label>
-                                                <span>( <font-awesome-icon icon="fa-file-invoice-dollar" /> )</span>
+                                                <label>
+                                                    Commercial Invoice Received? 
+                                                    <span>
+                                                        ( <font-awesome-icon icon="fa-file-invoice-dollar" /> )
+                                                    </span>
+                                                </label>
                                                 <toggle-button :value="false"
                                                                v-model="selectedCargo.commercialInvoiceReceived"
                                                                class="d-flex justify-content-center"
                                                                :labels="{checked: 'Yes'}"/>
                                             </b-col>
-
-
                                         </b-row>
                                         <b-row>
                                             <b-col class="text-center">
-                                                <label>Packing List Received? <span>( <font-awesome-icon icon="fa-box" /> )</span></label>
+                                                <label>
+                                                    Packing List Received? 
+                                                    <span>
+                                                        ( <font-awesome-icon icon="fa-box" /> )
+                                                    </span>
+                                                </label>
                                                 <toggle-button :value="false"
                                                                class="justify-content-center d-flex"
                                                                v-model="selectedCargo.packingListReceived"
                                                                :labels="{checked: 'Yes'}"/>
                                             </b-col>
                                             <b-col class="text-center">
-                                                <label>Billed To JKN? <span>( <font-awesome-icon icon="fa-dollar-sign" /> )</span></label>
+                                                <label>
+                                                    Billed To JKN? 
+                                                    <span>
+                                                        ( <font-awesome-icon icon="fa-dollar-sign" /> )
+                                                    </span>
+                                                </label>
 
                                                 <toggle-button :value="false"
                                                                class="justify-content-center d-flex"
@@ -1281,7 +1298,7 @@ export default {
                 })
         },
         getCargoList() {
-            this.loading = true
+            this.loading = false
             this.cargoTable.isLoading = true
             this.requestCargo()
             .then(response => {
@@ -1290,9 +1307,9 @@ export default {
                 this.cargoTable.isLoading = false
             })
             .catch(() => {
-                this.$router.push({name: 'login'})
-                localStorage.removeItem('jwt')
-                localStorage.removeItem('user')
+                // this.$router.push({name: 'login'})
+                // localStorage.removeItem('jwt')
+                // localStorage.removeItem('user')
             })
         },
         saveCargo() {
@@ -1553,7 +1570,8 @@ export default {
         },
         filterSearch() {
             return this.cargoTable.dataSource.filter((item) => {
-                return item.supplier.toLowerCase().match(this.search.toLowerCase()) || item.bpoNumber.toLowerCase().match(this.search.toLowerCase())
+                return item.supplier.toLowerCase().match(this.search.toLowerCase()) 
+                    || item.bpoNumber.toLowerCase().match(this.search.toLowerCase())
             })
         },
     },

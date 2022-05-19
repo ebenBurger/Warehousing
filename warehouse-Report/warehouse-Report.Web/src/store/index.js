@@ -7,9 +7,9 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         // baseUrl: 'https://localhost:5001',
-        baseUrl: 'https://atrax-warehouse-api.azurewebsites.net/',
+        baseUrl: 'https://atrax-warehouse-api.azurewebsites.net',
         userIdentifier: null,//not used
-        user: null,//not used
+        // user: null,
         
         //selected Item
         selectedSupplier: null,
@@ -51,6 +51,7 @@ export default new Vuex.Store({
         setLoginRequest: (state, payload) => {state.loginRequest = payload},
         setAdminCreateRequest: (state, payload) => {state.adminCreateRequest = payload},
         setUserCreateRequest: (state, payload) => {state.userCreateRequest = payload},
+        // setUser: (state, payload) => {state.user = payload},
         
         setSupplierRequest: (state, payload) => {state.supplierRequest = payload},
         setCreateSupplierRequest: (state, payload) => {state.createSupplierRequest = payload},
@@ -80,12 +81,14 @@ export default new Vuex.Store({
                     .then(response => {
                         localStorage.setItem('jwt', response.data.token)
                         localStorage.setItem('role', response.data.role[0])
+                        localStorage.setItem('user', response.data.firstName)
+                        console.log("USER", response.data.firstName)
                         resolve(response)
                     })
                     .catch((err) => {
                         reject()
                         console.log("ERROR", err)
-                        Vue.$toast.error("Oops!!! try that again, seems like your username or password was incorrect there");
+                        Vue.$toast.error("Oops!!! try that again, seems like your username or password was incorrect");
                     })
             })
         },
@@ -252,7 +255,7 @@ export default new Vuex.Store({
                     .then(response => {
                         state.cargoRequest = response.data
                         resolve(response)
-                        console.log("CARGO LIST", response.data)
+                        
                     })
                     .catch(err => {
                         reject(err)
