@@ -7,6 +7,7 @@ import router from './router'
 import store from "@/store";
 import Toast from "vue-toastification";
 import JsonExcel from "vue-json-excel";
+import Vuelidate from 'vuelidate';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {
@@ -66,6 +67,7 @@ Vue.use(ToggleButton)
 Vue.use(Toast, toastOptions)
 Vue.use(ToggleSwitch)
 Vue.component("downloadExcel", JsonExcel);
+Vue.use(Vuelidate)
 
 Vue.filter('dateTimeFilter', function (value) {
     if (!value) return ''
