@@ -51,7 +51,6 @@ export default new Vuex.Store({
         setLoginRequest: (state, payload) => {state.loginRequest = payload},
         setAdminCreateRequest: (state, payload) => {state.adminCreateRequest = payload},
         setUserCreateRequest: (state, payload) => {state.userCreateRequest = payload},
-        // setUser: (state, payload) => {state.user = payload},
         
         setSupplierRequest: (state, payload) => {state.supplierRequest = payload},
         setCreateSupplierRequest: (state, payload) => {state.createSupplierRequest = payload},

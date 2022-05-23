@@ -37,7 +37,6 @@
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="src\components\admin-nav.vue" />
-    <Content Include="src\components\client-nav.vue" />
     <Content Include="src\components\loader.vue" />
     <Content Include="src\router\index.js" />
     <Content Include="src\store\index.js" />
@@ -51,7 +50,6 @@
     <Content Include="src\views\admin\user\addAdminUser.vue" />
     <Content Include="src\views\admin\user\addUser.vue" />
     <Content Include="src\views\layouts\adminLayout.vue" />
-    <Content Include="src\views\layouts\layout.vue" />
     <Content Include="src\views\login.vue" />
     <Content Include="src\views\userViews\completeCargoUser.vue" />
     <Content Include="src\views\userViews\user-view.vue" />

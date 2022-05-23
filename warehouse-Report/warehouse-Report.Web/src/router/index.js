@@ -3,7 +3,6 @@ import login from "@/views/login";
 import VueRouter from 'vue-router'
 
 //user
-import layout from "@/views/layouts/layout";
 import UserView from "@/views/userViews/user-view";
 import completeCargoUser from "@/views/userViews/completeCargoUser";
 
@@ -33,44 +32,12 @@ const routes = [
         },
     },
 
-    //CLIENT PORTAL
-    {
-        path: '/',
-        name: 'layout',
-        component: layout,
-        children: [
-            
-            {
-                path: 'home',
-                name: 'userView',
-                component: UserView,
-                meta: {
-                    title: 'Home',
-                    requiresAuth: true,
-                    adminAuth: false,
-                    userAuth: true,
-                },
-            },
-            {
-                path: 'cargo',
-                name: 'completeCargoUser',
-                component: completeCargoUser,
-                meta: {
-                    title: 'Cargo',
-                    requiresAuth: true,
-                    adminAuth: false,
-                    userAuth: true,
-                },
-            },
-        ]
-    },
-
-    //ADMIN PORTAL
     {
         path: '/',
         name: 'adminLayout',
         component: adminLayout,
         children: [
+          //Admin
 
             {
                 path: '/home',
@@ -158,6 +125,30 @@ const routes = [
                     requiresAuth: true,
                     adminAuth: true,
                     userAuth: false,
+                },
+            },
+          
+          //user
+            {
+                path: 'home',
+                name: 'userView',
+                component: UserView,
+                meta: {
+                    title: 'Home',
+                    requiresAuth: true,
+                    adminAuth: false,
+                    userAuth: true,
+                },
+            },
+            {
+                path: 'cargo',
+                name: 'completeCargoUser',
+                component: completeCargoUser,
+                meta: {
+                    title: 'Cargo',
+                    requiresAuth: true,
+                    adminAuth: false,
+                    userAuth: true,
                 },
             },
         ]

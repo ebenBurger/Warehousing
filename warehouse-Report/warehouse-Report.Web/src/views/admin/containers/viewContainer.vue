@@ -23,7 +23,7 @@
                                 </b-col>
                             </b-col>
                         </b-row>
-                        <div v-if="this.availableContainers.length >= 0">
+                        <div>
                             <b-row>
                                 <b-col>
                                     <h4 class="m-0">Containers Loading</h4>
@@ -82,57 +82,70 @@
                 </b-col>
             </b-row>
             <b-modal id="containerAddModal" hide-footer hide-header-close class="text-center" title="Create Container" size="xl" :no-close-on-backdrop="true">
-                <b-row>
-                    <b-col>
-                        <label>File Reference</label>
-                        <b-form-input v-model="containerData.fileReference" />
-                    </b-col>
-                    <b-col>
-                        <label>Container Number</label>
-                        <b-form-input v-model="containerData.containerNumber" />
-                    </b-col>
-                    <b-col>
-                        <label>Container Type</label>
-                        <b-form-select v-model="containerData.containerType" :options="options"></b-form-select>
-                    </b-col>
-                </b-row>
-                <b-row>
-                    <b-col>
-                        <label>Vessel</label>
-                        <b-form-input v-model="containerData.vesel" />
-                    </b-col>
-                    <b-col>
-                        <label>Voyage</label>
-                        <b-form-input v-model="containerData.voyage" />
-                    </b-col>
-                    <b-col>
-                        <label>Bill of Lading</label>
-                        <b-form-input v-model="containerData.billOfLading" />
-                    </b-col>
-                </b-row>
-                <b-row>
-                    <b-col cols="4">
-                        <label>Loading Port</label>
-                        <b-form-input v-model="containerData.loadingPort" />
-                    </b-col>
-                    <b-col cols="4">
-                        <label>Destination Port</label>
-                        <b-form-input v-model="containerData.destinationPort" />
-                    </b-col>
-                </b-row>
-                <hr class="mx-3">
-                <b-row>
-                    <b-col>
-                        <div class="d-flex justify-content-end">
-                            <div>
-                                <b-button variant="outline-red" squared @click="hideContainerModal" class="ml-2">Cancel</b-button>
+                <b-form>
+                    <b-row>
+                        <b-col>
+                            <label>File Reference</label>
+                            <b-form-input v-model="$v.containerData.fileReference.$model" 
+                                          @blur="$v.containerData.fileReference.$touch()"></b-form-input>
+                            <div v-if="$v.containerData.fileReference.$error" class="text-danger font-weight-400">
+                                <p v-if="!$v.containerData.fileReference.required">This is a required field</p>
                             </div>
-                            <div>
-                                <b-button variant="primary" squared @click="save" class="ml-2">Save</b-button>
+                        </b-col>
+                        <b-col>
+                            <label>Container Number</label>
+                            <b-form-input v-model="containerData.containerNumber"
+                                          @blur="$v.containerData.containerNumber.$touch()"/>
+                            <div v-if="$v.containerData.containerNumber.$error" class="text-danger font-weight-400">
+                                <p v-if="!$v.containerData.containerNumber.required">This is a required field</p>
+<!--                                <p v-if="!$v.containerData.containerNumber.minLength">Minimum Length</p>-->
+                                <p v-if="!$v.containerData.containerNumber.containsUppercase">Needs 4 uppercase</p>
+                                <p v-if="!$v.containerData.containerNumber.containsNumber">Needs 7 Numbers</p>
                             </div>
-                        </div>
-                    </b-col>
-                </b-row>
+                        </b-col>
+                        <b-col>
+                            <label>Container Type</label>
+                            <b-form-select v-model="containerData.containerType" :options="options"></b-form-select>
+                        </b-col>
+                    </b-row>
+                    <b-row>
+                        <b-col>
+                            <label>Vessel</label>
+                            <b-form-input v-model="containerData.vesel" />
+                        </b-col>
+                        <b-col>
+                            <label>Voyage</label>
+                            <b-form-input v-model="containerData.voyage" />
+                        </b-col>
+                        <b-col>
+                            <label>Bill of Lading</label>
+                            <b-form-input v-model="containerData.billOfLading" />
+                        </b-col>
+                    </b-row>
+                    <b-row>
+                        <b-col cols="4">
+                            <label>Loading Port</label>
+                            <b-form-input v-model="containerData.loadingPort" />
+                        </b-col>
+                        <b-col cols="4">
+                            <label>Destination Port</label>
+                            <b-form-input v-model="containerData.destinationPort" />
+                        </b-col>
+                    </b-row>
+                    <hr class="mx-3">
+                    <b-row>
+                        <b-col>
+                            <div class="d-flex justify-content-end">
+                                <div>
+                                    <b-button variant="outline-red" squared @click="hideContainerModal" class="ml-2">Cancel</b-button>
+                                </div>
+                                <div>
+                                    <b-button variant="primary" squared @click="save" class="ml-2" :disabled="$v.containerData.$invalid">Save</b-button>
+                                </div>
+                            </div>
+                        </b-col>
+                    </b-row>
+                </b-form>
             </b-modal>
 
             <b-modal v-if="selectedContainer" id="containerContentModal" size="xl" hide-footer hide-header-close class="text-center" title="Update/ View Container" :no-close-on-backdrop="true">
@@ -278,6 +291,7 @@
 <script>
 import {mapActions, mapState} from "vuex";
 import Loader from "@/components/loader";
+import {required} from "vuelidate/lib/validators";
 
 export default {
     components: {Loader},
@@ -287,7 +301,7 @@ export default {
             containerNumber: null,
             containerType: null,
             billOfLading: null,
-            fileReference: null,
+            fileReference: '',
             vesel: null,
             voyage: null,
             loadingPort: null,
@@ -310,7 +324,7 @@ export default {
             {value: '40ft OT IG', text: '40ft OT IG'},
             {value: '40ft OT OOG', text: '40ft OT OOG'},
         ],
-        loading: true,
+        loading: false,
     }),
     beforeCreate() {
     },
@@ -358,6 +372,7 @@ export default {
             
         },
         getContainers() {
+            this.loading = true
             this.requestContainer()
             .then((response) => {
                 this.availableContainers = response.data
@@ -366,6 +381,7 @@ export default {
                 console.log("CONTAINER STATUS", response.data.status)
             })
             .catch((err) => {
+                this.loading = false
                 this.$router.push({path: '/'})
                 localStorage.removeItem('jwt')
                 localStorage.removeItem('user')
@@ -396,6 +412,27 @@ export default {
         ...mapState([
             "selectedContainer"
         ]),
+    },
+    validations: {
+        containerData: {
+            fileReference: {required},
+            containerNumber: {
+                required, 
+                containsUppercase: function(value) {
+                    return (
+                        /[A-Z]/.test(value)
+                    )
+                },
+                containsNumber: function(value) {
+                    return (
+                        /\d$/.test(value.splice(0, 4))
+                    )
+                },
+            },
+            vesel: {required},
+            voyage: {required},
+            billOfLading: {required},
+        },
     },
 }
 </script>

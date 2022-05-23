@@ -40,7 +40,7 @@
                                 </template>
 
                                 <template #cell(fullName)="data">
-                                    <b class="text-info">{{ data.item.name.toUpperCase()}}</b>, <b>{{ data.item.surname }}</b>
+                                    <b class="name-style">{{ data.item.name.toUpperCase()}}</b>, <b>{{ data.item.surname }}</b>
 <!--                                    <b class="text-info">{{ data.value}}</b>, <b>{{ data.value.first }}</b>-->
                                 </template>
 
@@ -106,7 +106,6 @@
                                             <b-form-input v-model="selectedSupplier.city"></b-form-input>
                                         </b-col>
                                         <b-col>
-                                            <!--                                        TODO update typo-->
                                             <label>Province</label>
                                             <b-form-input v-model="selectedSupplier.provence"></b-form-input>
                                         </b-col>
@@ -352,5 +351,7 @@ export default {
 </script>
 
 <style scoped>
-
+.name-style {
+    color: #176cb0;
+}
 </style>

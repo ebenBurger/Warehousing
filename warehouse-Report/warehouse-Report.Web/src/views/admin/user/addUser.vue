@@ -17,38 +17,63 @@
                         <b-row>
                             <b-col>
                                 <label>First Name</label>
-                                <b-form-input v-model="userDetails.firstName"></b-form-input>
+                                <b-form-input v-model="$v.userDetails.firstName.$model" 
+                                              @blur="$v.userDetails.firstName.$touch()"></b-form-input>
+                                <div v-if="$v.userDetails.firstName.$error" class="text-danger font-weight-400">
+                                    <p v-if="!$v.userDetails.firstName.minLength">Please check the Spelling</p>
+                                    <p v-if="!$v.userDetails.firstName.required">This is a required field</p>
+                                </div>
                             </b-col>
                             <b-col>
                                 <label>Surname</label>
-                                <b-form-input v-model="userDetails.surname"></b-form-input>
+                                <b-form-input v-model="$v.userDetails.surname.$model" 
+                                              @blur="$v.userDetails.surname.$touch()"></b-form-input>
+                                <div v-if="$v.userDetails.surname.$error" class="text-danger font-weight-400">
+                                    <p v-if="!$v.userDetails.surname.minLength">Please check the name</p>
+                                    <p v-if="!$v.userDetails.surname.required">This is a required field</p>
+                                </div>
                             </b-col>
                         </b-row>
                         <b-row>
                             <b-col>
                                 <label>UserName</label>
-                                <b-form-input v-model="userDetails.userName"></b-form-input>
+                                <b-form-input v-model="$v.userDetails.userName.$model" 
+                                              @blur="$v.userDetails.userName.$touch()"></b-form-input>
+                                <div v-if="$v.userDetails.userName.$error" class="text-danger font-weight-400">
+                                    <p v-if="!$v.userDetails.userName.required">This is a required field</p>
+                                </div>
                             </b-col>
                             <b-col>
                                 <label>Email</label>
-                                <b-form-input v-model="userDetails.email"></b-form-input>
+                                <b-form-input v-model="$v.userDetails.email.$model" 
+                                              @blur="$v.userDetails.email.$touch()"></b-form-input>
+                                <div v-if="$v.userDetails.email.$error" class="text-danger font-weight-400">
+                                    <p v-if="!$v.userDetails.email.email">This seems to not be an email.</p>
+                                    <p v-if="!$v.userDetails.email.required">This is a required field</p>
+                                </div>
                             </b-col>
                         </b-row>
                         <b-row>
                             <b-col>
                                 <label>Password</label>
-                                <b-form-input type="password" v-model="userDetails.password"></b-form-input>
+                                <b-form-input type="password" v-model="$v.userDetails.password.$model" 
+                                              @blur="$v.userDetails.password2.$touch()"></b-form-input>
+                                <div v-if="$v.userDetails.password.$error" class="text-danger font-weight-400">
+                                    <p v-if="!$v.userDetails.password.minLength">The password needs to be minimum length of 6 characters</p>
+                                    <p v-if="!$v.userDetails.password.required">This is a required field</p>
+                                    <p v-if="!$v.userDetails.password.containsUppercase">UppderCase</p>
+                                    <p v-if="!$v.userDetails.password.containsLowercase">LowerCase</p>
+                                    <p v-if="!$v.userDetails.password.containsNumber">Numbers</p>
+                                    <p v-if="!$v.userDetails.password.containsSpecial">Special character</p>
+                                </div>
                             </b-col>
                             <b-col>
                                 <label>Verify Password</label>
-                                <b-form-input type="password" v-model="userDetails.password2"></b-form-input>
-                                
-                            </b-col>
-                        </b-row>
-                        <b-row class="text-center">
-                            <b-col>
-                                <div v-if="userDetails.password !== userDetails.password2" class="text-danger">
-                                    The passwords do not match - Please try again.
+                                <b-form-input type="password" v-model="$v.userDetails.password2.$model" 
+                                              @blur="$v.userDetails.password2.$touch()"></b-form-input>
+                                <div v-if="$v.userDetails.password2.$error" class="text-danger font-weight-400">
+                                    <p v-if="!$v.userDetails.password2.sameAsPassword">Passwords do not match</p>
+                                    <p v-if="!$v.userDetails.password2.required">This is a required field</p>
                                 </div>
                             </b-col>
                         </b-row>
@@ -60,7 +85,7 @@
                                         <b-button variant="outline-red" squared @click="goBack" class="ml-2">Cancel</b-button>
                                     </div>
                                     <div>
-                                        <b-button variant="primary" squared @click="showUserAddModal" class="ml-2">Save</b-button>
+                                        <b-button variant="primary" squared @click="showUserAddModal" :disabled="$v.userDetails.$invalid" class="ml-2">Save</b-button>
                                     </div>
                                 </div>
                             </b-col>
@@ -90,6 +115,7 @@
 
 <script>
 import {mapActions} from "vuex";
+import {email, minLength, required, sameAs} from "vuelidate/lib/validators";
 
 export default {
     name: "createUser",
@@ -136,6 +162,30 @@ export default {
         },
     },
     computed: {},
+    validations: {
+        userDetails: {
+            userName: {required},
+            firstName: {required, minLength: minLength(3)},
+            surname: {required, minLength: minLength(5)},
+            email: {required, email},
+            password:{
+                required, 
+                minLength: minLength(6),
+                containsUppercase: function(value) {
+                    return /[A-Z]/.test(value)
+                },
+                containsLowercase: function(value) {
+                    return /[a-z]/.test(value)
+                },
+                containsNumber: function(value) {
+                    return /[0-9]/.test(value)
+                },
+                containsSpecial: function(value) {
+                    return /[#?!@$%^&*-]/.test(value)
+                }},
+            password2: {required, sameAsPassword: sameAs('password')},
+        }
+    },
 }
 </script>
 
