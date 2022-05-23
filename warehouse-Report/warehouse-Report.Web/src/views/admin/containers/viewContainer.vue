@@ -98,9 +98,7 @@
                                           @blur="$v.containerData.containerNumber.$touch()"/>
                             <div v-if="$v.containerData.containerNumber.$error" class="text-danger font-weight-400">
                                 <p v-if="!$v.containerData.containerNumber.required">This is a required field</p>
-<!--                                <p v-if="!$v.containerData.containerNumber.minLength">Minimum Length</p>-->
-                                <p v-if="!$v.containerData.containerNumber.containsUppercase">Needs 4 uppercase</p>
-                                <p v-if="!$v.containerData.containerNumber.containsNumber">Needs 7 Numbers</p>
+                                <p v-if="!$v.containerData.containerNumber.minLength">Check the container number</p>
                             </div>
                         </b-col>
                         <b-col>
@@ -111,15 +109,26 @@
                     <b-row>
                         <b-col>
                             <label>Vessel</label>
-                            <b-form-input v-model="containerData.vesel" />
+                            <b-form-input v-model="containerData.vesel" 
+                                          @blur="$v.containerData.vesel.$touch()"/>
+                            <div v-if="$v.containerData.vesel.$error" class="text-danger font-weight-400">
+                                <p v-if="!$v.containerData.vesel.required">This is a required field</p>
+                            </div>
                         </b-col>
                         <b-col>
                             <label>Voyage</label>
-                            <b-form-input v-model="containerData.voyage" />
+                            <b-form-input v-model="containerData.voyage" 
+                                          @blur="$v.containerData.voyage.$touch()"/>
+                            <div v-if="$v.containerData.voyage.$error" class="text-danger font-weight-400">
+                                <p v-if="!$v.containerData.voyage.required">This is a required field</p>
+                            </div>
                         </b-col>
                         <b-col>
                             <label>Bill of Lading</label>
-                            <b-form-input v-model="containerData.billOfLading" />
+                            <b-form-input v-model="containerData.billOfLading" @blur="$v.containerData.billOfLading.$touch()"/>
+                            <div v-if="$v.containerData.billOfLading.$error" class="text-danger font-weight-400">
+                                <p v-if="!$v.containerData.billOfLading.required">This is a required field</p>
+                            </div>
                         </b-col>
                     </b-row>
                     <b-row>
@@ -291,7 +300,7 @@
 <script>
 import {mapActions, mapState} from "vuex";
 import Loader from "@/components/loader";
-import {required} from "vuelidate/lib/validators";
+import {minLength, required} from "vuelidate/lib/validators";
 
 export default {
     components: {Loader},
@@ -416,19 +425,7 @@ export default {
     validations: {
         containerData: {
             fileReference: {required},
-            containerNumber: {
-                required, 
-                containsUppercase: function(value) {
-                    return (
-                        /[A-Z]/.test(value)
-                    )
-                },
-                containsNumber: function(value) {
-                    return (
-                        /\d$/.test(value.splice(0, 4))
-                    )
-                },
-            },
+            containerNumber: {required, minLength: minLength(11)},
             vesel: {required},
             voyage: {required},
             billOfLading: {required},
