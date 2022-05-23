@@ -19,26 +19,39 @@
                                             <b-button variant="outline-primary" size="sm" squared @click="goBack">
                                                 Back
                                             </b-button>
-                                            <b-button class="ml-3" variant="outline-primary" size="sm" squared >
-                                                <download-excel
-                                                    :data="filterSearch"
-                                                    worksheet="Complete Containers"
-                                                    :name='this.fileName'
-                                                    :before-finish= "finishDownload"
-                                                    :before-generate="startDownload"
-                                                    :export-fields="{
-                                                    'Supplier': 'supplier',
-                                                    'BPO Number': 'bpoNumber',
-                                                    'Total Chargeable Weight': 'totalChargeableWeight',
-                                                    'Number Of Storage Days': 'numberOfStorageDays',
-                                                    'Container Number' : 'container.containerNumber',
-                                                }"
-                                                >
-                                                    <font-awesome-icon class="mr-1" icon="fa-file-export" />
-                                                    Export Excel
+                                            <vue-excel-xlsx
+                                                class="button-style ml-3"
+                                                :data="filterSearch"
+                                                :sheet-name="'Complete Containers'"
+                                                :file-name='this.fileName'
+                                                :file-type="'xlsx'"
+                                                :columns="[
+                                                        {
+                                                            label: 'Supplier',
+                                                            field: 'supplier'
+                                                        },
+                                                        {
+                                                            label: 'BPO Number',
+                                                            field: 'bpoNumber'
+                                                        },
+                                                        {
+                                                            label: 'Total Chargeable Weight',
+                                                            field: 'totalChargeableWeight'
+                                                        },
+                                                        {
+                                                            label: 'Number Of Storage Days',
+                                                            field: 'numberOfStorageDays'
+                                                        },
+                                                        {
+                                                            label: 'Container Number',
+                                                            field: 'container.containerNumber'
+                                                        },
+                                                    ]"
+                                            >
+                                                <font-awesome-icon class="mr-1" icon="fa-file-export" />
+                                                Export Excel
 
-                                                </download-excel>
-                                            </b-button>
+                                            </vue-excel-xlsx>
                                         </b-col>
                                     </b-col>
                                 </b-row>
@@ -438,7 +451,7 @@ export default {
         },
         isRestore: false,
         search: '',
-        fileName: `Complete Cargo ${new Date().toLocaleDateString('en-ZA')}.xls`,
+        fileName: `Complete Cargo ${new Date().toLocaleDateString('en-ZA')}`,
         loading: false,
     }),
     beforeCreate() {
@@ -521,8 +534,24 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 label {
     font-weight: bold;
+}
+
+.button-style {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    display: inline-block;
+    font-weight: 400;
+    background-color: transparent;
+    border: 1px solid black;
+    
+    &:hover {
+        color: #ffffff;
+        background-color: #18224C;
+        border-color: #18224C;
+     }
 }
 </style>
