@@ -1,8 +1,10 @@
 <template>
-    <div>
-        <admin-nav /> 
-        <br />
-        <router-view />
+    <div class="layout">
+        <div class="overlay">
+            <admin-nav />
+            <br />
+            <router-view />
+        </div>
     </div>
 </template>
 
@@ -28,6 +30,22 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+
+.layout {
+    background-image: url("../../assets/warehouse2.jpg");
+    background-position: center;
+    height: 100vh;
+    width: 100vw;
+    
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+    }
+}
 
 </style>
