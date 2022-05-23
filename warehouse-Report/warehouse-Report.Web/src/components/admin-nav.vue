@@ -4,7 +4,7 @@
             <b-navbar-brand class="text-white">
                 <img src="../assets/Logo.png" alt="Atrax Logo">
             </b-navbar-brand>
-            <div v-if="user !== null">
+            <div class="text-white" v-if="user !== null">
                 <h3>Welcome {{user}}</h3>
             </div>
             <div>
@@ -127,7 +127,8 @@ export default {
 .navbar {
     display: flex;
     justify-content: space-between;
-    background: lightgrey;
+    background-image: linear-gradient(to left, #176cb0, lightgray);
+    //background: #176cb0;
     
     .navbar-brand {
         img {
@@ -137,7 +138,7 @@ export default {
 }
 
 a {
-    color: black;
+    color: white;
     margin: 0 0.3rem;
     padding: 0.1rem 0.4rem;
 }
@@ -150,13 +151,13 @@ a {
 }
 
 ul a:hover {
-    color: blue;
+    color: #e66b0c;
     text-decoration: none;
     border-radius: 12px;
 }
 
 .active {
-    color: white;
+    color: #e66b0c;
     text-decoration: none;
     border-radius: 12px;
 }
@@ -167,7 +168,14 @@ ul a:hover {
 }
 
 .logout:hover {
-    color: black;
+    color: #e66b0c;
+}
+.admin {
+    color: white;
+    
+    &:hover {
+        color: #e66b0c;
+    }
 }
 
 .navItemSpacing {

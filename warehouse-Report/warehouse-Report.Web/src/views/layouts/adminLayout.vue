@@ -34,7 +34,7 @@ export default {
 
 .layout {
     background-image: url("../../assets/warehouse2.jpg");
-    background-position: center;
+    background-position: bottom;
     height: 100vh;
     width: 100vw;
     
@@ -44,7 +44,8 @@ export default {
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba(0, 0, 0, 0.5);
+        background-image: linear-gradient(to bottom right, rgba(23, 108, 176, 0.8), rgba(255,255,255,0.9));
+        //background: rgba(23, 108, 176, 0.5);
     }
 }
 
