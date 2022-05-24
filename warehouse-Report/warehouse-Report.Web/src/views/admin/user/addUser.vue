@@ -57,14 +57,15 @@
                             <b-col>
                                 <label>Password</label>
                                 <b-form-input type="password" v-model="$v.userDetails.password.$model" 
-                                              @blur="$v.userDetails.password2.$touch()"></b-form-input>
+                                              @blur="$v.userDetails.password.$touch()"></b-form-input>
                                 <div v-if="$v.userDetails.password.$error" class="text-danger font-weight-400">
                                     <p v-if="!$v.userDetails.password.minLength">The password needs to be minimum length of 6 characters</p>
                                     <p v-if="!$v.userDetails.password.required">This is a required field</p>
-                                    <p v-if="!$v.userDetails.password.containsUppercase">UppderCase</p>
-                                    <p v-if="!$v.userDetails.password.containsLowercase">LowerCase</p>
-                                    <p v-if="!$v.userDetails.password.containsNumber">Numbers</p>
-                                    <p v-if="!$v.userDetails.password.containsSpecial">Special character</p>
+                                    <p v-if="!$v.userDetails.password.containsUppercase || 
+                                                !$v.userDetails.password.containsLowercase ||
+                                                !$v.userDetails.password.containsNumber ||
+                                                !$v.userDetails.password.containsSpecial">
+                                        Password requires at least 1 UppderCase, 1 lowercase, 1 number, 1 special character and minimum of 6 characters</p>
                                 </div>
                             </b-col>
                             <b-col>
@@ -95,7 +96,7 @@
             </b-col>
         </b-row>
         <b-modal id="UserAdd" hide-footer hide-header-close class="text-center" title="Add User">
-            <p>Are you sure you want to add <span class="text-success font-weight-bold font-italic">{{userDetails.userName}}</span> as a User</p>
+            <p>Are you sure you want to add <span class="text-success font-weight-bold font-italic">{{userDetails.firstName}} {{userDetails.surname}}</span> as a User</p>
             <hr class="mx-3">
             <b-row>
                 <b-col>
