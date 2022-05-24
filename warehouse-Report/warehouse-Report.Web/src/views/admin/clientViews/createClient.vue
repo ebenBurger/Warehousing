@@ -162,7 +162,7 @@ export default {
             this.state = 'loading'
             this.createSupplier()
             .then(() => {
-                this.$router.push({path: '/clientView'})
+                this.$router.push({name: 'clientView'})
             })
             .catch(() => {
             })
