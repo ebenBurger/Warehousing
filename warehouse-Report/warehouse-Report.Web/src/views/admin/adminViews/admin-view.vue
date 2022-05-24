@@ -463,9 +463,6 @@
                                                 <span>
                                                 <b-form-input v-model="selectedCargo.commercialInvoiceNumber"/>
                                             </span>
-                                                <!--                                            <span v-show="selectedCargo.commercialInvoiceNumber ? selectedCargo.commercialInvoiceNumber.length > 6 : selectedCargo.commercialInvoiceNumber.length > 12">-->
-                                                <!--                                                <label>{{selectedCargo.commercialInvoiceNumber}}</label>-->
-                                                <!--                                            </span>-->
                                             </b-col>
                                         </b-row>
                                         <b-row>
@@ -583,6 +580,7 @@
                                                 <toggle-button :value="false"
                                                                class="justify-content-center d-flex"
                                                                v-model="selectedCargo.isComplete"
+                                                               :disabled="!selectedCargo.packingListReceived || !selectedCargo.billedToJkn || !selectedCargo.commercialInvoiceReceived"
                                                                :labels="{checked: 'Yes'}"/>
                                             </b-col>
                                         </b-row>
