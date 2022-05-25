@@ -206,17 +206,30 @@
                             <b-row>
                                 <b-col>
                                     <label>Seal One</label>
-                                    <b-form-input v-model="selectedContainer.sealOne"/>
+                                    <b-form-input v-model="$v.selectedContainer.sealOne.$model"
+                                                  @blur="$v.selectedContainer.sealOne.$touch()"/>
+                                    <div v-if="$v.selectedContainer.sealOne.$error" class="text-danger font-weight-400">
+                                        <p v-if="!$v.selectedContainer.sealOne.required">This is a required field</p>
+                                    </div>
                                 </b-col>
                                 <b-col>
                                     <label>Seal Two</label>
-                                    <b-form-input v-model="selectedContainer.sealTwo"/>
+                                    <b-form-input v-model="selectedContainer.sealTwo"
+                                                  @blur="$v.selectedContainer.sealTwo.$touch()" 
+                                                  :disabled="!$v.selectedContainer.sealOne"/>
+                                    <div v-if="$v.selectedContainer.sealTwo.$error" class="text-danger font-weight-400">
+                                        <p v-if="!$v.selectedContainer.sealTwo.required">This is a required field</p>
+                                    </div>
                                 </b-col>
                             </b-row>
                             <b-row>
                                 <b-col cols="6">
                                     <label>Packing Loacation</label>
-                                    <b-form-input v-model="selectedContainer.packingLocation"/>
+                                    <b-form-input v-model="$v.selectedContainer.packingLocation.$model" 
+                                                  @blur="$v.selectedContainer.packingLocation.$touch()"/>
+                                    <div v-if="$v.selectedContainer.packingLocation.$error" class="text-danger font-weight-400">
+                                        <p v-if="!$v.selectedContainer.packingLocation.required">This is a required field</p>
+                                    </div>
                                 </b-col>
                                 <b-col cols="6">
                                     <label>Packing Date</label>
@@ -233,7 +246,8 @@
                                 <b-col cols="1">
                                     <label>Complete</label>
                                     <toggle-button :value="false"
-                                                   v-model="selectedContainer.isComplete"/>
+                                                   v-model="selectedContainer.isComplete" 
+                                                   :disabled="$v.selectedContainer.$invalid"/>
                                 </b-col>
                             </b-row>
                         </b-form>
@@ -429,6 +443,11 @@ export default {
             vesel: {required},
             voyage: {required},
             billOfLading: {required},
+        },
+        selectedContainer: {
+            sealOne: {required},
+            sealTwo: {required},
+            packingLocation: {required}
         },
     },
 }
