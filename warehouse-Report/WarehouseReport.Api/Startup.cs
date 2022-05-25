@@ -52,7 +52,7 @@ namespace WarehouseReport.Api
             
             //sql Connection
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("SQLConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("SQLLocal")));
             
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
