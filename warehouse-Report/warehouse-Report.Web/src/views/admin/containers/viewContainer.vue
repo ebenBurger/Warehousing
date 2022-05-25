@@ -103,7 +103,13 @@
                         </b-col>
                         <b-col>
                             <label>Container Type</label>
-                            <b-form-select v-model="containerData.containerType" :options="options"></b-form-select>
+                            <b-form-select 
+                                v-model="$v.containerData.containerType.$model"
+                                @blur="$v.containerData.containerType.$touch()"
+                                :options="options"></b-form-select>
+                            <div v-if="$v.containerData.containerType.$error" class="text-danger font-weight-400">
+                                <p v-if="!$v.containerData.containerType.required">This is a required field</p>
+                            </div>
                         </b-col>
                     </b-row>
                     <b-row>
@@ -125,7 +131,8 @@
                         </b-col>
                         <b-col>
                             <label>Bill of Lading</label>
-                            <b-form-input v-model="containerData.billOfLading" @blur="$v.containerData.billOfLading.$touch()"/>
+                            <b-form-input v-model="containerData.billOfLading" 
+                                          @blur="$v.containerData.billOfLading.$touch()"/>
                             <div v-if="$v.containerData.billOfLading.$error" class="text-danger font-weight-400">
                                 <p v-if="!$v.containerData.billOfLading.required">This is a required field</p>
                             </div>
@@ -134,11 +141,20 @@
                     <b-row>
                         <b-col cols="4">
                             <label>Loading Port</label>
-                            <b-form-input v-model="containerData.loadingPort" />
+                            <b-form-input v-model="$v.containerData.loadingPort.$model" 
+                                          @blur="$v.containerData.loadingPort.$touch()"/>
+                            <div v-if="$v.containerData.loadingPort.$error" class="text-danger font-weight-400">
+                                <p v-if="!$v.containerData.loadingPort.required">This is a required field</p>
+                            </div>
                         </b-col>
                         <b-col cols="4">
                             <label>Destination Port</label>
-                            <b-form-input v-model="containerData.destinationPort" />
+                            <b-form-input v-model="$v.containerData.destinationPort.$model" 
+                                          @blur="$v.containerData.destinationPort.$touch()"/>
+                            <div v-if="$v.containerData.destinationPort.$error" class="text-danger font-weight-400">
+                                <p v-if="!$v.containerData.destinationPort.required">This is a required field</p>
+                            </div>
+                            
                         </b-col>
                     </b-row>
                     <hr class="mx-3">
@@ -300,7 +316,7 @@
                                 <b-button variant="outline-red" squared @click="hideContainerContentModal" class="ml-2">Cancel</b-button>
                             </div>
                             <div>
-                                <b-button variant="primary" squared @click="containerUpdate" class="ml-2">Update</b-button>
+                                <b-button variant="primary" squared @click="containerUpdate" :disabled="$v.selectedContainer.$invalid" class="ml-2">Update</b-button>
                             </div>
                         </div>
                     </b-col>
@@ -443,6 +459,9 @@ export default {
             vesel: {required},
             voyage: {required},
             billOfLading: {required},
+            loadingPort: {required},
+            destinationPort: {required},
+            containerType: {required}
         },
         selectedContainer: {
             sealOne: {required},
