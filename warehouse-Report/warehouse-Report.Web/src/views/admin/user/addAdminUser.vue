@@ -16,7 +16,7 @@
                         </b-row>
                         <b-row>
                             <b-col>
-                                <label>Frist Name</label>
+                                <label>Frist Name <span class="text-danger">*</span></label>
                                 <b-form-input v-model="$v.userDetails.firstName.$model" 
                                               @blur="$v.userDetails.firstName.$touch()"></b-form-input>
                                 <div v-if="$v.userDetails.firstName.$error" class="text-danger font-weight-400">
@@ -25,7 +25,7 @@
                                 </div>
                             </b-col>
                             <b-col>
-                                <label>Surname</label>
+                                <label>Surname <span class="text-danger">*</span></label>
                                 <b-form-input v-model="$v.userDetails.surname.$model" 
                                               @blur="$v.userDetails.surname.$touch()"></b-form-input>
                                 <div v-if="$v.userDetails.surname.$error" class="text-danger font-weight-400">
@@ -36,7 +36,7 @@
                         </b-row>
                         <b-row>
                             <b-col>
-                                <label>UserName</label>
+                                <label>UserName <span class="text-danger">*</span></label>
                                 <b-form-input v-model="$v.userDetails.userName.$model" 
                                               @blur="$v.userDetails.userName.$touch()"></b-form-input>
                                 <div v-if="$v.userDetails.userName.$error" class="text-danger font-weight-400">
@@ -44,7 +44,7 @@
                                 </div>
                             </b-col>
                             <b-col>
-                                <label>Email</label>
+                                <label>Email <span class="text-danger">*</span></label>
                                 <b-form-input v-model="$v.userDetails.email.$model" 
                                               @blur="$v.userDetails.email.$touch()"></b-form-input>
                                 <div v-if="$v.userDetails.email.$error" class="text-danger font-weight-400">
@@ -55,7 +55,7 @@
                         </b-row>
                         <b-row>
                             <b-col>
-                                <label>Password</label>
+                                <label>Password <span class="text-danger">*</span></label>
                                 <b-form-input type="password" v-model="$v.userDetails.password.$model" 
                                               @blur="$v.userDetails.password.$touch()"></b-form-input>
                                 <div v-if="$v.userDetails.password.$error" class="text-danger font-weight-400">
@@ -69,7 +69,7 @@
                                 </div>
                             </b-col>
                             <b-col>
-                                <label>Verify Password</label>
+                                <label>Verify Password <span class="text-danger">*</span></label>
                                 <b-form-input type="password" v-model="userDetails.password2" 
                                               @blur="$v.userDetails.password2.$touch()"></b-form-input>
                                 <div v-if="$v.userDetails.password2.$error" class="text-danger font-weight-400">
