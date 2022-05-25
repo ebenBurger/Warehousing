@@ -85,7 +85,7 @@
                 <b-form>
                     <b-row>
                         <b-col>
-                            <label>File Reference</label>
+                            <label>File Reference <span class="text-danger">*</span> </label>
                             <b-form-input v-model="$v.containerData.fileReference.$model" 
                                           @blur="$v.containerData.fileReference.$touch()"></b-form-input>
                             <div v-if="$v.containerData.fileReference.$error" class="text-danger font-weight-400">
@@ -93,7 +93,7 @@
                             </div>
                         </b-col>
                         <b-col>
-                            <label>Container Number</label>
+                            <label>Container Number <span class="text-danger">*</span></label>
                             <b-form-input v-model="containerData.containerNumber"
                                           @blur="$v.containerData.containerNumber.$touch()"/>
                             <div v-if="$v.containerData.containerNumber.$error" class="text-danger font-weight-400">
@@ -102,7 +102,7 @@
                             </div>
                         </b-col>
                         <b-col>
-                            <label>Container Type</label>
+                            <label>Container Type <span class="text-danger">*</span></label>
                             <b-form-select 
                                 v-model="$v.containerData.containerType.$model"
                                 @blur="$v.containerData.containerType.$touch()"
@@ -114,7 +114,7 @@
                     </b-row>
                     <b-row>
                         <b-col>
-                            <label>Vessel</label>
+                            <label>Vessel <span class="text-danger">*</span></label>
                             <b-form-input v-model="containerData.vesel" 
                                           @blur="$v.containerData.vesel.$touch()"/>
                             <div v-if="$v.containerData.vesel.$error" class="text-danger font-weight-400">
@@ -122,7 +122,7 @@
                             </div>
                         </b-col>
                         <b-col>
-                            <label>Voyage</label>
+                            <label>Voyage <span class="text-danger">*</span></label>
                             <b-form-input v-model="containerData.voyage" 
                                           @blur="$v.containerData.voyage.$touch()"/>
                             <div v-if="$v.containerData.voyage.$error" class="text-danger font-weight-400">
@@ -130,7 +130,7 @@
                             </div>
                         </b-col>
                         <b-col>
-                            <label>Bill of Lading</label>
+                            <label>Bill of Lading <span class="text-danger">*</span></label>
                             <b-form-input v-model="containerData.billOfLading" 
                                           @blur="$v.containerData.billOfLading.$touch()"/>
                             <div v-if="$v.containerData.billOfLading.$error" class="text-danger font-weight-400">
@@ -140,7 +140,7 @@
                     </b-row>
                     <b-row>
                         <b-col cols="4">
-                            <label>Loading Port</label>
+                            <label>Loading Port <span class="text-danger">*</span></label>
                             <b-form-input v-model="$v.containerData.loadingPort.$model" 
                                           @blur="$v.containerData.loadingPort.$touch()"/>
                             <div v-if="$v.containerData.loadingPort.$error" class="text-danger font-weight-400">
@@ -148,7 +148,7 @@
                             </div>
                         </b-col>
                         <b-col cols="4">
-                            <label>Destination Port</label>
+                            <label>Destination Port <span class="text-danger">*</span></label>
                             <b-form-input v-model="$v.containerData.destinationPort.$model" 
                                           @blur="$v.containerData.destinationPort.$touch()"/>
                             <div v-if="$v.containerData.destinationPort.$error" class="text-danger font-weight-400">

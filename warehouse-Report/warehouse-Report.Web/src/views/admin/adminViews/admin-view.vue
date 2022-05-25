@@ -194,32 +194,40 @@
                             </b-row>
                             <b-row>
                                 <b-col cols="4">
-                                    <label>Supplier</label>
-                                    <b-form-select v-model="cargo.supplier">
+                                    <label>Supplier <span class="text-danger">*</span> </label>
+                                    <b-form-select v-model="$v.cargo.supplier.$model" 
+                                                   @blur="$v.cargo.supplier.$touch()">
                                         <b-form-select-option v-for="(item, index) in suppliers" :key="index" :value="item.companyName">{{item.companyName}}</b-form-select-option>
+                                        <div v-if="$v.cargo.supplier.$error" class="text-danger font-weight-400">
+                                            <p v-if="!$v.cargo.supplier.required">This is a required field</p>
+                                        </div>
                                     </b-form-select>
                                 </b-col>
                                 <b-col cols="4">
-                                    <label>Date Collected</label>
-                                    <b-form-datepicker v-model="cargo.dateCollected"></b-form-datepicker>
+                                    <label>Date Collected <span class="text-danger">*</span></label>
+                                    <b-form-datepicker v-model="$v.cargo.dateCollected.$model"></b-form-datepicker>
                                 </b-col>
                                 <b-col cols="4">
-                                    <label>Date Received</label>
-                                    <b-form-datepicker v-model="cargo.dateReceived"></b-form-datepicker>
+                                    <label>Date Received <span class="text-danger">*</span></label>
+                                    <b-form-datepicker v-model="$v.cargo.dateReceived.$model"></b-form-datepicker>
                                 </b-col>
                             </b-row>
                             <b-row>
                                 <b-col cols="4">
-                                    <label>Description</label>
-                                    <b-form-input v-model="cargo.description"></b-form-input>
+                                    <label>Description <span class="text-danger">*</span></label>
+                                    <b-form-input v-model="cargo.description"/>
                                 </b-col>
                                 <b-col cols="4">
                                     <label>USD Rate</label>
                                     <b-form-input type="number" v-model="cargo.dollarRate" placeholder="Normal rate is at 0.55"></b-form-input>
                                 </b-col>
                                 <b-col cols="4">
-                                    <label>BPO Number</label>
-                                    <b-form-input v-model="cargo.bpoNumber"></b-form-input>
+                                    <label>BPO Number <span class="text-danger">*</span></label>
+                                    <b-form-input v-model="$v.cargo.bpoNumber.$model"
+                                                  @blur="$v.cargo.bpoNumber.$touch()"/>
+                                    <div v-if="$v.cargo.bpoNumber.$error" class="text-danger font-weight-400">
+                                        <p v-if="!$v.cargo.bpoNumber.required">This is a required field</p>
+                                    </div>
                                 </b-col>
                             </b-row>
                             <b-row>
@@ -231,7 +239,7 @@
                                     />
                                 </b-col>
                                 <b-col class="text-center">
-                                    <label>Commercial Invoice Received?</label>
+                                    <label>Commercial Invoice Received? <span class="text-danger">*</span></label>
                                     <toggle-button :value="false"
                                                    v-model="cargo.commercialInvoiceReceived"
                                                    class="d-flex justify-content-center"
@@ -257,7 +265,12 @@
                             <b-row v-if="cargo.commercialInvoiceReceived">
                                 <b-col cols="3"></b-col>
                                 <b-col cols="3">
-                                    <b-form-input v-model="cargo.commercialInvoiceNumber" placeholder="Commercial Invoice Number"></b-form-input>
+                                    <b-form-input v-model="cargo.commercialInvoiceNumber" 
+                                                  placeholder="Commercial Invoice Number"
+                                                  @blur="$v.cargo.commercialInvoiceNumber.$touch()"/>
+                                    <div v-if="$v.cargo.commercialInvoiceNumber.$error" class="text-danger font-weight-400">
+                                        <p v-if="!$v.cargo.commercialInvoiceNumber.required">This is a required field</p>
+                                    </div>
                                 </b-col>
                                 <b-col cols="3"></b-col>
                                 <b-col cols="3"></b-col>
@@ -282,7 +295,7 @@
                                             <b-button variant="outline-red" squared @click="hideCargoModal" class="ml-2">Cancel</b-button>
                                         </div>
                                         <div>
-                                            <b-button variant="primary" squared @click="saveCargo" class="ml-2">Save</b-button>
+                                            <b-button variant="primary" squared @click="saveCargo" :disabled="$v.cargo.$invalid" class="ml-2">Save</b-button>
                                         </div>
                                     </div>
                                 </b-col>
@@ -316,33 +329,57 @@
                                 </b-row>
                                 <b-row>
                                     <b-col>
-                                        <label>Description</label>
-                                        <b-form-input v-model="packageData.description"></b-form-input>
+                                        <label>Description <span class="text-danger">*</span></label>
+                                        <b-form-input v-model="$v.packageData.description.$model" 
+                                                      @blur="$v.packageData.description.$touch()"></b-form-input>
+                                        <div v-if="$v.packageData.description.$error" class="text-danger font-weight-400">
+                                            <p v-if="!$v.packageData.description.required">This is a required field</p>
+                                        </div>
                                     </b-col>
                                     <b-col>
-                                        <label>Quantity</label>
-                                        <b-form-input type="number" v-model="packageData.quantity"></b-form-input>
+                                        <label>Quantity <span class="text-danger">*</span></label>
+                                        <b-form-input type="number" v-model="$v.packageData.quantity.$model"
+                                                      @blur="$v.packageData.quantity.$touch()"></b-form-input>
+                                        <div v-if="$v.packageData.quantity.$error" class="text-danger font-weight-400">
+                                            <p v-if="!$v.packageData.quantity.required">This is a required field</p>
+                                        </div>
                                     </b-col>
 
                                     <b-col>
-                                        <label>Length (cm)</label>
-                                        <b-form-input type="number" v-model="packageData.length"></b-form-input>
+                                        <label>Length (cm) <span class="text-danger">*</span></label>
+                                        <b-form-input type="number" v-model="$v.packageData.length.$model"
+                                                      @blur="$v.packageData.length.$touch()"></b-form-input>
+                                        <div v-if="$v.packageData.length.$error" class="text-danger font-weight-400">
+                                            <p v-if="!$v.packageData.length.required">This is a required field</p>
+                                        </div>
                                     </b-col>
                                     <b-col>
-                                        <label>Width (cm)</label>
-                                        <b-form-input type="number" v-model="packageData.width"></b-form-input>
+                                        <label>Width (cm) <span class="text-danger">*</span></label>
+                                        <b-form-input type="number" v-model="$v.packageData.width.$model"
+                                                      @blur="$v.packageData.width.$touch()"></b-form-input>
+                                        <div v-if="$v.packageData.width.$error" class="text-danger font-weight-400">
+                                            <p v-if="!$v.packageData.width.required">This is a required field</p>
+                                        </div>
                                     </b-col>
                                     <b-col>
-                                        <label>Height (cm)</label>
-                                        <b-form-input type="number" v-model="packageData.height"></b-form-input>
+                                        <label>Height (cm) <span class="text-danger">*</span></label>
+                                        <b-form-input type="number" v-model="$v.packageData.height.$model"
+                                                      @blur="$v.packageData.height.$touch()"></b-form-input>
+                                        <div v-if="$v.packageData.height.$error" class="text-danger font-weight-400">
+                                            <p v-if="!$v.packageData.height.required">This is a required field</p>
+                                        </div>
                                     </b-col>
                                     <b-col>
-                                        <label>Weight (kg)</label>
-                                        <b-form-input type="number" v-model="packageData.weight"></b-form-input>
+                                        <label>Weight (kg) <span class="text-danger">*</span></label>
+                                        <b-form-input type="number" v-model="packageData.weight"
+                                                      @blur="$v.packageData.weight.$touch()"></b-form-input>
+                                        <div v-if="$v.packageData.weight.$error" class="text-danger font-weight-400">
+                                            <p v-if="!$v.packageData.weight.required">This is a required field</p>
+                                        </div>
                                     </b-col>
                                     <b-col>
                                         <label></label>
-                                        <b-button variant="primary" squared @click="addPackage">
+                                        <b-button variant="primary" :disabled="$v.packageData.$invalid" squared @click="addPackage">
                                             <font-awesome-icon icon="fa-plus" />
                                         </b-button>
                                     </b-col>
@@ -366,14 +403,6 @@
                                         </template>
 
                                     </b-table>
-                                    <!--                                <b-row align-h="center" >-->
-                                    <!--                                    <b-pagination-->
-                                    <!--                                        v-model="packageAdd.currentPage"-->
-                                    <!--                                        :total-rows="packageAddRows"-->
-                                    <!--                                        :per-page="packageAdd.resultsPerPage"-->
-                                    <!--                                        aria-controls="packageAddTable"-->
-                                    <!--                                    ></b-pagination>-->
-                                    <!--                                </b-row>-->
                                 </b-row>
                                 <hr class="mx-3">
                                 <b-row>
@@ -383,7 +412,7 @@
                                                 <b-button variant="outline-red" squared @click="hideCargoModal" class="ml-2">Cancel</b-button>
                                             </div>
                                             <div>
-                                                <b-button variant="primary" squared @click="confirmPackageList" class="ml-2">Save</b-button>
+                                                <b-button variant="primary" squared @click="confirmPackageList" :disabled="!this.packageAdd.dataSource.length > 0" class="ml-2">Save</b-button>
                                             </div>
                                         </div>
                                     </b-col>
@@ -1002,6 +1031,7 @@
 <script>
 import {mapActions, mapState} from "vuex";
 import Loader from "@/components/loader";
+import {required} from "vuelidate/lib/validators";
 
 export default {
     name: "adminView",
@@ -1320,7 +1350,7 @@ export default {
                 })
         },
         savePackageToDb() {
-            this.isEnterPage = true
+            this.loading = true
             this.packageAdd.dataSource.forEach((item) => {
                 const packItem = {}
                 packItem.cargoId = this.cargoCreatedId
@@ -1571,6 +1601,40 @@ export default {
                 return item.supplier.toLowerCase().match(this.search.toLowerCase()) 
                     || item.bpoNumber.toLowerCase().match(this.search.toLowerCase())
             })
+        },
+    },
+    validations: {
+        cargo: {
+            supplier: {required},
+            dateCollected: {required},
+            dateReceived: {required},
+            // description: {required},
+            bpoNumber: {required},
+            commercialInvoiceNumber: {required},
+            
+            // atraxInvoiceNumber: {required},
+            // deliveryArea: {required},
+            // transporter: {required},
+            // transporterCost: {required},
+            // transportedInvoiceNumber: {required},
+            // specialRequirements: {required},
+            // deleteReason: {required},
+            // billedToJkn:  {required},
+            // commercialInvoiceReceived:  {required},
+            // packingListReceived:  {required},
+            // hazardous:  {required},
+            // isComplete:  {required},
+            // isActive: {required},
+            // containerId: {required},
+        },
+        packageData: {
+            description: {required},
+            quantity: {required},
+            length: {required},
+            width: {required},
+            height: {required},
+            weight: {required},
+            
         },
     },
 }
